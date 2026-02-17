@@ -7,7 +7,7 @@
         </span>
     @endif
     <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold {{ $dark ? 'text-white' : 'text-secondary' }} leading-tight">
-        {{ $title }}
+        {!! $title !!}
     </h2>
     <div class="mt-4 flex {{ $align === 'center' ? 'justify-center' : ($align === 'right' ? 'justify-end' : 'justify-start') }}">
         <div class="h-1.5 w-20 bg-primary rounded-full"></div>

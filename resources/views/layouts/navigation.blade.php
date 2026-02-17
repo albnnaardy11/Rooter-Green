@@ -23,7 +23,7 @@
 
         <!-- Desktop Menu: Minimal Tech Style -->
         <div class="hidden lg:flex items-center space-x-2">
-            @foreach(['Tentang' => '#about', 'Layanan' => '#services', 'Teknologi' => '#technology', 'Wilayah' => '#coverage'] as $label => $link)
+            @foreach(['Tentang' => '/tentang', 'Layanan' => '/#services', 'Teknologi' => '/#technology', 'Wilayah' => '/#coverage'] as $label => $link)
                 <a href="{{ $link }}" class="relative px-5 py-2 text-sm font-black text-white hover:text-primary uppercase tracking-[0.15em] transition-all duration-300 group">
                     <span class="relative z-10">{{ $label }}</span>
                     <span class="absolute bottom-0 left-1/2 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
@@ -72,7 +72,7 @@
         
         <div class="relative flex flex-col gap-8 z-20">
             @php $index = 1; @endphp
-            @foreach(['Tentang' => '#about', 'Layanan' => '#services', 'Teknologi' => '#technology', 'Wilayah' => '#coverage'] as $label => $link)
+            @foreach(['Tentang' => '/tentang', 'Layanan' => '/#services', 'Teknologi' => '/#technology', 'Wilayah' => '/#coverage'] as $label => $link)
                 <div x-show="open"
                      x-transition:enter="transition ease-out duration-600 delay-[{{ $index * 150 }}ms]"
                      x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
