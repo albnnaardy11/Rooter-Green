@@ -122,14 +122,13 @@
     </section>
 
     <!-- Why Us / Problem Solver Section (Modular & Complex) -->
-    <section class="py-24 bg-stone-50 overflow-hidden">
+    <section class="py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row gap-20 items-center">
                 <div class="lg:w-1/2 order-2 lg:order-1 relative">
                     <!-- Layered Imagery -->
-                    <div class="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl skew-y-2 group">
-                        <img src="https://images.unsplash.com/photo-1542013936693-884638332954?w=1200&fit=crop" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700" alt="Plumbing Problem">
-                        <div class="absolute inset-0 bg-secondary/40 mix-blend-multiply transition-opacity group-hover:opacity-0"></div>
+                    <div class="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl skew-y-1 group">
+                        <img src="https://images.unsplash.com/photo-1542013936693-884638332954?w=1200&fit=crop" class="w-full transition-transform duration-1000 group-hover:scale-105" alt="Plumbing Problem">
                     </div>
                     <div class="absolute -bottom-10 -right-10 w-2/3 z-20 rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white group animate-bounce-soft">
                         <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&fit=crop" alt="Work Process" class="w-full h-full object-cover">
@@ -139,52 +138,52 @@
                 <div class="lg:w-1/2 order-1 lg:order-2">
                     <x-section-heading title="Hadir Menjadi Solusi Terbaik Anda" subtitle="KENAPA HARUS KAMI?" align="left" />
                     
-                    <p class="text-gray-600 text-lg mb-10 -mt-8 leading-relaxed">
+                    <p class="text-gray-600 text-lg mb-12 -mt-8 leading-relaxed">
                         Kami mengerti rasa frustrasi Anda saat saluran pipa mampet di rumah. Itulah kenapa tim Rooter Green hadir dengan standar pelayanan yang berbeda dari bengkel pipa biasa.
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <!-- Ahli & Profesional -->
-                        <div class="flex flex-col gap-4 p-6 bg-white rounded-3xl border border-gray-100 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 10l2 2m0 0l2-2m-2 2v6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="flex flex-col gap-5 p-8 bg-stone-50/50 rounded-[2rem] border border-gray-100 hover:bg-white hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 group">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                                <i class="ri-medal-fill text-2xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-secondary font-black text-lg mb-1">Ahli & Profesional</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed">Teknisi tersertifikasi dengan jam terbang tinggi di bidang plumbing.</p>
+                                <h4 class="text-secondary font-black text-xl mb-2 group-hover:text-primary transition-colors">Ahli & Profesional</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Teknisi tersertifikasi dengan jam terbang tinggi di bidang plumbing.</p>
                             </div>
                         </div>
 
                         <!-- Konsultasi Gratis -->
-                        <div class="flex flex-col gap-4 p-6 bg-white rounded-3xl border border-gray-100 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="flex flex-col gap-5 p-8 bg-stone-50/50 rounded-[2rem] border border-gray-100 hover:bg-white hover:border-accent/20 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 group">
+                            <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                                <i class="ri-customer-service-2-line text-2xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-secondary font-black text-lg mb-1">Konsultasi Gratis</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed">Tanya masalah pipa Anda kapan saja tanpa dipungut biaya sepeserpun.</p>
+                                <h4 class="text-secondary font-black text-xl mb-2 group-hover:text-accent transition-colors">Konsultasi Gratis</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Tanya masalah pipa Anda kapan saja tanpa dipungut biaya sepeserpun.</p>
                             </div>
                         </div>
 
                         <!-- Layanan Berkualitas -->
-                        <div class="flex flex-col gap-4 p-6 bg-white rounded-3xl border border-gray-100 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="flex flex-col gap-5 p-8 bg-stone-50/50 rounded-[2rem] border border-gray-100 hover:bg-white hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 group">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                                <i class="ri-shield-check-fill text-2xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-secondary font-black text-lg mb-1">Layanan Berkualitas</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed">Pengerjaan rapi, bersih, dan menggunakan standar teknologi terbaru.</p>
+                                <h4 class="text-secondary font-black text-xl mb-2 group-hover:text-primary transition-colors">Layanan Berkualitas</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Pengerjaan rapi, bersih, dan menggunakan standar teknologi terbaru.</p>
                             </div>
                         </div>
 
                         <!-- Harga Terbaik -->
-                        <div class="flex flex-col gap-4 p-6 bg-white rounded-3xl border border-gray-100 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="flex flex-col gap-5 p-8 bg-stone-50/50 rounded-[2rem] border border-gray-100 hover:bg-white hover:border-accent/20 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 group">
+                            <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                                <i class="ri-wallet-3-fill text-2xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-secondary font-black text-lg mb-1">Harga Terbaik</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed">Penawaran harga paling kompetitif dengan kualitas hasil bintang lima.</p>
+                                <h4 class="text-secondary font-black text-xl mb-2 group-hover:text-accent transition-colors">Harga Terbaik</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Penawaran harga paling kompetitif dengan kualitas hasil bintang lima.</p>
                             </div>
                         </div>
                     </div>
