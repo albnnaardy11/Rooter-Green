@@ -17,7 +17,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-stone-50 text-slate-800">
-    <div class="min-h-screen flex flex-col">
+    <div id="site-content" class="min-h-screen flex flex-col transition-all duration-300">
         @include('layouts.navigation')
 
         <main class="flex-grow">
@@ -28,5 +28,7 @@
         
         <x-sticky-footer />
     </div>
+    
+    <x-accessibility-menu />
 </body>
 </html>

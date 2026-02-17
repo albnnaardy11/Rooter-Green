@@ -21,3 +21,7 @@ Route::get('/galeri', function () {
 Route::get('/kontak', function () {
     return view('kontak');
 })->name('contact');
+
+Route::get('/panduan-aksesibilitas', function () {
+    return view('panduan-aksesibilitas');
+})->name('accessibility-guide');
