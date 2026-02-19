@@ -23,10 +23,19 @@
 
         <!-- Desktop Menu: Minimal Tech Style -->
         <div class="hidden lg:flex items-center space-x-4 xl:space-x-8">
-            @foreach(['Home' => route('home'), 'About Us' => route('about'), 'Service' => route('services'), 'Gallery' => route('gallery'), 'Contact' => route('contact')] as $label => $link)
-                <a href="{{ $link }}" class="relative px-3 xl:px-5 py-2 text-[11px] xl:text-xs font-black text-white hover:text-primary uppercase tracking-[0.2em] transition-all duration-300 group whitespace-nowrap">
+            @foreach(['Home' => route('home'), 'Tentang' => route('about'), 'Layanan' => route('services'), 'Galeri' => route('gallery'), 'Kontak' => route('contact')] as $label => $link)
+                <a href="{{ $link }}" 
+                   class="relative px-5 py-2 text-[11px] xl:text-xs font-extra-black uppercase tracking-[0.25em] transition-all duration-500 group whitespace-nowrap {{ request()->url() == $link ? 'text-white' : 'text-gray-400 hover:text-white' }}">
                     <span class="relative z-10">{{ $label }}</span>
-                    <span class="absolute bottom-0 left-1/2 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full"></span>
+                    
+                    <!-- Background Soft Pill -->
+                    <span class="absolute inset-x-0 inset-y-[-4px] bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 border border-white/0 group-hover:border-white/5 backdrop-blur-sm"></span>
+                    
+                    <!-- Tech Indicator Dot -->
+                    <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-500 {{ request()->url() == $link ? 'opacity-100 -bottom-2' : 'opacity-0 group-hover:opacity-100 group-hover:-bottom-2' }}">
+                        <span class="w-1 h-1 bg-primary rounded-full shadow-[0_0_10px_#1FAF5A]"></span>
+                        <span class="w-8 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></span>
+                    </div>
                 </a>
             @endforeach
         </div>
