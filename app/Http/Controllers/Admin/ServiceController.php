@@ -41,7 +41,11 @@ class ServiceController extends Controller
         $validated['slug'] = Str::slug($request->name);
         $validated['is_active'] = $request->has('is_active');
 
-        $this->serviceRepo->create($validated);
+        $service = $this->serviceRepo->create($validated);
+
+        if ($request->has('seo')) {
+            $service->seo()->create($request->seo);
+        }
 
         return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
     }
@@ -54,6 +58,8 @@ class ServiceController extends Controller
 
     public function update(Request $request, $id)
     {
+        $service = $this->serviceRepo->find($id);
+        
         $validated = $request->validate([
             'name' => 'required|max:255',
             'icon' => 'required',
@@ -67,6 +73,10 @@ class ServiceController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         $this->serviceRepo->update($id, $validated);
+
+        if ($request->has('seo')) {
+            $service->seo()->updateOrCreate([], $request->seo);
+        }
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
     }

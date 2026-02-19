@@ -53,6 +53,10 @@
                     <i class="ri-gallery-line text-xl"></i>
                     <span class="text-sm font-bold">Galeri Proyek</span>
                 </a>
+                <a href="{{ route('admin.media.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.media.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-image-2-line text-xl"></i>
+                    <span class="text-sm font-bold">Media Library</span>
+                </a>
 
                 <div class="pt-4 pb-2 px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Konfigurasi</div>
                 
@@ -67,6 +71,10 @@
                 <a href="{{ route('admin.users.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-group-line text-xl"></i>
                     <span class="text-sm font-bold">Admin Users</span>
+                </a>
+                <a href="{{ route('admin.activity-logs.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.activity-logs.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-radar-line text-xl"></i>
+                    <span class="text-sm font-bold">System Logs</span>
                 </a>
             </nav>
 
@@ -93,5 +101,6 @@
         </main>
     </div>
 
+    @stack('scripts')
 </body>
 </html>

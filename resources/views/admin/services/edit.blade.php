@@ -35,6 +35,8 @@
                               class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary/50 transition-all font-medium leading-relaxed">{{ old('description_full', $service->description_full) }}</textarea>
                 </div>
             </div>
+
+            <x-admin.seo-fields :model="$service" />
         </div>
 
         <div class="space-y-8">

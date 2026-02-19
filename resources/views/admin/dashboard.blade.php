@@ -67,6 +67,46 @@
         </div>
     </div>
 
+    <!-- Analytics Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-slate-900/50 p-10 rounded-[3rem] border border-white/5 backdrop-blur-xl">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <h3 class="text-xl font-heading font-black text-white tracking-tight">Visitor <span class="text-primary italic">Traffic.</span></h3>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Last 7 Days Activity</p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="text-right">
+                        <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Today</p>
+                        <p class="text-xl font-black text-white">{{ number_format($stats['views_today']) }}</p>
+                    </div>
+                    <div class="w-px h-8 bg-white/10"></div>
+                    <div class="text-right">
+                        <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Total</p>
+                        <p class="text-xl font-black text-primary">{{ number_format($stats['total_views']) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="h-64">
+                <canvas id="visitorChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-slate-900/50 p-10 rounded-[3rem] border border-white/5 backdrop-blur-xl space-y-8">
+            <h3 class="text-xl font-heading font-black text-white tracking-tight">Top <span class="text-primary italic">Pages.</span></h3>
+            <div class="space-y-4">
+                @foreach($stats['top_pages'] as $page)
+                <div class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/[0.08] transition-all group">
+                    <div class="flex flex-col max-w-[70%]">
+                        <span class="text-[10px] text-slate-400 font-mono truncate group-hover:text-primary transition-colors">{{ $page->url }}</span>
+                    </div>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full">{{ $page->total }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Recent Activities -->
         <div class="lg:col-span-2 space-y-6">
@@ -130,3 +170,48 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('visitorChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @js($stats['visitor_chart']['labels']),
+            datasets: [{
+                label: 'Views',
+                data: @js($stats['visitor_chart']['values']),
+                borderColor: '#1FAF5A',
+                backgroundColor: 'rgba(31, 175, 90, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: '#1FAF5A',
+                pointBorderColor: '#0f172a',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } }
+                }
+            }
+        }
+    });
+</script>
+@endpush

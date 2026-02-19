@@ -27,11 +27,12 @@
 
                 <div>
                     <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Content</label>
-                    <textarea name="content" rows="12" required placeholder="Write your article content here..." 
-                              class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-all font-medium leading-relaxed">{{ old('content') }}</textarea>
+                    <x-admin.rich-editor name="content" :value="old('content')" />
                     @error('content') <p class="text-red-500 text-[10px] mt-2 font-bold">{{ $message }}</p> @enderror
                 </div>
             </div>
+
+            <x-admin.seo-fields />
         </div>
 
         <!-- Right: Sidebar Settings -->

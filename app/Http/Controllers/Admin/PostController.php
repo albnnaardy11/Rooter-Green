@@ -45,7 +45,11 @@ class PostController extends Controller
             $validated['featured_image'] = '/storage/' . $path;
         }
 
-        $this->postRepo->create($validated);
+        $post = $this->postRepo->create($validated);
+
+        if ($request->has('seo')) {
+            $post->seo()->create($request->seo);
+        }
 
         return redirect()->route('admin.posts.index')->with('success', 'Article created successfully.');
     }
@@ -79,6 +83,10 @@ class PostController extends Controller
         }
 
         $this->postRepo->update($id, $validated);
+
+        if ($request->has('seo')) {
+            $post->seo()->updateOrCreate([], $request->seo);
+        }
 
         return redirect()->route('admin.posts.index')->with('success', 'Article updated successfully.');
     }
