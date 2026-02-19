@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[97vh] flex items-center overflow-hidden pt-36 sm:pt-44 pb-24 sm:pb-40 sm:pb-40">
+<section class="relative bg-secondary min-h-[75vh] lg:min-h-[85vh] xl:min-h-[97vh] flex items-center overflow-hidden pt-36 sm:pt-36 lg:pt-44 pb-16 lg:pb-32 xl:pb-40">
     <!-- 1. Background Visuals (Standard Brand DNA) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -8,10 +8,10 @@
         <div class="flex flex-col items-center text-center relative">
             
             <!-- Floating Decorative Images (Left & Right) -->
-            <div class="absolute -left-16 lg:-left-44 top-0 w-44 lg:w-64 aspect-[3/4] rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl rotate-[-15deg] hidden sm:block animate-bounce-soft">
+            <div class="absolute -left-10 lg:-left-20 xl:-left-44 top-0 w-32 md:w-44 xl:w-64 aspect-[3/4] rounded-[2rem] xl:rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl rotate-[-15deg] hidden sm:block animate-bounce-soft">
                 <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&fit=crop" class="w-full h-full object-cover">
             </div>
-            <div class="absolute -right-16 lg:-right-44 bottom-0 w-44 lg:w-64 aspect-[3/4] rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl rotate-[15deg] hidden sm:block animate-bounce-soft delay-700">
+            <div class="absolute -right-10 lg:-right-20 xl:-right-44 bottom-0 w-32 md:w-44 xl:w-64 aspect-[3/4] rounded-[2rem] xl:rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl rotate-[15deg] hidden sm:block animate-bounce-soft delay-700">
                 <img src="https://images.unsplash.com/photo-1542013936693-884638332954?w=600&fit=crop" class="w-full h-full object-cover">
             </div>
 
@@ -22,7 +22,7 @@
                     <span class="text-accent font-black text-[10px] uppercase tracking-[0.4em]">Works Portfolio</span>
                 </div>
                 
-                <h1 class="text-4xl sm:text-6xl md:text-8xl font-heading font-black text-white leading-[0.85] tracking-tighter mb-8 sm:mb-12">
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-black text-white leading-[0.85] tracking-tighter mb-8 sm:mb-12">
                     Lensa <span class="text-primary italic underline decoration-accent/30 underline-offset-[12px]">Kerja</span> <br> Nyata Kami.
                 </h1>
 
@@ -30,15 +30,15 @@
                     Kumpulan dokumentasi pengerjaan solusi plumbing profesional dari ribuan titik di seluruh Jabodetabek.
                 </p>
 
-                <div class="flex flex-wrap items-center justify-center gap-10">
+                <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
                     <div class="flex flex-col items-center">
-                        <span class="text-white text-5xl font-black tracking-tighter mb-1">2.4k+</span>
-                        <span class="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Pipa Lancar</span>
+                        <span class="text-white text-3xl sm:text-5xl font-black tracking-tighter mb-1">2.4k+</span>
+                        <span class="text-gray-500 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">Pipa Lancar</span>
                     </div>
                     <div class="w-[1px] h-12 bg-white/10 hidden md:block"></div>
                     <div class="flex flex-col items-center">
-                        <span class="text-white text-5xl font-black tracking-tighter mb-1">98%</span>
-                        <span class="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Repeat Order</span>
+                        <span class="text-white text-3xl sm:text-5xl font-black tracking-tighter mb-1">98%</span>
+                        <span class="text-gray-500 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">Repeat Order</span>
                     </div>
                 </div>
 

@@ -12,27 +12,39 @@
     
     <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <!-- Header Section -->
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-20">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-12 mb-12 lg:mb-20">
             <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-4 mb-6">
-                    <span class="w-12 h-[2px] bg-primary"></span>
-                    <span class="text-primary font-black text-xs uppercase tracking-[0.4em]">Dokumentasi Lapangan</span>
+                <div class="flex items-center gap-4 mb-4 sm:mb-6">
+                    <span class="w-10 sm:w-12 h-[2px] bg-primary"></span>
+                    <span class="text-primary font-black text-[10px] sm:text-xs uppercase tracking-[0.4em]">Dokumentasi Lapangan</span>
                 </div>
-                <h2 class="text-5xl sm:text-7xl font-heading font-black text-secondary leading-none tracking-tighter">
-                    Galeri Hasil <br> <span class="text-primary italic">Kerja Nyata.</span>
+                <h2 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-black text-secondary leading-none tracking-tighter">
+                    Galeri Hasil <br class="hidden sm:block"> <span class="text-primary italic">Kerja Nyata.</span>
                 </h2>
             </div>
 
             <!-- Custom Filter Tabs -->
-            <div class="flex flex-wrap items-center gap-3 bg-white p-3 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100">
-                <template x-for="cat in ['All', 'Residential', 'Commercial', 'Specialized']">
-                    <button 
-                        @click="filter = cat"
-                        :class="filter === cat ? 'bg-secondary text-white shadow-lg' : 'text-gray-400 hover:text-secondary hover:bg-stone-50'"
-                        class="px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500"
-                        x-text="cat">
-                    </button>
-                </template>
+            <div class="w-full lg:w-auto mt-8 lg:mt-0">
+                <div class="bg-white p-1.5 sm:p-2 rounded-2xl sm:rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 flex items-center overflow-x-auto no-scrollbar focus-within:ring-2 ring-primary/10">
+                    <div class="flex items-center gap-1.5 sm:gap-2 px-1">
+                        <template x-for="cat in ['All', 'Residential', 'Commercial', 'Specialized']">
+                            <button 
+                                @click="filter = cat"
+                                :class="filter === cat ? 'bg-secondary text-white shadow-lg' : 'text-gray-400 hover:text-secondary hover:bg-stone-50'"
+                                class="flex-shrink-0 px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500"
+                                x-text="cat">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+                <!-- Mini Scroll Hint for Mobile -->
+                <div class="flex lg:hidden justify-center mt-3">
+                    <div class="flex gap-1">
+                        <div class="w-1 h-1 rounded-full bg-primary/20"></div>
+                        <div class="w-4 h-1 rounded-full bg-primary/40"></div>
+                        <div class="w-1 h-1 rounded-full bg-primary/20"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -92,52 +104,73 @@
         <div x-show="activeItem" 
              class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-10"
              x-transition:enter="transition ease-out duration-500"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
              x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0">
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             @keydown.escape.window="activeItem = null">
             
-            <div @click="activeItem = null" class="absolute inset-0 bg-secondary/95 backdrop-blur-3xl"></div>
+            <div @click="activeItem = null" class="absolute inset-0 bg-secondary/90 backdrop-blur-2xl"></div>
             
-            <div class="max-w-6xl w-full bg-white rounded-[4rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] relative z-10 flex flex-col lg:flex-row h-full max-h-[90vh]">
-                <!-- Large Image Area -->
-                <div class="lg:w-8/12 bg-black flex items-center justify-center overflow-hidden">
-                    <img :src="activeItem?.img" class="w-full h-full object-cover">
+            <div class="w-full max-w-6xl bg-white rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden shadow-2xl relative z-10 flex flex-col lg:flex-row h-fit max-h-[92vh]">
+                
+                <!-- Close Button -->
+                <button @click="activeItem = null" 
+                        class="absolute top-4 sm:top-6 right-4 sm:right-6 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 lg:bg-secondary/10 backdrop-blur-xl border border-white/20 lg:border-secondary/10 flex items-center justify-center text-white lg:text-secondary hover:bg-primary hover:text-white hover:border-primary hover:scale-110 transition-all duration-300 shadow-xl group">
+                    <i class="ri-close-line text-xl sm:text-2xl group-hover:rotate-90 transition-transform duration-500"></i>
+                </button>
+
+                <!-- Image Area -->
+                <div class="w-full lg:w-7/12 aspect-video lg:aspect-auto bg-stone-900 flex items-center justify-center overflow-hidden relative min-h-[250px] lg:min-h-0">
+                    <img :src="activeItem?.img" class="w-full h-full object-cover" :alt="activeItem?.title">
+                    
+                    <!-- Category Badge -->
+                    <div class="absolute bottom-6 left-6 flex items-center gap-3">
+                        <span class="px-4 sm:px-5 py-2 rounded-full bg-primary/90 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-xl" x-text="activeItem?.category"></span>
+                    </div>
                 </div>
                 
-                <!-- Info Area -->
-                <div class="lg:w-4/12 p-12 lg:p-16 flex flex-col justify-between">
+                <!-- Details Area -->
+                <div class="w-full lg:w-5/12 p-8 sm:p-12 lg:p-16 flex flex-col justify-between overflow-y-auto no-scrollbar bg-white">
                     <div>
-                        <button @click="activeItem = null" class="w-14 h-14 rounded-full bg-stone-50 flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all mb-12">
-                            <i class="ri-close-line text-2xl"></i>
-                        </button>
+                        <div class="flex items-center gap-4 mb-6 sm:mb-8">
+                            <span class="w-10 h-[2px] bg-primary"></span>
+                            <span class="text-primary font-black text-[10px] sm:text-xs uppercase tracking-[0.3em]">Project Overview</span>
+                        </div>
                         
-                        <div class="inline-block px-4 py-1.5 rounded-full bg-stone-100 text-gray-500 text-[10px] font-black uppercase tracking-[0.2em] mb-6" x-text="activeItem?.category"></div>
-                        <h2 class="text-4xl font-heading font-black text-secondary leading-tight tracking-tighter mb-8" x-text="activeItem?.title"></h2>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-black text-secondary leading-tight tracking-tighter mb-6 sm:mb-8" x-text="activeItem?.title"></h2>
                         
-                        <div class="space-y-6">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                                    <i class="ri-checkbox-circle-fill"></i>
+                        <div class="space-y-4 sm:space-y-6">
+                            <div class="flex items-start gap-4 p-4 rounded-2xl sm:rounded-3xl bg-stone-50 border border-gray-100 hover:border-primary/20 transition-colors">
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                                    <i class="ri-checkbox-circle-fill text-lg sm:text-xl"></i>
                                 </div>
-                                <p class="text-gray-500 text-sm leading-relaxed">Pengerjaan menggunakan metode modern tanpa merusak struktur pipa bangunan.</p>
+                                <div>
+                                    <h4 class="text-secondary font-black text-[10px] sm:text-xs uppercase tracking-wider mb-1">Metode Modern</h4>
+                                    <p class="text-gray-500 text-[11px] sm:text-[13px] leading-relaxed font-medium">Pengerjaan modern tanpa merusak struktur pipa bangunan Anda.</p>
+                                </div>
                             </div>
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
-                                    <i class="ri-shield-check-fill"></i>
+                            
+                            <div class="flex items-start gap-4 p-4 rounded-2xl sm:rounded-3xl bg-stone-50 border border-gray-100 hover:border-accent/20 transition-colors">
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-accent/10 flex items-center justify-center text-accent shrink-0 shadow-inner">
+                                    <i class="ri-shield-check-fill text-lg sm:text-xl"></i>
                                 </div>
-                                <p class="text-gray-500 text-sm leading-relaxed">Garansi pelancaran kembali jika mampet dalam masa waktu yang ditentukan.</p>
+                                <div>
+                                    <h4 class="text-secondary font-black text-[10px] sm:text-xs uppercase tracking-wider mb-1">Garansi Penuh</h4>
+                                    <p class="text-gray-500 text-[11px] sm:text-[13px] leading-relaxed font-medium">Garansi pelancaran kembali jika terjadi mampet di masa garansi.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="pt-12 border-t border-gray-100">
-                        <a href="https://wa.me/6281234567890" class="w-full flex items-center justify-center gap-4 bg-secondary py-5 rounded-2xl text-white font-black uppercase tracking-widest text-xs hover:bg-primary transition-all group">
-                             <i class="ri-whatsapp-line text-xl"></i>
+                    <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-100 flex flex-col gap-4">
+                        <a href="https://wa.me/6281234567890" class="w-full flex items-center justify-center gap-4 bg-secondary py-4 sm:py-5 rounded-xl sm:rounded-2xl text-white font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary transition-all duration-300 group shadow-xl shadow-secondary/10 hover:shadow-primary/20">
+                             <i class="ri-whatsapp-line text-lg sm:text-xl"></i>
                              <span>Konsultasi Serupa</span>
                              <i class="ri-arrow-right-line group-hover:translate-x-2 transition-transform"></i>
                         </a>
+                        <p class="text-center text-[9px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-widest italic opacity-60">Gratis Konsultasi & Estimasi Biaya</p>
                     </div>
                 </div>
             </div>
