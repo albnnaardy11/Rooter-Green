@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[70vh] flex items-center overflow-hidden pt-44 pb-32 sm:pb-32">
+<section class="relative bg-secondary min-h-[70vh] flex items-center overflow-hidden pt-36 sm:pt-44 pb-24 sm:pb-32 sm:pb-32">
     <!-- 1. Connection/Background (Consistent Brand DNA) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -28,7 +28,7 @@
                     <span class="text-white font-black text-[10px] uppercase tracking-[0.5em]">Always Connected</span>
                 </div>
 
-                <h1 class="text-6xl sm:text-8xl font-heading font-black text-white leading-[0.85] tracking-[ -0.05em]">
+                <h1 class="text-4xl sm:text-6xl md:text-8xl font-heading font-black text-white leading-[0.85] tracking-[ -0.05em]">
                     Butuh <span class="text-primary italic">Solusi</span> <br> Cepat?
                 </h1>
 

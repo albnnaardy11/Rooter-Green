@@ -24,7 +24,7 @@
     </div>
 
     <!-- Content Area -->
-    <div class="p-10 pt-4 relative">
+    <div class="p-6 sm:p-10 pt-4 relative">
         <!-- Accent Line -->
         <div @class([
             'w-12 h-1 rounded-full mb-6 group-hover:w-20 transition-all duration-500',

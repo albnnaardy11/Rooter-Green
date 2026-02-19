@@ -29,7 +29,7 @@
 
 <section {{ $attributes->merge(['class' => 'relative z-30 -mt-10 sm:-mt-14']) }}>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white/70 backdrop-blur-2xl rounded-[3rem] p-8 sm:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 relative overflow-hidden">
+        <div class="bg-white/70 backdrop-blur-2xl rounded-[2rem] sm:rounded-[3rem] p-5 sm:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 relative overflow-hidden">
             <!-- Decorative Background Element -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
             

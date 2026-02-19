@@ -10,7 +10,7 @@
     'guaranteeDesc' => 'Pipa mampet mampet lagi dalam 7 hari? Kami perbaiki GRATIS tanpa biaya tambahan apapun.'
 ])
 
-<section {{ $attributes->merge(['class' => 'relative bg-secondary min-h-[85vh] flex items-center overflow-hidden pt-44 lg:pt-48 pb-20 sm:pb-32']) }}>
+<section {{ $attributes->merge(['class' => 'relative bg-secondary min-h-[85vh] flex items-center overflow-hidden pt-32 sm:pt-44 lg:pt-48 pb-16 sm:pb-32']) }}>
     <!-- Modern Pattern Overlay -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -20,17 +20,17 @@
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             <!-- Text Content -->
             <div class="lg:w-3/5 text-center lg:text-left">
-                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 animate-fade-in-up">
-                    <div class="inline-flex items-center px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]">
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-4 sm:mb-8 animate-fade-in-up">
+                    <div class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold text-[9px] sm:text-xs uppercase tracking-[0.2em]">
                         {{ $subtitle }}
                     </div>
-                    <div class="inline-flex items-center px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/80 font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-                        <i class="ri-map-pin-2-fill mr-2 text-accent"></i>
+                    <div class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 text-white/80 font-bold text-[9px] sm:text-xs uppercase tracking-[0.2em]">
+                        <i class="ri-map-pin-2-fill mr-1 sm:mr-2 text-accent"></i>
                         {{ $locationTag }}
                     </div>
                 </div>
                 
-                <h1 class="text-4xl sm:text-5xl md:text-7xl font-heading font-black text-white leading-[1.1] mb-8">
+                <h1 class="text-3xl sm:text-5xl md:text-7xl font-heading font-black text-white leading-[1.1] mb-6 sm:mb-8">
                     {!! $title !!}
                 </h1>
                 

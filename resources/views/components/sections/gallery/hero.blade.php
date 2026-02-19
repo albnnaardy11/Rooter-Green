@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[97vh] flex items-center overflow-hidden pt-44 pb-40 sm:pb-40">
+<section class="relative bg-secondary min-h-[97vh] flex items-center overflow-hidden pt-36 sm:pt-44 pb-24 sm:pb-40 sm:pb-40">
     <!-- 1. Background Visuals (Standard Brand DNA) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -22,7 +22,7 @@
                     <span class="text-accent font-black text-[10px] uppercase tracking-[0.4em]">Works Portfolio</span>
                 </div>
                 
-                <h1 class="text-6xl sm:text-8xl font-heading font-black text-white leading-[0.85] tracking-tighter mb-12">
+                <h1 class="text-4xl sm:text-6xl md:text-8xl font-heading font-black text-white leading-[0.85] tracking-tighter mb-8 sm:mb-12">
                     Lensa <span class="text-primary italic underline decoration-accent/30 underline-offset-[12px]">Kerja</span> <br> Nyata Kami.
                 </h1>
 

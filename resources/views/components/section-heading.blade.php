@@ -6,7 +6,7 @@
             {{ $subtitle }}
         </span>
     @endif
-    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold {{ $dark ? 'text-white' : 'text-secondary' }} leading-tight">
+    <h2 class="text-2xl sm:text-4xl md:text-5xl font-heading font-extrabold {{ $dark ? 'text-white' : 'text-secondary' }} leading-tight mb-2">
         {!! $title !!}
     </h2>
     <div class="mt-4 flex {{ $align === 'center' ? 'justify-center' : ($align === 'right' ? 'justify-end' : 'justify-start') }}">

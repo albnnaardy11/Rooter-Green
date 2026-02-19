@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[95vh] flex items-center overflow-hidden pt-46 lg:pt-42 pb-46 sm:pb-42">
+<section class="relative bg-secondary min-h-[95vh] flex items-center overflow-hidden pt-36 sm:pt-46 lg:pt-42 pb-24 sm:pb-46 sm:pb-42">
     <!-- Background Visuals (Consistent Brand DNA) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -14,7 +14,7 @@
                     <span class="text-primary font-black text-xs uppercase tracking-[0.5em]">Who We Are</span>
                 </div>
                 
-                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.95] tracking-tighter mb-10">
+                <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.95] tracking-tighter mb-6 sm:mb-10">
                     Solusi <span class="text-primary italic">Plumbing</span> <br> 
                     <span class="relative">
                         Modern.

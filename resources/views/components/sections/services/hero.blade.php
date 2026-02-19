@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[70vh] flex items-center overflow-hidden pt-44 pb-32 sm:pb-48">
+<section class="relative bg-secondary min-h-[70vh] flex items-center overflow-hidden pt-36 sm:pt-44 pb-24 sm:pb-32 sm:pb-48">
     <!-- 1. Background Visuals (Matched to Home Hero) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -14,7 +14,7 @@
             </div>
             
             <!-- Massive Centered Heading -->
-            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.9] tracking-tighter mb-10 max-w-5xl animate-fade-in-up">
+            <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.9] tracking-tighter mb-6 sm:mb-10 max-w-5xl animate-fade-in-up">
                 Layanan <span class="text-primary italic">Plumbing</span> <br> Profesional & Bergaransi.
             </h1>
 

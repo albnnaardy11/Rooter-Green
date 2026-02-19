@@ -4,7 +4,7 @@
     'services' => []
 ])
 
-<section id="services" {{ $attributes->merge(['class' => 'py-32 bg-stone-50 relative overflow-hidden']) }}>
+<section id="services" {{ $attributes->merge(['class' => 'py-16 sm:py-32 bg-stone-50 relative overflow-hidden']) }}>
     <!-- Background Elements -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
     <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
