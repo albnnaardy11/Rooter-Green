@@ -7,7 +7,7 @@
     'bgImage' => 'https://images.unsplash.com/photo-1542013936693-884638332954?w=1600&fit=crop'
 ])
 
-<section {{ $attributes->merge(['class' => 'relative bg-secondary py-32 overflow-hidden group']) }}>
+<section {{ $attributes->merge(['class' => 'relative bg-secondary py-12 sm:py-20 overflow-hidden group']) }}>
     <!-- Moving Background Graphic -->
     <div class="absolute inset-0 opacity-10 bg-[url(\'{{ $bgImage }}\')] scale-110 group-hover:scale-100 transition-transform duration-[10s] ease-linear brightness-50 grayscale"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/80 to-transparent"></div>
@@ -15,16 +15,16 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             <div class="lg:w-3/5 text-center lg:text-left">
-                <h2 class="text-4xl sm:text-6xl font-heading font-black text-white leading-tight mb-8">
+                <h2 class="text-3xl sm:text-5xl lg:text-7xl font-heading font-black text-white leading-[1.1] mb-8 sm:mb-12">
                     {!! $title !!}
                 </h2>
-                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8">
-                    <x-button href="{{ $ctaLink }}" variant="primary" class="!px-10 !py-5 shadow-2xl shadow-primary/20">
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-10">
+                    <x-button href="{{ $ctaLink }}" variant="primary" class="!px-12 !py-5.5 lg:!py-6 shadow-2xl shadow-primary/20 !rounded-full text-base lg:text-lg">
                         {{ $ctaText }}
                     </x-button>
-                    <div class="flex items-center gap-4 text-white/60">
-                         <div class="w-1.5 h-1.5 bg-primary rounded-full animate-ping"></div>
-                         <span class="text-xs font-bold uppercase tracking-widest">Tersedia 24 Jam - Fast Response</span>
+                    <div class="flex items-center gap-4 text-white/50">
+                         <div class="w-2 h-2 bg-primary rounded-full animate-ping"></div>
+                         <span class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">Tersedia 24 Jam - Fast Response</span>
                     </div>
                 </div>
             </div>
