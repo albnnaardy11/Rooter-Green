@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     //
+    protected $casts = [
+        'images' => 'json',
+        'is_featured' => 'boolean',
+    ];
 }

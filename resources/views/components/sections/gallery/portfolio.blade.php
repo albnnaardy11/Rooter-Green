@@ -165,7 +165,7 @@
                     </div>
 
                     <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-100 flex flex-col gap-4">
-                        <a href="https://wa.me/6281234567890" class="w-full flex items-center justify-center gap-4 bg-secondary py-4 sm:py-5 rounded-xl sm:rounded-2xl text-white font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary transition-all duration-300 group shadow-xl shadow-secondary/10 hover:shadow-primary/20">
+                        <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number', '6281246668749') }}" class="w-full flex items-center justify-center gap-4 bg-secondary py-4 sm:py-5 rounded-xl sm:rounded-2xl text-white font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary transition-all duration-300 group shadow-xl shadow-secondary/10 hover:shadow-primary/20">
                              <i class="ri-whatsapp-line text-lg sm:text-xl"></i>
                              <span>Konsultasi Serupa</span>
                              <i class="ri-arrow-right-line group-hover:translate-x-2 transition-transform"></i>

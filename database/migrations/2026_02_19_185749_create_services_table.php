@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('description_full');
             $table->decimal('price', 15, 2)->nullable();
             $table->json('gallery')->nullable();
+            $table->json('items')->nullable();
+            $table->json('pricing')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

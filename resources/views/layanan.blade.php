@@ -4,7 +4,7 @@
     <x-sections.services.hero />
 
     {{-- 2. New Unique Service Catalog (Custom for this page) --}}
-    <x-sections.services.catalog />
+    <x-sections.services.catalog :services="$services" />
 
     {{-- 3. Methodology Reminder --}}
     <x-sections.tentang.methodology />

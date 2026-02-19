@@ -82,24 +82,75 @@ class DatabaseSeeder extends Seeder
         // --- Services Seeder ---
         $services = [
             [
-                'name' => 'Pelancaran Pipa Mampet',
-                'slug' => 'pelancaran-pipa-mampet',
-                'icon' => 'ri-drop-line',
-                'description_short' => 'Melancarkan pipa wastafel, kamar mandi, dan saluran air tanpa bongkar.',
-                'description_full' => 'Layanan pelancaran pipa mampet menggunakan teknologi modern.',
-                'price' => 250000,
+                'name' => 'Saluran Pembuangan Mampet',
+                'slug' => 'saluran-pembuangan-mampet',
+                'icon' => 'ri-water-flash-fill',
+                'description_short' => 'Solusi tuntas WC & pipa mampet dengan mesin Spiral Baja.',
+                'description_full' => 'Menghancurkan sumbatan kerak lemak tanpa merusak konstruksi menggunakan teknologi modern tanpa bongkar.',
+                'price' => 600000,
+                'items' => ['Sal. Kamar Mandi', 'Sal. Cuci Piring', 'Sal. Cuci Tangan', 'Sal. Talang Air Hujan', 'Sal. Urinoir', 'Sal. Kloset', 'Sal. Bak Kontrol', 'Lain-lain'],
+                'pricing' => [
+                    ['type' => 'Rumah Hunian', 'price' => 'Rp. 600.000,-', 'note' => 'Per-titik Masalah, Garansi 30 Hari'],
+                    ['type' => 'Komersial (Resto, Kantor, dll)', 'price' => 'Rp. 800.000 - 1.800.000', 'note' => 'Per-titik Masalah, Garansi 30 Hari']
+                ],
+                'is_active' => true,
             ],
             [
-                'name' => 'Deteksi Pipa Bocor',
-                'slug' => 'deteksi-pipa-bocor',
-                'icon' => 'ri-radar-line',
-                'description_short' => 'Deteksi titik kebocoran pipa dalam tanah atau dinding secara akurat.',
-                'description_full' => 'Menggunakan alat ultrasonik dan thermal imaging.',
-                'price' => 500000,
+                'name' => 'Air Bersih & Cuci Toren',
+                'slug' => 'air-bersih-cuci-toren',
+                'icon' => 'ri-drop-fill',
+                'description_short' => 'Normalisasi kran mampet & cuci tangki air.',
+                'description_full' => 'Teknik sterilisasi pipa untuk menjamin aliran air bersih yang sehat & lancar serta bebas lumut.',
+                'price' => 200000,
+                'items' => ['Kran Mampet', 'Cuci Toren / Tangki Air'],
+                'pricing' => [
+                    ['type' => 'Survey Lokasi', 'price' => 'Gratis', 'note' => 'Biaya ditentukan setelah survey lokasi']
+                ],
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Instalasi Sanitary & Pipa',
+                'slug' => 'instalasi-sanitary-pipa',
+                'icon' => 'ri-tools-fill',
+                'description_short' => 'Pemasangan kran, kloset, & jalur pipa baru.',
+                'description_full' => 'Dikerjakan dengan standar profesional untuk hasil rapi, kuat, & permanen menggunakan teknik presisi tinggi.',
+                'price' => 0,
+                'items' => ['Instalasi Pipa Air Bersih', 'Instalasi Pipa Air Kotor', 'Instalasi Kloset Jongkok/Duduk', 'Instalasi Sanitary', 'Instalasi Kran Air', 'Lain-lain'],
+                'pricing' => [
+                    ['type' => 'Project Based', 'price' => 'Custom Quote', 'note' => 'Berdasarkan volume pengerjaan & material']
+                ],
+                'is_active' => true,
             ],
         ];
         foreach ($services as $service) {
             \App\Models\Service::create($service);
+        }
+
+        // --- Projects Seeder ---
+        $projects = [
+            ['img' => 'https://images.unsplash.com/photo-1542013936693-884638332954?w=800&fit=crop', 'title' => 'Pipa Dapur Mampet', 'category' => 'Residential', 'location' => 'Denpasar'],
+            ['img' => 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&fit=crop', 'title' => 'Saluran Air Kamar Mandi', 'category' => 'Residential', 'location' => 'Badung'],
+            ['img' => 'https://images.unsplash.com/photo-1521207418485-99c705420785?w=800&fit=crop', 'title' => 'Wastafel Kantor', 'category' => 'Commercial', 'location' => 'Jimbaran'],
+            ['img' => 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&fit=crop', 'title' => 'Pengerjaan Rooter Spiral', 'category' => 'Commercial', 'location' => 'Kuta'],
+            ['img' => 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&fit=crop', 'title' => 'Pipa Mampet Gedung', 'category' => 'Commercial', 'location' => 'Ubud'],
+            ['img' => 'https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=800&fit=crop', 'title' => 'Kerja Tim Profesional', 'category' => 'Residential', 'location' => 'Sanur'],
+        ];
+        foreach ($projects as $project) {
+            \App\Models\Project::create([
+                'title' => $project['title'],
+                'category' => $project['category'],
+                'location' => $project['location'],
+                'images' => json_encode([$project['img']]),
+            ]);
+        }
+
+        // --- Testimonials Seeder ---
+        $testimonials = [
+            ['name' => 'Bpk. Ahmad', 'photo' => 'https://i.pravatar.cc/150?u=ahmad', 'rating' => 5, 'content' => 'Layanan sangat cepat dan pipa wastafel kembali lancar tanpa dibongkar!'],
+            ['name' => 'Ibu Maria', 'photo' => 'https://i.pravatar.cc/150?u=maria', 'rating' => 5, 'content' => 'Teknisinya ramah dan kerjanya sangat rapi. Sangat merekomendasikan RooterIn.'],
+        ];
+        foreach ($testimonials as $testimonial) {
+            \App\Models\Testimonial::create($testimonial);
         }
     }
 }

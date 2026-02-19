@@ -108,7 +108,7 @@
              <div class="inline-block relative group">
                 <div class="absolute -inset-8 bg-primary/25 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                 
-                <x-button href="https://wa.me/6281234567890?text=Halo%20Rooter%20Green%2C%20saya%20sudah%20melihat%20galeri%20hasil%20kerja%20Anda%20dan%20ingin%20pesan%20jasa..." variant="primary" class="relative z-10 !px-10 sm:!px-20 !py-4 sm:!py-7 !rounded-full shadow-2xl shadow-primary/30 text-sm sm:text-xl font-black hover:scale-105 transition-transform duration-500 overflow-hidden group/btn">
+                <x-button href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number', '6281246668749') }}?text=Halo%20Rooter%20Green%2C%20saya%20sudah%20melihat%20galeri%20hasil%20kerja%20Anda%20dan%20ingin%20pesan%20jasa..." variant="primary" class="relative z-10 !px-10 sm:!px-20 !py-4 sm:!py-7 !rounded-full shadow-2xl shadow-primary/30 text-sm sm:text-xl font-black hover:scale-105 transition-transform duration-500 overflow-hidden group/btn">
                     <span class="flex items-center gap-4">
                         Konsultasi Gratis Sekarang
                         <i class="ri-whatsapp-line text-xl sm:text-2xl animate-bounce-soft"></i>

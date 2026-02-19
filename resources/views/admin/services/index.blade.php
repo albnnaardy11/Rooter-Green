@@ -7,7 +7,7 @@
             <h1 class="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">Service <span class="text-primary italic">Catalog.</span></h1>
             <p class="text-slate-500 font-medium mt-2 uppercase text-[10px] tracking-[0.3em]">Core Offerings Management</p>
         </div>
-        <a href="#" class="px-8 py-3 bg-primary text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20">
+        <a href="{{ route('admin.services.create') }}" class="px-8 py-3 bg-primary text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20">
             <i class="ri-add-line mr-2"></i> New Service
         </a>
     </div>
@@ -47,9 +47,16 @@
                     </td>
                     <td class="px-8 py-6 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <a href="#" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 transition-all">
+                            <a href="{{ route('admin.services.edit', $service->id) }}" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 transition-all">
                                 <i class="ri-edit-line text-lg"></i>
                             </a>
+                            <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-red-500 hover:text-white transition-all" onclick="return confirm('Delete this service?')">
+                                    <i class="ri-delete-bin-line text-lg"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

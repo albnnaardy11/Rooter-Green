@@ -1,48 +1,18 @@
+@props(['services'])
+
 <section x-data="{ 
     activeCategory: null,
-    categories: [
-        {
-            id: 'A',
-            title: 'Saluran Pembuangan Mampet',
-            icon: 'ri-water-flash-fill',
-            color: 'primary',
-            items: [
-                'Sal. Kamar Mandi', 'Sal. Cuci Piring', 'Sal. Cuci Tangan', 
-                'Sal. Talang Air Hujan', 'Sal. Urinoir', 'Sal. Kloset', 
-                'Sal. Bak Kontrol', 'Lain-lain'
-            ],
-            pricing: [
-                { type: 'Rumah Hunian', price: 'Rp. 600.000,-', note: 'Per-titik Masalah, Garansi 30 Hari' },
-                { type: 'Komersial (Resto, Kantor, dll)', price: 'Rp. 800.000 - 1.800.000', note: 'Per-titik Masalah, Garansi 30 Hari' }
-            ]
-        },
-        {
-            id: 'B',
-            title: 'Air Bersih & Cuci Toren',
-            icon: 'ri-drop-fill',
-            color: 'accent',
-            items: [
-                'Kran Mampet', 'Cuci Toren / Tangki Air'
-            ],
-            pricing: [
-                { type: 'Survey Lokasi', price: 'Gratis', note: 'Biaya ditentukan setelah survey lokasi' }
-            ]
-        },
-        {
-            id: 'C',
-            title: 'Instalasi Sanitary & Pipa',
-            icon: 'ri-tools-fill',
-            color: 'secondary',
-            items: [
-                'Instalasi Pipa Air Bersih', 'Instalasi Pipa Air Kotor', 
-                'Instalasi Kloset Jongkok/Duduk', 'Instalasi Sanitary', 
-                'Instalasi Kran Air', 'Lain-lain'
-            ],
-            pricing: [
-                { type: 'Project Based', price: 'Custom Quote', note: 'Berdasarkan volume pengerjaan & material' }
-            ]
-        }
-    ]
+    categories: {{ json_encode($services->map(function($s, $index) {
+        $colors = ['primary', 'accent', 'secondary'];
+        return [
+            'id' => chr(65 + $index),
+            'title' => $s->name,
+            'icon' => $s->icon,
+            'color' => $colors[$index % 3],
+            'items' => $s->items ?? [],
+            'pricing' => $s->pricing ?? []
+        ];
+    })) }}
 }" class="py-32 bg-white relative overflow-hidden">
     
     <!-- Background Decor -->
@@ -58,208 +28,131 @@
                     <span class="text-primary font-black text-xs uppercase tracking-[0.4em]">Katalog Layanan</span>
                 </div>
                 <h2 class="text-4xl sm:text-6xl font-heading font-black text-secondary leading-tight tracking-tighter">
-                    Solusi <span class="text-primary italic">Plumbing Digital.</span>
+                    Solusi Tuntas <br> <span class="text-primary italic">Masalah Saluran.</span>
                 </h2>
-                <p class="text-gray-400 mt-6 text-lg font-medium leading-relaxed">
-                    Kami membagi keahlian kami dalam 3 kategori utama guna memastikan Anda mendapatkan penanganan yang spesifik dan akurat.
-                </p>
+            </div>
+            <div class="hidden md:block">
+                <p class="text-gray-400 font-bold uppercase text-[10px] tracking-widest text-right">Premium Standards • Modern Tools • Guaranteed Results</p>
+                <div class="flex gap-1 justify-end mt-4">
+                    <div class="w-8 h-1 bg-primary rounded-full"></div>
+                    <div class="w-2 h-1 bg-primary/20 rounded-full"></div>
+                    <div class="w-2 h-1 bg-primary/20 rounded-full"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Service Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <template x-for="cat in categories" :key="cat.id">
-                <div 
-                    @click="activeCategory = cat"
-                    class="group relative bg-stone-50 rounded-[3rem] p-8 sm:p-10 border border-gray-100 hover:border-primary/30 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 cursor-pointer overflow-hidden flex flex-col h-full"
-                >
-                    <!-- Floating Icon Decor -->
-                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-gray-100/50 rounded-full group-hover:bg-primary/5 group-hover:scale-150 transition-all duration-700"></div>
+                <div @click="activeCategory = (activeCategory === cat.id ? null : cat.id)"
+                     class="group relative bg-stone-50 rounded-[3rem] p-10 cursor-pointer overflow-hidden transition-all duration-700 hover:-translate-y-4 border border-transparent"
+                     :class="{
+                        'border-primary/20 bg-white shadow-2xl shadow-primary/10 ring-4 ring-primary/5': activeCategory === cat.id,
+                        'hover:border-gray-200': activeCategory !== cat.id
+                     }">
+                    
+                    <!-- Card Background Decor -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:scale-150 transition-transform duration-1000"></div>
 
-                    <div class="relative z-10 flex flex-col h-full">
-                        <div 
-                            :class="{
-                                'bg-primary shadow-primary/20': cat.color === 'primary',
-                                'bg-accent shadow-accent/20': cat.color === 'accent',
-                                'bg-secondary shadow-secondary/20': cat.color === 'secondary'
-                            }"
-                            class="w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] flex items-center justify-center text-white mb-8 sm:mb-10 shadow-2xl group-hover:rotate-12 transition-transform duration-500"
-                        >
-                            <i :class="cat.icon" class="text-3xl sm:text-4xl"></i>
-                        </div>
-
-                        <h3 class="text-2xl sm:text-3xl font-heading font-black text-secondary mb-6 leading-tight" x-text="cat.title"></h3>
-                        
-                        <div class="space-y-3 mb-12 flex-grow">
-                            <template x-for="(item, index) in cat.items.slice(0, 3)" :key="index">
-                                <div class="flex items-center gap-3 text-gray-400">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-primary/40"></div>
-                                    <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest" x-text="item"></span>
-                                </div>
-                            </template>
-                            <div x-show="cat.items.length > 3" class="text-primary font-black text-[10px] uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
-                                <span x-text="`+ ${cat.items.length - 3} Lainnya`"></span>
-                                <i class="ri-arrow-right-line"></i>
+                    <div class="relative z-10">
+                        <!-- Icon & Badge -->
+                        <div class="flex items-center justify-between mb-12">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-xl transition-all duration-500"
+                                 :class="{
+                                    'bg-primary text-white scale-110 rotate-6': activeCategory === cat.id,
+                                    'bg-white text-gray-400 group-hover:text-primary group-hover:scale-110': activeCategory !== cat.id
+                                 }">
+                                <i :class="cat.icon"></i>
                             </div>
+                            <span class="px-5 py-2 rounded-full bg-white text-[9px] font-black uppercase tracking-widest text-gray-400 border border-gray-100 shadow-sm" x-text="cat.pricing[0]?.price || 'Custom'"></span>
                         </div>
 
-                        <button class="w-full py-5 rounded-2xl bg-secondary text-white font-black uppercase text-[10px] tracking-widest group-hover:bg-primary transition-colors mt-auto">
-                            Cek Detail & Harga
+                        <!-- Content -->
+                        <h3 class="text-2xl font-heading font-black text-secondary tracking-tight mb-4 group-hover:text-primary transition-colors" x-text="cat.title"></h3>
+                        <p class="text-gray-500 text-sm font-medium leading-relaxed mb-8">Pengerjaan profesional menggunakan alat modern tanpa harus membongkar struktur bangunan.</p>
+                        
+                        <!-- List Snippet -->
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <template x-for="item in cat.items.slice(0, 3)" :key="item">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest" x-text="item + ' • '"></span>
+                            </template>
+                            <span class="text-[10px] font-bold text-primary uppercase tracking-widest">+ More</span>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full py-4 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-lg"
+                                :class="activeCategory === cat.id ? 'bg-secondary text-white' : 'bg-white text-secondary group-hover:bg-primary group-hover:text-white'">
+                            <span x-text="activeCategory === cat.id ? 'Tutup Detail' : 'Lihat Detail Layanan'"></span>
+                            <i class="ri-arrow-right-line" :class="activeCategory === cat.id ? 'rotate-90' : ''"></i>
                         </button>
                     </div>
+
+                    <!-- Scanline Effect -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent h-1 transition-all duration-1000 ease-linear pointer-events-none"
+                         :class="activeCategory === cat.id ? 'translate-y-[400px]' : '-translate-y-full'"></div>
                 </div>
             </template>
         </div>
 
-        <!-- Professional Equipment Mini-Banner -->
-        <div class="mt-24 p-8 sm:p-16 bg-secondary rounded-[4rem] relative overflow-hidden shadow-3xl">
-            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-            
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <div class="flex items-center gap-4 mb-8">
-                        <span class="w-10 h-[2px] bg-primary"></span>
-                        <span class="text-primary font-black text-xs uppercase tracking-[0.4em]">Professional Toolkit</span>
-                    </div>
-                    <h3 class="text-3xl sm:text-5xl font-heading font-black text-white leading-tight mb-8">
-                        Teknologi Yang Kami <span class="text-primary italic">Gunakan.</span>
-                    </h3>
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-primary shrink-0">
-                                <i class="ri-refresh-line text-3xl animate-spin-slow"></i>
+        <!-- Detailed Drawer -->
+        <template x-for="cat in categories" :key="'drawer-' + cat.id">
+            <div x-show="activeCategory === cat.id"
+                 x-collapse
+                 class="mt-12">
+                <div class="bg-secondary rounded-[3.5rem] p-12 sm:p-20 text-white relative overflow-hidden shadow-2xl">
+                    <!-- Drawer Decor -->
+                    <div class="absolute top-0 right-0 w-[60%] h-full bg-white/5 skew-x-12 -translate-y-1/2"></div>
+                    
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        <!-- Left: Scope -->
+                        <div>
+                            <div class="inline-flex items-center gap-4 mb-8">
+                                <span class="w-10 h-[1px] bg-primary"></span>
+                                <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Cakupan Pengerjaan</span>
                             </div>
-                            <div>
-                                <h4 class="text-white font-black text-lg mb-1">Drain Cleaner Spiral Baja</h4>
-                                <p class="text-gray-400 text-sm leading-relaxed">Spiral elastis jangkauan 20-30m yang mampu menghancurkan hambatan pipa mengikuti kelokan jalur.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-accent shrink-0">
-                                <i class="ri-water-flash-fill text-3xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-black text-lg mb-1">High Pressure Submersible</h4>
-                                <p class="text-gray-400 text-sm leading-relaxed">Pompa tekanan tinggi 200 Liter/Menit untuk membilas sisa kotoran yang telah dihancurkan mesin spiral.</p>
+                            <h4 class="text-3xl font-heading font-black mb-12 tracking-tight">Detail Lingkup <br> <span class="text-white/60 italic">Pekerjaan Kami.</span></h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <template x-for="item in cat.items" :key="item">
+                                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-default">
+                                        <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
+                                        <span class="text-xs font-bold tracking-wide" x-text="item"></span>
+                                    </div>
+                                </template>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Visual Placeholder/Image -->
-                <div class="relative aspect-video rounded-[3rem] overflow-hidden group border-4 border-white/5 shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1200" class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Plumbing Machine">
-                    <div class="absolute inset-x-8 bottom-8 p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl">
-                        <p class="text-white font-black text-[10px] uppercase tracking-[0.3em] text-center">Equipment Standard Internasional</p>
+
+                        <!-- Right: Pricing & CTA -->
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="inline-flex items-center gap-4 mb-8">
+                                    <span class="w-10 h-[1px] bg-primary"></span>
+                                    <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Estimasi Biaya</span>
+                                </div>
+                                <div class="space-y-6">
+                                    <template x-for="price in cat.pricing" :key="price.type">
+                                        <div class="p-8 rounded-3xl bg-white text-secondary group">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400" x-text="price.type"></p>
+                                                <span class="px-3 py-1 bg-secondary text-white text-[8px] font-black uppercase tracking-widest rounded-full">Best Value</span>
+                                            </div>
+                                            <p class="text-3xl font-heading font-black text-secondary mb-2" x-text="price.price"></p>
+                                            <p class="text-[11px] font-bold text-gray-500 italic" x-text="price.note"></p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="mt-12 flex flex-col sm:flex-row items-center gap-6">
+                                <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number', '6281246668749') }}" class="w-full flex-1 bg-primary py-6 rounded-2xl flex items-center justify-center gap-4 text-white font-black uppercase tracking-widest text-xs hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20">
+                                    <i class="ri-whatsapp-line text-xl"></i>
+                                    <span>Pesan Layanan Sekarang</span>
+                                </a>
+                                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest max-w-[150px] leading-relaxed">Pengerjaan Cepat Tanpa Bongkar & Bergaransi</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
-
-    <!-- Immersive Service Modal -->
-    <template x-teleport="body">
-        <div x-show="activeCategory" 
-             class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-10"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95"
-             @keydown.escape.window="activeCategory = null"
-             style="display: none;">
-            
-            <div @click="activeCategory = null" class="absolute inset-0 bg-secondary/95 backdrop-blur-2xl"></div>
-            
-            <div class="w-full max-w-5xl bg-white rounded-[2.5rem] sm:rounded-[4rem] shadow-2xl relative z-10 flex flex-col lg:flex-row h-auto max-h-[92vh] overflow-y-auto lg:overflow-hidden no-scrollbar">
-                
-                <!-- Close Button (Sticky on Mobile) -->
-                <div class="sticky lg:absolute top-0 right-0 z-50 p-4 lg:p-6 bg-white/80 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none flex justify-end w-full lg:w-auto">
-                    <button @click="activeCategory = null" 
-                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-secondary text-white lg:bg-secondary/10 lg:text-secondary flex items-center justify-center hover:bg-primary transition-all shadow-xl group">
-                        <i class="ri-close-line text-xl sm:text-2xl group-hover:rotate-90 transition-transform duration-500"></i>
-                    </button>
-                </div>
-
-                <!-- Left: Info & Items -->
-                <div class="w-full lg:w-1/2 p-5 sm:p-10 lg:p-16 lg:overflow-y-auto no-scrollbar">
-                    <div class="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-stone-100 text-gray-500 font-bold text-[9px] sm:text-[10px] uppercase tracking-widest mb-6 sm:mb-8">
-                        Detail Layanan
-                    </div>
-                    
-                    <h2 class="text-2xl sm:text-4xl font-heading font-black text-secondary leading-tight tracking-tighter mb-6 sm:mb-10" x-text="activeCategory?.title"></h2>
-                    
-                    <div class="space-y-4">
-                        <p class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-4">Cakupan Pekerjaan:</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4">
-                            <template x-for="(item, index) in activeCategory?.items" :key="index">
-                                <div class="flex items-center gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-stone-50 border border-gray-100 hover:border-primary/20 transition-colors">
-                                    <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                                        <i class="ri-check-line text-base sm:text-lg"></i>
-                                    </div>
-                                    <span class="text-secondary font-bold text-[9px] sm:text-xs uppercase tracking-tight" x-text="item"></span>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-
-                    <!-- Policy Notes -->
-                    <div class="mt-8 sm:mt-12 p-5 sm:p-8 bg-primary/5 rounded-[1.5rem] sm:rounded-[2rem] border border-primary/10">
-                        <div class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                            <i class="ri-error-warning-fill text-primary text-lg sm:text-2xl"></i>
-                            <h5 class="text-secondary font-black text-[10px] sm:text-xs uppercase tracking-widest">Penting Untuk Diketahui</h5>
-                        </div>
-                        <ul class="space-y-2 sm:space-y-3">
-                            <li class="flex gap-2 sm:gap-3 items-start">
-                                <div class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
-                                <p class="text-gray-500 text-[10px] sm:text-[11px] leading-relaxed">Jika gagal karena masalah tidak ditemukan, biaya <span class="text-primary font-bold">GRATIS.</span></p>
-                            </li>
-                            <li class="flex gap-2 sm:gap-3 items-start">
-                                <div class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
-                                <p class="text-gray-500 text-[10px] sm:text-[11px] leading-relaxed">Jika masalah utama (septictank penuh), biaya tetap sesuai kontrak.</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Right: Pricing & CTA -->
-                <div class="w-full lg:w-1/2 bg-stone-50 p-5 sm:p-10 lg:p-16 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-gray-100 lg:overflow-y-auto no-scrollbar">
-                    <div>
-                        <div class="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
-                            <span class="w-6 sm:w-10 h-[2px] bg-accent"></span>
-                            <span class="text-accent font-black text-[9px] sm:text-xs uppercase tracking-[0.4em]">Estimasi Biaya</span>
-                        </div>
-
-                        <div class="space-y-4 sm:space-y-6">
-                            <template x-for="(p, index) in activeCategory?.pricing" :key="index">
-                                <div class="p-5 sm:p-8 bg-white rounded-2xl sm:rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
-                                    <h4 class="text-gray-400 font-bold text-[8px] sm:text-[10px] uppercase tracking-widest mb-1 sm:mb-2" x-text="p.type"></h4>
-                                    <div class="flex items-baseline gap-2 mb-1">
-                                        <span class="text-lg sm:text-3xl font-heading font-black text-secondary" x-text="p.price"></span>
-                                    </div>
-                                    <p class="text-primary font-bold text-[8px] sm:text-[10px] uppercase tracking-widest" x-text="p.note"></p>
-                                </div>
-                            </template>
-                        </div>
-
-                        <!-- Special Survey Notice -->
-                        <div class="mt-6 sm:mt-8 flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 rounded-xl sm:rounded-2xl bg-white border border-dashed border-gray-200">
-                            <i class="ri-survey-line text-accent text-lg sm:text-xl"></i>
-                            <p class="text-gray-500 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-relaxed">Gedung / Ruko: Biaya ditentukan setelah Survey Lokasi.</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 sm:mt-12 space-y-3 sm:space-y-4 text-center lg:text-left">
-                        <a href="https://wa.me/6281234567890" class="w-full flex items-center justify-center gap-3 bg-secondary py-4 sm:py-6 rounded-xl sm:rounded-2xl text-white font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary transition-all duration-300 shadow-xl">
-                            <i class="ri-whatsapp-line text-lg sm:text-xl"></i>
-                            <span>Pesan Layanan Sekarang</span>
-                        </a>
-                        <p class="text-[8px] sm:text-[9px] text-gray-400 font-bold uppercase tracking-widest italic opacity-60">Teknisi berangkat dalam 45 menit ke lokasi</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </template>
-
 </section>
