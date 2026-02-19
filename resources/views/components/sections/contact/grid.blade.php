@@ -20,7 +20,7 @@
                     @foreach([
                         ['icon' => 'ri-whatsapp-fill', 'title' => 'WhatsApp Desktop', 'value' => '0812-4666-8749', 'sub' => 'Fast Response 24/7', 'link' => 'https://wa.me/6281246668749'],
                         ['icon' => 'ri-phone-fill', 'title' => 'Emergency Call', 'value' => '0812-4666-8749', 'sub' => 'Siap Berangkat Sekarang', 'link' => 'tel:081246668749'],
-                        ['icon' => 'ri-mail-send-fill', 'title' => 'Email Inquiry', 'value' => 'rootergreen@gmail.com', 'sub' => 'Penawaran & Kerjasama Gedung', 'link' => 'mailto:rootergreen@gmail.com'],
+                        ['icon' => 'ri-mail-send-fill', 'title' => 'Email Inquiry', 'value' => 'rooterin@gmail.com', 'sub' => 'Penawaran & Kerjasama Gedung', 'link' => 'mailto:rooterin@gmail.com'],
                         ['icon' => 'ri-map-pin-2-fill', 'title' => 'Wilayah Operasional', 'value' => 'Seluruh Jabodetabek', 'sub' => 'Jakarta, Bogor, Depok, Tangerang, Bekasi', 'link' => '#']
                     ] as $contact)
                         <a href="{{ $contact['link'] }}" class="group flex items-center gap-6 p-8 bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/20 hover:shadow-2xl hover:border-primary/20 transition-all duration-500">

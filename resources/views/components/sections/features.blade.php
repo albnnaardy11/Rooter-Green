@@ -1,7 +1,7 @@
 @props([
     'title' => 'Hadir Menjadi Solusi Terbaik Anda',
     'subtitle' => 'KENAPA HARUS KAMI?',
-    'description' => 'Kami mengerti rasa frustrasi Anda saat saluran pipa mampet di rumah. Itulah kenapa tim Rooter Green hadir dengan standar pelayanan yang berbeda dari bengkel pipa biasa.',
+    'description' => 'Kami mengerti rasa frustrasi Anda saat saluran pipa mampet di rumah. Itulah kenapa tim RooterIn hadir dengan standar pelayanan yang berbeda dari bengkel pipa biasa.',
     'mainImage' => 'https://images.unsplash.com/photo-1542013936693-884638332954?w=1200&fit=crop',
     'secondaryImage' => 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&fit=crop',
     'features' => [

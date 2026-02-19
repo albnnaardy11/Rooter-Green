@@ -16,16 +16,16 @@
                 <!-- Narrative Content - Standardized Typography -->
                 <div class="space-y-8 text-gray-500 text-lg leading-relaxed">
                     <p>
-                        <strong class="text-secondary font-black">Rooter Green</strong> adalah layanan profesional pelancar saluran pipa mampet, perawatan drainase, serta instalasi perpipaan modern yang mengutamakan metode kerja ramah lingkungan, bersih, dan aman bagi penghuni maupun lingkungan.
+                        <strong class="text-secondary font-black">RooterIn</strong> adalah layanan profesional pelancar saluran pipa mampet, perawatan drainase, serta instalasi perpipaan modern yang mengutamakan metode kerja ramah lingkungan, bersih, dan aman bagi penghuni maupun lingkungan.
                     </p>
                     <p>
-                        Berada di bawah naungan <strong class="text-secondary font-bold">J&J Group (Jawa & Jaya Rooter)</strong> yang telah berpengalaman lebih dari 10 tahun di bidang plumbing dan drainase, Rooter Green hadir sebagai pengembangan layanan modern dengan standar kerja lebih rapi, higienis, dan profesional.
+                        Berada di bawah naungan <strong class="text-secondary font-bold">J&J Group (Jawa & Jaya Rooter)</strong> yang telah berpengalaman lebih dari 10 tahun di bidang plumbing dan drainase, RooterIn hadir sebagai pengembangan layanan modern dengan standar kerja lebih rapi, higienis, dan profesional.
                     </p>
                     <p class="p-6 bg-white rounded-3xl border-l-8 border-primary shadow-sm italic text-secondary font-medium">
                         "Kami mengedepankan teknik mekanis dan teknologi inspeksi tanpa merusak pipa serta sangat menghindari penggunaan bahan kimia keras seperti soda api."
                     </p>
                     <p class="font-black text-secondary tracking-tight">
-                        Rooter Green — solusi saluran mampet modern tanpa merusak alam, rumah, dan kesehatan penghuni.
+                        RooterIn — solusi saluran mampet modern tanpa merusak alam, rumah, dan kesehatan penghuni.
                     </p>
                 </div>
             </div>

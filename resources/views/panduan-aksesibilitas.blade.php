@@ -1,4 +1,4 @@
-<x-app-layout title="Panduan Aksesibilitas - Rooter Green">
+<x-app-layout title="Panduan Aksesibilitas - RooterIn">
     
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 bg-stone-50 overflow-hidden">

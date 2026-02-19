@@ -5,7 +5,7 @@
             
             <!-- Background Image from Internet -->
             <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2000&auto=format&fit=crop" 
-                 alt="Rooter Green Professional" 
+                 alt="RooterIn Professional" 
                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover/cta:scale-110">
             
             <!-- Darker Gradient Overlay for Maximum Impact -->

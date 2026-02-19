@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Rooter Green - Jasa Plumbing Premium') }} - Ahlinya Pipa Mampet</title>
+    <title>{{ config('app.name', 'RooterIn - Jasa Plumbing Premium') }} - Ahlinya Pipa Mampet</title>
     <meta name="description" content="Jasa pelancaran pipa mampet tanpa bongkar pertama di Indonesia. Menggunakan teknologi modern, ramah lingkungan, dan bergaransi.">
 
     <!-- Fonts -->

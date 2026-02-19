@@ -12,7 +12,7 @@
                     <div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 group-hover:rotate-12">
                         <i class="ri-flashlight-fill text-white text-2xl"></i>
                     </div>
-                    <span class="font-heading font-black text-3xl tracking-tighter uppercase">ROOTER<span class="text-primary italic">GREEN</span></span>
+                    <span class="font-heading font-black text-3xl tracking-tighter uppercase">ROOTER<span class="text-primary italic">IN</span></span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-black text-white leading-tight mb-8">
                     Solusi <span class="text-primary italic">Pipa Lancar</span> <br>Tanpa <span class="text-gray-400 italic">Bongkar!</span>
@@ -92,7 +92,7 @@
         <!-- Bottom Bar -->
         <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em]">© {{ date('Y') }} Rooter Green Indonesia • Developed by Ardy Albanna</p>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em]">© {{ date('Y') }} RooterIn Indonesia • Developed by Ardy Albanna</p>
                 <div class="hidden md:block w-1.5 h-1.5 bg-white/10 rounded-full"></div>
                 <div class="flex gap-6 text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">
                     <a href="#" class="hover:text-white transition-colors">Privacy</a>
