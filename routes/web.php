@@ -18,6 +18,14 @@ Route::get('/galeri', function () {
     return view('galeri');
 })->name('gallery');
 
+Route::get('/tips', function () {
+    return view('tips');
+})->name('tips');
+
+Route::get('/tips/detail', function () {
+    return view('tips-detail');
+})->name('tips.detail');
+
 Route::get('/kontak', function () {
     return view('kontak');
 })->name('contact');
