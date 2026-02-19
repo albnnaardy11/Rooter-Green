@@ -72,7 +72,7 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="flex items-center justify-between px-2">
                 <h3 class="text-xl font-heading font-black text-white tracking-tight">Recent <span class="text-primary italic">Articles.</span></h3>
-                <a href="#" class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">View All</a>
+                <a href="{{ route('admin.posts.index') }}" class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">View All</a>
             </div>
             
             <div class="space-y-4">

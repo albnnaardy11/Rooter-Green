@@ -41,32 +41,32 @@
 
                 <div class="pt-4 pb-2 px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Konten Utama</div>
                 
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-bold">
+                <a href="{{ route('admin.posts.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.posts.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-article-line text-xl"></i>
-                    <span>Tips & Trik</span>
+                    <span class="text-sm font-bold">Tips & Trik</span>
                 </a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-bold">
+                <a href="{{ route('admin.services.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.services.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-customer-service-2-line text-xl"></i>
-                    <span>Layanan</span>
+                    <span class="text-sm font-bold">Layanan</span>
                 </a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-bold">
+                <a href="{{ route('admin.projects.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.projects.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-gallery-line text-xl"></i>
-                    <span>Galeri Proyek</span>
+                    <span class="text-sm font-bold">Galeri Proyek</span>
                 </a>
 
                 <div class="pt-4 pb-2 px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Konfigurasi</div>
                 
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-bold">
+                <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.settings.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-settings-4-line text-xl"></i>
-                    <span>Site Settings</span>
+                    <span class="text-sm font-bold">Site Settings</span>
                 </a>
                 <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.messages.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-mail-line text-xl"></i>
                     <span class="font-bold text-sm">Messages</span>
                 </a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-bold">
+                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-group-line text-xl"></i>
-                    <span>Admin Users</span>
+                    <span class="text-sm font-bold">Admin Users</span>
                 </a>
             </nav>
 
