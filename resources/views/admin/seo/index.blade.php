@@ -43,7 +43,7 @@
             </div>
             <div>
                 <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Server RAM Stats</p>
-                <p class="text-xs font-black text-white">{{ $healthData['infrastructure']['memory']['usage'] }} <span class="text-[9px] text-slate-500 font-normal">/ {{ $healthData['infrastructure']['memory']['limit'] }}</span></p>
+                <p class="text-xs font-black text-white">{{ $healthData['infrastructure']['compute']['usage'] }} <span class="text-[9px] text-slate-500 font-normal">/ {{ $healthData['infrastructure']['compute']['limit'] }}</span></p>
             </div>
         </div>
         <div class="bg-slate-900 border border-white/5 rounded-3xl p-5 flex items-center gap-4">

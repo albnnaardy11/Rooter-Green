@@ -30,11 +30,12 @@
     <div class="p-8 space-y-8">
         <!-- Status Overview Row -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            @php
                 $sections = [
-                    ['title' => 'AI Core', 'data' => $healthData['ai_integrity'], 'icon' => 'ri-cpu-line'],
+                    ['title' => 'AI Core', 'data' => $healthData['ai_integrity'], 'icon' => 'ri-cpu-line', 'field' => null],
                     ['title' => 'Resources', 'data' => $healthData['infrastructure']['database'], 'icon' => 'ri-database-2-line', 'field' => 'pulse'],
-                    ['title' => 'SEO API', 'data' => $healthData['seo_api_audit']['google_indexing'], 'icon' => 'ri-rocket-line'],
-                    ['title' => 'Security', 'data' => $healthData['security']['environment'], 'icon' => 'ri-shield-check-line'],
+                    ['title' => 'SEO API', 'data' => $healthData['seo_api_audit']['google_indexing'], 'icon' => 'ri-rocket-line', 'field' => null],
+                    ['title' => 'Security', 'data' => $healthData['security']['environment'], 'icon' => 'ri-shield-check-line', 'field' => null],
                 ];
             @endphp
             @foreach($sections as $sec)

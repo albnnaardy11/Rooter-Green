@@ -80,7 +80,6 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
     // Config
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings/{id}', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
-    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
     
     // Messages
     Route::get('/messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index');
@@ -118,6 +117,9 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
         // Indexing Rocket
         Route::post('/seo/rocket', [\App\Http\Controllers\Admin\SeoController::class, 'pushIndexing'])->name('seo.rocket');
         Route::get('/seo/rocket', function() { return redirect()->route('admin.seo.index'); });
+
+        // User Management (Super Admin Exclusive)
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
     });
 
     // API-like routes for conversion tracking
