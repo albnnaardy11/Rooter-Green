@@ -76,7 +76,12 @@
                                     {{ $entity->description }}
                                 </p>
 
-                                @if($entity->attributes)
+                                @php
+                                    $excludedKeys = ['meta_title', 'meta_desc', 'keywords', 'semantic_signals', 'schema', 'internal_link'];
+                                    $specs = collect($entity->attributes)->except($excludedKeys);
+                                @endphp
+
+                                @if($specs->isNotEmpty())
                                 <div class="my-20 p-10 sm:p-16 border border-stone-100 bg-stone-50/50 rounded-[4rem] relative overflow-hidden group/specs">
                                     <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                                     
@@ -86,19 +91,36 @@
                                         </div>
                                         Spesifikasi Teknis
                                     </h3>
-
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-                                        @foreach($entity->attributes as $key => $value)
+                                        @foreach($specs as $key => $value)
                                         <div class="group/item pb-6 border-b border-stone-200/60 hover:border-primary/30 transition-colors">
                                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 group-hover/item:text-primary transition-colors">
                                                 {{ str_replace('_', ' ', $key) }}
                                             </p>
                                             <p class="text-xl font-bold text-secondary tracking-tight">
-                                                {{ $value }}
+                                                {{ is_array($value) ? implode(', ', $value) : $value }}
                                             </p>
                                         </div>
                                         @endforeach
                                     </div>
+                                </div>
+                                @endif
+
+                                {{-- Automated Internal Linking Block --}}
+                                @if(isset($entity->attributes['internal_link']))
+                                <div class="my-16 p-8 bg-primary/5 rounded-3xl border border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-6 group/link">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center text-xl shadow-lg shadow-primary/20 group-hover/link:rotate-12 transition-transform">
+                                            <i class="ri-link"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-black text-primary uppercase tracking-widest">Topical Authority Link</p>
+                                            <h4 class="text-secondary font-bold">{{ $entity->attributes['internal_link']['text'] }}</h4>
+                                        </div>
+                                    </div>
+                                    <a href="{{ $entity->attributes['internal_link']['url'] }}" class="px-8 py-3 bg-white text-secondary font-black text-[10px] uppercase tracking-widest rounded-xl border border-stone-200 hover:bg-secondary hover:text-white transition-all">
+                                        Explore Equipment
+                                    </a>
                                 </div>
                                 @endif
 

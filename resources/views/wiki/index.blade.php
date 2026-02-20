@@ -1,5 +1,23 @@
 <x-app-layout title="WikiPipa - Database Infrastruktur Saluran & Pipa">
     
+    {{-- Main Wrapper with Alpine --}}
+    <div x-data="{
+        activeCategory: 'Semua',
+        searchQuery: '',
+        allEntities: {{ json_encode($entities) }},
+        scrollToResults() {
+            document.getElementById('wikiResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        },
+        get filteredEntities() {
+            return this.allEntities.filter(entity => {
+                const matchesCategory = this.activeCategory === 'Semua' || entity.category === this.activeCategory;
+                const matchesSearch = entity.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                                   entity.description.toLowerCase().includes(this.searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+        }
+    }">
+
     {{-- 1. Hero Section - Knowledge Base Style --}}
     <section class="relative bg-secondary min-h-[75vh] sm:min-h-[90vh] flex items-center overflow-hidden pt-32 sm:pt-48 pb-10 sm:pb-42">
         <!-- Background Visuals -->
@@ -29,10 +47,11 @@
                     {{-- Search Bar Integrated --}}
                     <div class="max-w-xl mx-auto lg:mx-0 relative group">
                         <input type="text" 
-                               id="wikiSearchInput"
+                               x-model="searchQuery"
                                placeholder="Cari Entitas Teknis (e.g. HDPE, Spiral)..." 
+                               @keyup.enter="scrollToResults()"
                                class="w-full bg-white/5 rounded-2xl py-6 px-8 text-white placeholder-gray-500 focus:outline-none focus:ring-2 ring-primary/50 focus:bg-white/10 transition-all text-lg font-medium shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-                        <button class="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20 hover:scale-110 active:scale-95 transition-all group-hover:rotate-6">
+                        <button @click="scrollToResults()" class="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20 hover:scale-110 active:scale-95 transition-all group-hover:rotate-6">
                             <i class="ri-search-line text-2xl"></i>
                         </button>
                     </div>
@@ -118,27 +137,7 @@
     </style>
 
     {{-- Main Content Layout --}}
-    <div x-data="{
-        activeCategory: 'Semua',
-        searchQuery: '',
-        allEntities: {{ json_encode($entities) }},
-        init() {
-            const searchInput = document.getElementById('wikiSearchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    this.searchQuery = e.target.value;
-                });
-            }
-        },
-        get filteredEntities() {
-            return this.allEntities.filter(entity => {
-                const matchesCategory = this.activeCategory === 'Semua' || entity.category === this.activeCategory;
-                const matchesSearch = entity.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
-                                   entity.description.toLowerCase().includes(this.searchQuery.toLowerCase());
-                return matchesCategory && matchesSearch;
-            });
-        }
-    }" class="bg-stone-50 py-20 relative min-h-screen">
+    <div id="wikiResults" class="bg-stone-50 py-20 relative min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- 2. Category Filter --}}
@@ -151,6 +150,13 @@
                         <span class="relative z-10">{{ $cat }}</span>
                     </button>
                 @endforeach
+            </div>
+
+            {{-- Results Counter --}}
+            <div x-show="searchQuery.length > 0" x-transition.opacity class="mb-8 flex items-center gap-4">
+                <span class="text-gray-400 font-medium">Hasil Pencarian:</span>
+                <span x-text="filteredEntities.length" class="bg-primary/10 text-primary px-4 py-1 rounded-full font-black text-xs"></span>
+                <span class="text-gray-400 font-medium italic" x-text="'untuk \'' + searchQuery + '\''"></span>
             </div>
 
             {{-- 3. Grid Layout --}}
@@ -190,6 +196,9 @@
                     </div>
                     <h3 class="text-3xl font-heading font-black text-secondary mb-3">Entitas Tidak Ditemukan</h3>
                     <p class="text-gray-400 text-lg max-w-md mx-auto mb-10">Maaf, kami tidak menemukan data teknis yang sesuai dengan kriteria Anda.</p>
+                    <button @click="searchQuery = ''; activeCategory = 'Semua'" class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-widest transition-all duration-500">
+                        Reset Pencarian
+                    </button>
                 </div>
             </template>
         </div>
@@ -227,5 +236,6 @@
     </section>
 
     <x-sticky-footer />
+    </div>
 
 </x-app-layout>

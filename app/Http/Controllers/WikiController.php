@@ -30,10 +30,12 @@ class WikiController extends Controller
         SEOTools::setTitle("{$entity->title} - WikiPipa RooterIn");
         SEOTools::setDescription(substr($entity->description, 0, 160));
 
-        // 1. Semantic Entity Schema
-        $schema = SchemaOrg::thing()
-            ->name($entity->title)
-            ->description($entity->description);
+        // 1. Semantic Entity Schema (TechArticle for Technical Otoritas)
+        $schema = SchemaOrg::techArticle()
+            ->headline($entity->title)
+            ->description($entity->description)
+            ->proficiencyLevel('Professional')
+            ->author(SchemaOrg::organization()->name('RooterIN Tech Team'));
 
         if ($entity->wikidata_id) {
             $schema->sameAs("https://www.wikidata.org/wiki/{$entity->wikidata_id}");

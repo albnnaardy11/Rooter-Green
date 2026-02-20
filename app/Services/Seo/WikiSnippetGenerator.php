@@ -19,9 +19,14 @@ class WikiSnippetGenerator
             ]
         ];
 
-        // Add dynamic questions based on attributes
+        // Add dynamic questions based on attributes (Skip non-string data or SEO-only keys)
         if ($entity->attributes) {
+            $excludedKeys = ['meta_title', 'meta_desc', 'keywords', 'schema', 'internal_link', 'semantic_signals'];
             foreach ($entity->attributes as $key => $value) {
+                if (in_array($key, $excludedKeys) || !is_string($value)) {
+                    continue;
+                }
+                
                 $questions[] = [
                     'q' => "Berapa {$key} dari {$entity->title}?",
                     'a' => "{$entity->title} memiliki {$key} senilai {$value} sesuai standar teknis profesional."
