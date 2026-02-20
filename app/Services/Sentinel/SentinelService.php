@@ -119,15 +119,20 @@ class SentinelService
 
     protected function repairSecurity()
     {
-        // In a real environment, we'd use a dedicated script to modify .env
-        // Here we simulate the fix by forcing the config state or logging the fix intent
-        if (config('app.debug')) {
-            // Log::warning("[SENTINEL] Security: Production Debug Mode detected. Suggesting .env update.");
-            // Simulation logic to "fix" it in the current session if it were a dynamic check
-        }
+        $automation = app(\App\Services\Security\SecurityAutomationService::class);
         
-        // Ensure SSL path transparency
-        Log::info("[SENTINEL] Security: Global SSL Pulse recalculated.");
+        // Trigger Debug Mode Killer
+        $automation->killDebugMode();
+        
+        // Trigger SSL Auto-Repair check
+        $automation->monitorSsl();
+        
+        // Check for DB anomalies and trigger lockdown if necessary
+        if ($automation->pulseLockdown()) {
+            $this->sendWhatsAppAlert("SYSTEM LOCKDOWN: Database Pulse anomaly detected. Defensive measures active.");
+        }
+
+        Log::info("[SENTINEL] Security Pulse Repair: Shield status recalibrated to SECURE.");
     }
 
     /**
@@ -315,44 +320,40 @@ class SentinelService
     }
 
     /**
-     * 4. Security & SSL Monitor
+     * 4. Security & SSL Monitor (Top-Condition Security)
      */
     protected function checkSecurity()
     {
-        // 4a. SSL Monitor
-        $domain = request()->getHost();
-        $sslStatus = 'Critical';
-        $daysLeft = 0;
+        $automation = app(\App\Services\Security\SecurityAutomationService::class);
+        
+        // 4a. SSL Monitor with Auto-Repair context
+        $daysLeft = $automation->monitorSsl();
+        $sslStatus = ($daysLeft === true || $daysLeft > 7) ? 'Operational' : 'Degraded';
 
-        if ($domain !== 'localhost' && $domain !== '127.0.0.1') {
-            try {
-                $oracles = stream_context_create(["ssl" => ["capture_peer_cert" => true]]);
-                $read = stream_socket_client("ssl://".$domain.":443", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $oracles);
-                $cont = stream_context_get_params($read);
-                $cert = openssl_x509_parse($cont["options"]["ssl"]["peer_certificate"]);
-                $validTo = Carbon::createFromTimestamp($cert['validTo_time_t']);
-                $daysLeft = now()->diffInDays($validTo, false);
-                $sslStatus = $daysLeft > 7 ? 'Operational' : 'Degraded';
-            } catch (\Exception $e) {
-                $sslStatus = 'Critical';
-            }
-        } else {
-            $sslStatus = 'Operational'; // Local development bypass
-            $daysLeft = 'N/A';
-        }
-
-        // 4b. .env Audit
+        // 4b. .env & Shield Audit
         $appDebug = config('app.debug');
-        $envStatus = $appDebug ? 'Critical' : 'Operational';
+        $shieldActive = \Illuminate\Support\Facades\Cache::has('blocked_ips'); // Indicates firewall activity
+        
+        // Final Status Formulation
+        $status = '100% SECURE';
+        if ($appDebug || $sslStatus === 'Degraded') {
+            $status = 'Shield Active (Degraded)';
+        }
 
         return [
             'ssl' => [
                 'status' => $sslStatus,
-                'days_left' => $daysLeft
+                'days_left' => $daysLeft === true ? 'Verified' : $daysLeft . ' Days',
+                'auto_repair' => 'Active'
             ],
             'environment' => [
-                'debug_mode' => $appDebug ? 'Enabled' : 'Disabled',
-                'status' => $envStatus
+                'debug_mode' => $appDebug ? 'Enabled (CRITICAL)' : 'Disabled',
+                'status' => $status,
+                'waf_shield' => $shieldActive ? 'Defensive Mode' : 'Monitoring'
+            ],
+            'audit' => [
+                'zero_trust_logs' => DB::table('activity_logs')->count(),
+                'blocked_ips' => count(\Illuminate\Support\Facades\Cache::get('blocked_ips', []))
             ]
         ];
     }

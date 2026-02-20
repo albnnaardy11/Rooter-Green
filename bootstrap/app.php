@@ -11,16 +11,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(\App\Http\Middleware\SecurityShield::class);
+        $middleware->append(\App\Http\Middleware\PreRenderMiddleware::class);
+        $middleware->append(\App\Http\Middleware\TrackVisitors::class);
+        $middleware->append(\App\Http\Middleware\SeoRedirectMiddleware::class);
+        
         $middleware->validateCsrfTokens(except: [
             'admin/api/track-whatsapp'
         ]);
         
         $middleware->alias([
             'track' => \App\Http\Middleware\TrackVisitors::class,
+            'shield' => \App\Http\Middleware\SecurityShield::class,
         ]);
-        $middleware->append(\App\Http\Middleware\PreRenderMiddleware::class);
-        $middleware->append(\App\Http\Middleware\TrackVisitors::class);
-        $middleware->append(\App\Http\Middleware\SeoRedirectMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
