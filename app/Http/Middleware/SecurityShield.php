@@ -45,7 +45,33 @@ class SecurityShield
         // 5. Intelligent Threat Detection (WAF Mockup)
         $this->detectThreats($request);
 
+        // 6. Bot & Scraper Blocker (WikiPipa Protection)
+        $this->blockScrapers($request);
+
         return $next($request);
+    }
+
+    protected function blockScrapers(Request $request)
+    {
+        // Apply stricter bot detection specifically for technical WikiPipa and AI Intelligence sections
+        if (!$request->is('wiki*') && !$request->is('ai-intelligence*')) {
+            return;
+        }
+
+        $userAgent = strtolower($request->userAgent());
+        $bots = [
+            'python-requests', 'curl', 'wget', 'libcurl', 'go-http-client',
+            'postmanruntime', 'scrapy', 'headlesschrome', 'selenium',
+            'axios', 'node-fetch'
+        ];
+
+        foreach ($bots as $bot) {
+            if (str_contains($userAgent, $bot)) {
+                $this->security->blockIp($request->ip(), "WikiPipa Scraper Detected: $bot");
+                $this->security->auditLog("WikiPipa Bot Blocked", ['agent' => $userAgent]);
+                abort(403, 'Automated harvesting of technical RooterIN WikiPipa data is prohibited.');
+            }
+        }
     }
 
     protected function detectThreats(Request $request)
@@ -57,7 +83,8 @@ class SecurityShield
             'order by',
             'information_schema',
             '--',
-            '<script>'
+            '<script>',
+            '\'%20or%201=1'
         ];
 
         foreach ($patterns as $pattern) {

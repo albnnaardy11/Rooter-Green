@@ -115,6 +115,13 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Audit & Activity
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');
 
+    // Security & Access Vault (New Defensive Core)
+    Route::get('/vault', [\App\Http\Controllers\Admin\VaultController::class, 'index'])->name('vault.index');
+    Route::post('/vault/lockdown', [\App\Http\Controllers\Admin\VaultController::class, 'toggleLockdown'])->name('vault.lockdown');
+    Route::get('/vault/lockdown', function() { return redirect()->route('admin.vault.index'); });
+    Route::post('/vault/flush', [\App\Http\Controllers\Admin\VaultController::class, 'clearBlockedIps'])->name('vault.flush');
+    Route::get('/vault/flush', function() { return redirect()->route('admin.vault.index'); });
+
     // System Sentinel & Health Check
     Route::get('/sentinel', [\App\Http\Controllers\Admin\SentinelController::class, 'index'])->name('sentinel.index');
     Route::post('/sentinel/scan', [\App\Http\Controllers\Admin\SentinelController::class, 'scan'])->name('sentinel.scan');

@@ -120,25 +120,23 @@ class SecurityAutomationService
      */
     public function auditLog($action, $data = [])
     {
-        $user = auth()->user() ? auth()->user()->email : 'Anonymous/System';
         $ip = request()->ip();
         
         DB::table('activity_logs')->insert([
-            'log_name' => 'security_audit',
-            'description' => $action,
-            'subject_id' => 0,
-            'subject_type' => 'SecurityAutomation',
-            'causer_id' => auth()->id() ?? 0,
-            'properties' => json_encode([
-                'ip' => $ip,
-                'user' => $user,
-                'data' => $data,
-                'user_agent' => request()->userAgent()
-            ]),
+            'user_id' => auth()->id(), // Use null if not authenticated
+            'event' => $action,
+            'auditable_type' => 'SecurityAutomation',
+            'auditable_id' => 0,
+            'old_values' => null,
+            'new_values' => json_encode($data),
+            'url' => request()->fullUrl(),
+            'ip_address' => $ip,
+            'user_agent' => request()->userAgent(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         
+        $user = auth()->user() ? auth()->user()->email : 'Anonymous/System';
         Log::info("[AUDIT] $user performed $action from $ip");
     }
 }

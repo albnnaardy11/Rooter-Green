@@ -335,9 +335,12 @@ class SentinelService
         $shieldActive = \Illuminate\Support\Facades\Cache::has('blocked_ips'); // Indicates firewall activity
         
         // Final Status Formulation
-        $status = '100% SECURE';
+        $status = 'Operational'; // Target GREEN
+        $message = '100% SECURE';
+
         if ($appDebug || $sslStatus === 'Degraded') {
-            $status = 'Shield Active (Degraded)';
+            $status = 'Degraded';
+            $message = 'Shield Active (Degraded)';
         }
 
         return [
@@ -349,6 +352,7 @@ class SentinelService
             'environment' => [
                 'debug_mode' => $appDebug ? 'Enabled (CRITICAL)' : 'Disabled',
                 'status' => $status,
+                'message' => $message,
                 'waf_shield' => $shieldActive ? 'Defensive Mode' : 'Monitoring'
             ],
             'audit' => [

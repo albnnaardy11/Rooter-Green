@@ -88,6 +88,10 @@
                     <i class="ri-history-line text-xl"></i>
                     <span class="text-sm font-bold">System Logs</span>
                 </a>
+                <a href="{{ route('admin.vault.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.vault.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-shield-keyhole-line text-xl"></i>
+                    <span class="text-sm font-bold font-heading text-primary">Security Vault</span>
+                </a>
                 <a href="{{ route('admin.sentinel.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.sentinel.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-shield-flash-line text-xl"></i>
                     <span class="text-sm font-bold">System Sentinel</span>
