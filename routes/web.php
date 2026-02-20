@@ -6,7 +6,7 @@ Route::get('/area/{city}', [\App\Http\Controllers\LocalSeoController::class, 'ci
 Route::get('/area/{city}/{service}', [\App\Http\Controllers\LocalSeoController::class, 'show'])->name('local.service');
 Route::get('/ai-diagnostic', [\App\Http\Controllers\AiDiagnosticController::class, 'index'])->name('ai.diagnostic');
 Route::post('/ai-diagnostic/store', [\App\Http\Controllers\AiDiagnosticController::class, 'store'])->middleware(['phantom', 'throttle:phantom-api'])->name('ai.diagnostic.store');
-Route::get('/ai-diagnostic/handshake', [\App\Http\Controllers\AiDiagnosticController::class, 'getHandshake'])->name('ai.diagnostic.handshake');
+Route::get('/ai-diagnostic/handshake', [\App\Http\Controllers\AiDiagnosticController::class, 'getHandshake'])->middleware('throttle:phantom-api')->name('ai.diagnostic.handshake');
 Route::get('/api/search/suggest', [\App\Http\Controllers\SearchController::class, 'suggest'])->name('api.search.suggest');
 Route::post('/api/phantom/introspect', [\App\Http\Controllers\Api\PhantomIntrospectionController::class, 'introspect'])->middleware('throttle:phantom-api')->name('api.phantom.introspect');
 Route::get('/wiki', [\App\Http\Controllers\WikiController::class, 'index'])->name('wiki.index');
@@ -14,14 +14,19 @@ Route::get('/wiki/{slug}', [\App\Http\Controllers\WikiController::class, 'show']
 
 // NEURAL ASSET VAULT: Handshake Required
 Route::get('/models/{file}', function($file) {
-    if (!str_ends_with($file, '.json') && !str_ends_with($file, '.bin')) {
-        abort(404);
+    // 1. Path Traversal & Extension Shield
+    $safeFile = basename($file);
+    if ($safeFile !== $file || (!str_ends_with($file, '.json') && !str_ends_with($file, '.bin'))) {
+        abort(403, 'Restricted Neural Access');
     }
     
-    $path = storage_path('app/models/' . $file);
+    $path = storage_path('app/models/' . $safeFile);
     if (!file_exists($path)) abort(404);
     
-    return response()->file($path, ['Content-Type' => 'application/octet-stream']);
+    return response()->file($path, [
+        'Content-Type' => 'application/octet-stream',
+        'X-Content-Type-Options' => 'nosniff'
+    ]);
 })->middleware(['phantom', 'throttle:phantom-api'])->name('neural.asset.serve');
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->middleware('throttle:public-web')->name('home');

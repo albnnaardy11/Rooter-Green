@@ -101,7 +101,8 @@ class PhantomSyncService
                     return ['lat' => -6.2088, 'lon' => 106.8456, 'loc' => 'Jakarta, ID'];
                 }
                 try {
-                    $response = \Illuminate\Support\Facades\Http::timeout(2)->get("http://ip-api.com/json/{$currentIp}");
+                    // Anti-Bjorka: Force HTTPS for identity geofencing
+                    $response = \Illuminate\Support\Facades\Http::timeout(2)->get("https://ip-api.com/json/{$currentIp}");
                     if ($response->successful() && $response->json('status') === 'success') {
                         return [
                             'lat' => $response->json('lat'),

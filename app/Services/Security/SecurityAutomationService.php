@@ -135,11 +135,10 @@ class SecurityAutomationService
     {
         $ip = request()->ip();
         
-        // UNICORP-GRADE: Comprehensive Metadata Capture
+        // UNICORP-GRADE: Minimized Metadata Capture (Privacy & Security First)
         $metadata = array_merge($data, [
-            'os' => PHP_OS,
-            'php_version' => PHP_VERSION,
-            'memory_peak' => $this->formatSize(memory_get_peak_usage(true))
+            'memory_peak' => $this->formatSize(memory_get_peak_usage(true)),
+            'timestamp'   => microtime(true)
         ]);
 
         try {

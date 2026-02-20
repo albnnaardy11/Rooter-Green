@@ -18,8 +18,18 @@ class PhantomIntrospectionController extends Controller
     public function introspect(Request $request, PhantomSyncService $phantom)
     {
         // Require API Key for service-to-service auth (simplified example)
+        $bridgeKey = env('PHANTOM_BRIDGE_KEY', 'default-v2-dev-key');
+        
+        // Anti-Bjorka: Block default keys in non-local environments
+        if ($bridgeKey === 'default-v2-dev-key' && !app()->isLocal()) {
+            return response()->json([
+                'active' => false,
+                'error' => 'Insecure Configuration Exception: Default Bridge Key detected in production.'
+            ], 500);
+        }
+
         $authKey = $request->header('Authorization');
-        if (!$authKey || $authKey !== 'Bearer ' . env('PHANTOM_BRIDGE_KEY', 'default-v2-dev-key')) {
+        if (!$authKey || $authKey !== 'Bearer ' . $bridgeKey) {
             return response()->json([
                 'active' => false,
                 'error' => 'Unauthorized RPC Bridge Access (401)'
