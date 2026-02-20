@@ -43,6 +43,9 @@ class PhantomSyncService
         // Pre-warm L1 Cache
         self::$l1Cache[$opaqueToken] = $userData;
         
+        // Memory Control: Keep L1 cache ultra-dense (Max 1000 items)
+        if (count(self::$l1Cache) > 1000) array_shift(self::$l1Cache);
+        
         return $opaqueToken;
     }
 
@@ -184,6 +187,15 @@ class PhantomSyncService
         Cache::forget($this->tokenPrefix . $token);
         // In real Cuckoo filter, delete operation is supported. Here we just evict cache.
         Log::info("[PHANTOM-SYNC] Revoked token: " . substr($token, 0, 8) . "...");
+    }
+
+    /**
+     * Clear all Hot Tier entries (Atomic Reset)
+     */
+    public static function clearL1Cache()
+    {
+        self::$l1Cache = [];
+        Log::info("[PHANTOM-SYNC] L1 Hot Cache cleared.");
     }
 
     /**

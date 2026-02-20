@@ -42,15 +42,22 @@ class ProductionShield
         // 3. Brute Force Monitor for API Keys (Phantom/PASETO Bridge)
         if ($request->is('api/*')) {
             $key = 'brute_force_auth:' . $ip;
+            $globalKey = 'brute_force_global_counter';
+            
             $attempts = \Illuminate\Support\Facades\Cache::increment($key);
+            $globalAttempts = \Illuminate\Support\Facades\Cache::increment($globalKey);
             
             if ($attempts === 1) {
                 \Illuminate\Support\Facades\Cache::put($key, 1, 60);
             }
+            if ($globalAttempts === 1) {
+                \Illuminate\Support\Facades\Cache::put($globalKey, 1, 60);
+            }
 
-            if ($attempts > 5) {
+            if ($attempts > 5 || $globalAttempts > 50) {
                 // Trigger AutoLockdown
-                $this->security->triggerAutoLockdown($ip, "Brute Force Threshold Exceeded (>5 attempts/min on API)");
+                $reason = $attempts > 5 ? "Brute Force Threshold Exceeded (>5 attempts/min on single IP)" : "Distributed Brute Force Swarm Detected (>50 attempts/min globally)";
+                $this->security->triggerAutoLockdown($ip, $reason);
                 return response()->view('errors.503', [], 503);
             }
         }

@@ -124,9 +124,8 @@ class SecurityAutomationService
         if ($latency > 1000) { // 1 second latency is anomaly for RooterIN
             Log::emergency("[SECURITY] DB ANOMALY DETECTED. Pulse Latency: {$latency}ms. Activating SYSTEM LOCKDOWN...");
             
-            Cache::put('system_lockdown', true, 3600); // 1 hour lockdown
+            Cache::put('system_lockdown_active', true, 3600); // 1 hour lockdown
             
-            // Disable writes temporarily by throwing exception or redirecting
             return true;
         }
         return false;
@@ -143,19 +142,26 @@ class SecurityAutomationService
             'memory_peak' => $this->formatSize(memory_get_peak_usage(true))
         ]);
 
-        DB::table('activity_logs')->insert([
-            'user_id' => auth()->id(), 
-            'event' => $action,
-            'auditable_type' => 'InfrastructureOmniscience',
-            'auditable_id' => 0,
-            'old_values' => null,
-            'new_values' => json_encode($metadata),
-            'url' => request()->fullUrl(),
-            'ip_address' => $ip,
-            'user_agent' => request()->userAgent(),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        try {
+            DB::table('activity_logs')->insert([
+                'user_id' => auth()->id(), 
+                'event' => $action,
+                'auditable_type' => 'InfrastructureOmniscience',
+                'auditable_id' => 0,
+                'old_values' => null,
+                'new_values' => json_encode($metadata),
+                'url' => request()->fullUrl(),
+                'ip_address' => $ip,
+                'user_agent' => request()->userAgent(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Exception $e) {
+            Log::emergency("[SECURITY FATAL] DATABASE CORRUPTION DETECTED during audit log! Action: $action. Error: " . $e->getMessage());
+            // Failover: Write to a separate emergency recovery file
+            $recoveryLog = storage_path('logs/emergency_audit.log');
+            file_put_contents($recoveryLog, "[" . now() . "] $ip | $action | " . json_encode($metadata) . "\n", FILE_APPEND);
+        }
         
         $user = auth()->user() ? auth()->user()->email : 'Anonymous/System';
         Log::info("[AUDIT] $user performed $action from $ip | Metadata: " . json_encode($metadata));
@@ -284,6 +290,7 @@ class SecurityAutomationService
         // In a real high-scale system, we'd use a prefix-based flush or a versioning system.
         // For RooterIN, we'll clear the phantom cache.
         \Illuminate\Support\Facades\Artisan::call('cache:clear'); // Nuclear option for rotation
+        \App\Services\Security\PhantomSyncService::clearL1Cache();
         $this->auditLog('Global Token Rotation Executed');
     }
 }
