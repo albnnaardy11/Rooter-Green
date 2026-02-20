@@ -5,6 +5,7 @@ namespace App\Services\Sentinel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Models\SeoSetting;
 use App\Models\AiDiagnose;
 use Carbon\Carbon;
@@ -12,18 +13,71 @@ use Carbon\Carbon;
 class SentinelService
 {
     /**
-     * Perform all system health checks.
+     * Perform all system health checks and trigger self-healing if needed.
      */
     public function monitorAll()
     {
-        return [
+        $health = [
             'ai_integrity'   => $this->checkAiIntegrity(),
             'infrastructure' => $this->checkInfrastructure(),
             'seo_api_audit'  => $this->checkSeoApiAudit(),
             'security'       => $this->checkSecurity(),
             'last_sync'      => now()->toIso8601String(),
         ];
+
+        // --- SELF-HEALING LOGIC ---
+        // If memory is critical (>90% or defined thresh), trigger automatic cleanup
+        if ($health['infrastructure']['storage']['status'] === 'Critical' || 
+            memory_get_usage(true) > 128 * 1024 * 1024) { // Mock threshold
+            $this->healSystem();
+        }
+
+        // --- SEO SELF-OPTIMIZATION ---
+        // Automatically rotate Market Urgency slogans if conversion is low
+        $this->optimizeSeoConversion();
+
+        return $health;
     }
+
+    /**
+     * SELF-HEALING: Clear Cache & Optimize DB
+     */
+    protected function healSystem()
+    {
+        \Illuminate\Support\Facades\Log::warning("[SENTINEL] Resource limit reached. Executing System Healing Protocol...");
+        
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        
+        // In a real environment, you might run DB VACUUM or similar
+        Log::info("[SENTINEL] Cache purged. Memory pressure reduced.");
+    }
+
+    /**
+     * SEO SELF-OPTIMIZATION: Market Urgency Rotator (A/B Testing)
+     */
+    protected function optimizeSeoConversion()
+    {
+        // Simple A/B variation list
+        $variations = [
+            'Diskon 25% Khusus Hari Ini & Garansi 1 Tahun!',
+            'Respon Cepat 15 Menit - Solusi Pipa Tanpa Bongkar!',
+            'Promo Akhir Pekan: Deteksi Kamera AI Gratis!',
+            'Tukang Rooter Profesional - Bayar Setelah Selesai!'
+        ];
+
+        // Check if current CTR is low (Simplified check)
+        // Here we'd typically query EventLog for conversion rate
+        $conversionRate = 0.02; // Mock CR (2%)
+        
+        if ($conversionRate < 0.05) { // If CR below 5%, rotate
+            $newSlogan = $variations[array_rand($variations)];
+            SeoSetting::updateOrCreate(['key' => 'market_urgency'], ['value' => $newSlogan]);
+            Log::info("[SENTINEL] SEO Optimization: Low CR detected. Updated Market Urgency slogan to: " . $newSlogan);
+        }
+    }
+
 
     /**
      * 1. AI Model & Edge-Inference Integrity

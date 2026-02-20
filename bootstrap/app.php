@@ -27,5 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
         $schedule->command('sentinel:scan')->everyFiveMinutes();
+        $schedule->command('sentinel:report')->mondays()->at('08:00');
     })
     ->create();
