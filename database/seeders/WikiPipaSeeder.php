@@ -185,33 +185,32 @@ class WikiPipaSeeder extends Seeder
             $slug = Str::slug($item['t']);
             $desc = $this->generateContent($item['t'], $item['c']);
             
+            $relatedServiceSlug = $this->getRelatedService($item['c']);
+
             $attributes = [
                 'meta_title' => $item['t'] . " - Spesifikasi Teknis & Panduan Ahli",
-                'meta_desc' => "Pelajari profil lengkap {$item['t']} dalam kategori {$item['c']}. Panduan teknis cara kerja, instalasi, dan pemeliharaan profesional.",
+                'meta_desc' => "Analisis mendalam profil teknis {$item['t']} kategori {$item['c']}. Panduan standar industri untuk instalasi dan pemeliharaan kuratif.",
                 'keywords' => [
-                    "efisiensi {$item['t']}",
-                    "pemasangan {$item['t']} profesional",
-                    "toko jual {$item['t']} terdekat",
-                    "masalah umum {$item['t']}",
-                    "biaya servis {$item['t']}"
+                    "spesifikasi {$item['t']}",
+                    "maintenance {$item['t']} berkala",
+                    "sni {$item['t']}",
+                    "perbaikan {$item['t']} mampet",
+                    "biaya instalasi {$item['t']}"
                 ],
-                'semantic_signals' => 'active',
+                'semantic_signals' => 'verified', // Upgraded to verified
                 'schema' => [
                     "@context" => "https://schema.org",
                     "@type" => "TechArticle",
                     "headline" => $item['t'],
-                    "description" => "Panduan teknis mendalam mengenai {$item['t']} untuk sistem plumbing modern.",
-                    "author" => ["@type" => "Organization", "name" => "RooterIN Tech Team"]
+                    "description" => "Otoritas teknis mengenai {$item['t']} untuk sistem infrastruktur air modern.",
+                    "author" => ["@type" => "Organization", "name" => "RooterIN Tech Team"],
+                    "educationalLevel" => "Professional"
+                ],
+                'internal_link' => [
+                    'text' => "Butuh Solusi Nyata? Cek Layanan Terkait",
+                    'url' => '/layanan#' . $relatedServiceSlug
                 ]
             ];
-
-            // Internal Linking Pattern
-            if ($item['c'] === 'Infrastruktur') {
-                $attributes['internal_link'] = [
-                    'text' => "Didukung oleh Alat Teknisi Profesional",
-                    'url' => '/wiki/rooter-machine-drain-cleaner'
-                ];
-            }
 
             WikiEntity::updateOrCreate(
                 ['slug' => $slug],
@@ -241,11 +240,26 @@ class WikiPipaSeeder extends Seeder
 
     private function generateContent($title, $cat)
     {
-        $intro = "{$title} merupakan komponen vital dalam ekosistem {$cat} modern. ";
-        $body = "Secara teknis, {$title} berfungsi untuk mendistribusikan aliran dengan tingkat presisi tinggi dan meminimalkan risiko sumbatan atau kebocoran sistem. ";
-        $tech = "Penggunaan {$title} pada standar proyek komersial mewajibkan tingkat durabilitas tinggi dan kompatibilitas dengan standar ISO/SNI. ";
-        $cta = "\n\nHubungi tim RooterIN jika Anda mengalami masalah terkait {$title}";
+        $intro = "{$title} merupakan instrumen kritikal dalam manajemen {$cat} kontemporer. ";
+        $body = "Analisis teknis menunjukkan bahwa {$title} memainkan peran pivotal dalam regulasi hidrodinamika sistem, memastikan integritas struktural jaringan pipa tetap terjaga dari fluktuasi tekanan ekstrem dan risiko degradasi material jangka panjang. ";
+        $tech = "Dalam spesifikasi standar industri (JIS/DIN/SNI), {$title} dirancang untuk memenuhi ekspektasi durabilitas operasional minimum 25 tahun, dengan koefisien gesek rendah yang signifikan dalam mereduksi penumpukan deposit sedimen. ";
+        $usage = "\n\nPenggunaan {$title} sangat direkomendasikan untuk proyek high-rise building maupun infrastruktur residensial premium guna menjamin efisiensi aliran limbah atau air bersih secara maksimal.";
+        $cta = "\n\nKonsultasikan kebutuhan teknis terkait {$title} Anda dengan spesialis RooterIN untuk diagnosis mendalam menggunakan teknologi kamera AI.";
 
-        return $intro . $body . $tech . $cta;
+        return $intro . $body . $tech . $usage . $cta;
+    }
+
+    /**
+     * Map Wiki Categories to relevant Service Slugs for Semantic Cross-Linking
+     */
+    private function getRelatedService($category)
+    {
+        $map = [
+            'Material Pipa' => 'instalasi-sanitary-pipa',
+            'Alat Teknisi'   => 'saluran-pembuangan-mampet',
+            'Infrastruktur'  => 'deteksi-kebocoran-pipa'
+        ];
+        
+        return $map[$category] ?? 'saluran-pembuangan-mampet';
     }
 }

@@ -34,6 +34,11 @@ class SitemapService
                 $sitemap->add(Url::create("/tips/{$post->slug}")->setPriority(0.8));
             });
 
+            // Add WikiPipa Entities
+            \App\Models\WikiEntity::get()->each(function (\App\Models\WikiEntity $wiki) use ($sitemap) {
+                $sitemap->add(Url::create("/wiki/{$wiki->slug}")->setPriority(0.7)->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+            });
+
             $sitemap->writeToFile(public_path('sitemap.xml'));
             
             Log::info('Sitemap generated successfully.');
