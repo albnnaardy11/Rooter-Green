@@ -25,17 +25,18 @@ class ProductionShield
      */
     public function handle(Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
     {
+        $ip = $request->ip();
+        $adminIps = ['127.0.0.1', '::1']; // Localhost & Secure Admin Subnets
+        $isAdmin = in_array($ip, $adminIps);
+
         // 1. Stealth Check: Application Lockdown Status (L2 Redis)
-        if ($this->security->isLockedDown()) {
-            // Stealth Rejection: Generic 503 without details
+        if ($this->security->isLockedDown() && !$isAdmin) {
+            // Stealth Rejection: Generic 503 without details for public
             return response()->view('errors.503', [], 503);
         }
 
         // 2. Debug Suppressor: Runtime Force-Kill for Public Traffic
-        $ip = $request->ip();
-        $adminIps = ['127.0.0.1', '::1']; 
-        
-        if (!in_array($ip, $adminIps)) {
+        if (!$isAdmin) {
             config(['app.debug' => false]);
         }
 
