@@ -40,7 +40,7 @@ class GoogleIndexingService
     /**
      * Notify Google that a URL has been updated or created.
      */
-    public function notifyUpdate(string $url)
+    public function notifyUpdate(string $url, string $type = 'URL_UPDATED')
     {
         if (!$this->isConfigured) {
             return ['success' => false, 'message' => 'Google Indexing Credentials not configured.'];
@@ -50,7 +50,7 @@ class GoogleIndexingService
             $indexing = new Indexing($this->client);
             $urlNotification = new Indexing\UrlNotification();
             $urlNotification->setUrl($url);
-            $urlNotification->setType('URL_UPDATED');
+            $urlNotification->setType($type);
 
             $result = $indexing->urlNotifications->publish($urlNotification);
             

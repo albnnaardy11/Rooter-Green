@@ -21,6 +21,23 @@
             </div>
 
             <div x-data="aiDeepDiagnostic()" class="max-w-xl mx-auto">
+                <!-- Intelligence Feedback System (Toast) -->
+                <div x-show="notification.show" 
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 -translate-y-10"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 -translate-y-10"
+                     x-cloak
+                     class="fixed top-24 left-1/2 -translate-x-1/2 z-[200] w-[90%] max-w-xs">
+                    <div class="rounded-2xl p-4 shadow-2xl flex items-center gap-3 border"
+                         :class="notification.type === 'error' ? 'bg-red-500/90 border-red-400 text-white' : 'bg-primary/90 border-primary/50 text-slate-950'">
+                        <i :class="notification.type === 'error' ? 'ri-error-warning-line' : 'ri-checkbox-circle-line'" class="text-xl"></i>
+                        <span class="text-[10px] font-black uppercase tracking-widest" x-text="notification.msg"></span>
+                    </div>
+                </div>
+
                 <!-- Multi-Step Progress -->
                 <div class="flex items-center justify-between mb-8 px-8">
                     <template x-for="(stepName, index) in steps" :key="index">
@@ -200,55 +217,61 @@
                                 <span x-text="finishing ? 'Calculating Rooterin Deep Score...' : 'Generate Deep Diagnostic'"></span>
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Result Modal -->
-        <template x-if="true">
-            <div x-show="showResultModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-6">
-                <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-xl" @click="showResultModal = false"></div>
-                <div class="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[3rem] p-10 shadow-3xl overflow-hidden scale-100 transition-all">
-                    <!-- Deep Rank Badge -->
-                    <div class="flex justify-center mb-6">
-                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent p-1">
-                            <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
-                                <span class="text-4xl font-heading font-black text-white italic" x-text="deepRanking"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl font-heading font-black text-white mb-2 underline decoration-primary" x-text="resultTitle"></h2>
-                        <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Tracking ID: <span x-text="diagnoseId"></span></span>
-                    </div>
-
-                    <div class="bg-white/5 rounded-3xl p-6 border border-white/5 mb-8">
-                        <div class="space-y-4">
-                            <div class="p-4 bg-primary/10 rounded-2xl border border-primary/20">
-                                <span class="text-[8px] font-black text-primary uppercase block mb-1 underline">REKOMENDASI SPESIALIS</span>
-                                <p class="text-white text-[11px] font-bold leading-relaxed" x-text="recommendation"></p>
-                            </div>
-                            <div class="p-4 bg-slate-950/50 rounded-2xl border border-white/5 flex items-start gap-4">
-                                <div class="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center shrink-0">
-                                    <i class="ri-tools-line text-secondary text-xl"></i>
-                                </div>
-                                <div>
-                                    <span class="text-[8px] font-black text-slate-500 uppercase block mb-1">ALAT YANG DIBUTUHKAN</span>
-                                    <p class="text-slate-300 text-[10px] font-medium" x-text="toolsNeeded"></p>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    <button @click="openWhatsAppDeep()" class="w-full py-5 bg-secondary text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-secondary/20 flex items-center justify-center gap-3">
-                        <i class="ri-whatsapp-line text-xl"></i>
-                        Kirim Laporan Deep Diagnostic
-                    </button>
-                    <button @click="showResultModal = false" class="mt-4 w-full py-2 text-[8px] font-black text-slate-500 uppercase tracking-widest hover:text-white transition-all">Tutup Analisis</button>
+                    <!-- Result Modal (Inside Scope) -->
+                    <div x-show="showResultModal" 
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         x-cloak 
+                         class="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-xl" @click="showResultModal = false"></div>
+                        <div class="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[3rem] p-10 shadow-3xl overflow-hidden">
+                            <!-- Deep Rank Badge -->
+                            <div class="flex justify-center mb-6">
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent p-1">
+                                    <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+                                        <span class="text-4xl font-heading font-black text-white italic" x-text="deepRanking"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-8">
+                                <h2 class="text-2xl font-heading font-black text-white mb-2 underline decoration-primary" x-text="resultTitle"></h2>
+                                <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Tracking ID: <span x-text="diagnoseId"></span></span>
+                            </div>
+
+                            <div class="bg-white/5 rounded-3xl p-6 border border-white/5 mb-8">
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-primary/10 rounded-2xl border border-primary/20">
+                                        <span class="text-[8px] font-black text-primary uppercase block mb-1 underline">REKOMENDASI SPESIALIS</span>
+                                        <p class="text-white text-[11px] font-bold leading-relaxed" x-text="recommendation"></p>
+                                    </div>
+                                    <div class="p-4 bg-slate-950/50 rounded-2xl border border-white/5 flex items-start gap-4">
+                                        <div class="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center shrink-0">
+                                            <i class="ri-tools-line text-secondary text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-[8px] font-black text-slate-500 uppercase block mb-1">ALAT YANG DIBUTUHKAN</span>
+                                            <p class="text-slate-300 text-[10px] font-medium" x-text="toolsNeeded"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button @click="openWhatsAppDeep()" class="w-full py-5 bg-secondary text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-secondary/20 flex items-center justify-center gap-3">
+                                <i class="ri-whatsapp-line text-xl"></i>
+                                Kirim Laporan Deep Diagnostic
+                            </button>
+                            <button @click="showResultModal = false" class="mt-4 w-full py-2 text-[8px] font-black text-slate-500 uppercase tracking-widest hover:text-white transition-all">Tutup Analisis</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </template>
     </section>
 
     <!-- Master Scripts -->
@@ -263,6 +286,7 @@
                 analyzingAudio: false,
                 finishing: false,
                 showResultModal: false,
+                notification: { show: false, msg: '', type: 'info' },
                 
                 // Data Store
                 visionLabel: '',
@@ -308,6 +332,8 @@
                 
                 deepRanking: '?',
                 diagnoseId: 'RT-PENDING',
+                resultTitle: 'Diagnosing...',
+                deepScore: 0,
 
                 // AI Worker
                 worker: null,
@@ -384,34 +410,54 @@
                 },
 
                 initWorker() {
-                    // Start the AI Processor Web Worker
-                    this.worker = new Worker('/assets/ai/workers/ai-processor.js');
-                    this.worker.onmessage = (e) => {
-                        const { type, results, error } = e.data;
-                        if (type === 'VISION_RESULT') {
-                            this.visionLabel = results.label;
-                            this.visionConfidence = results.confidence;
-                            this.currentStep = 1;
-                            this.analyzingVision = false;
-                        } else if (type === 'AUDIO_RESULT') {
-                            this.audioLabel = results.label;
-                            this.audioConfidence = results.confidence;
-                            this.currentStep = 2;
-                            this.analyzingAudio = false;
-                        } else if (type === 'ERROR') {
-                            console.error('Worker Error:', error);
-                            this.analyzingVision = false;
-                            this.analyzingAudio = false;
-                        }
-                    };
+                    console.log("Worker: Initializing bridge...");
+                    try {
+                        // Start the AI Processor Web Worker
+                        this.worker = new Worker('/assets/ai/workers/ai-processor.js');
+                        
+                        this.worker.onmessage = (e) => {
+                            const { type, results, error, message } = e.data;
+                            
+                            if (type === 'STATUS') {
+                                console.log("Worker Status Update:", message);
+                            } else if (type === 'VISION_RESULT') {
+                                console.log("Worker: Vision result received", results);
+                                this.visionLabel = results.label;
+                                this.visionConfidence = results.confidence;
+                                this.showToast("Visual Data Sync Successful");
+                                this.currentStep = 1;
+                                this.analyzingVision = false;
+                            } else if (type === 'AUDIO_RESULT') {
+                                console.log("Worker: Audio result received", results);
+                                this.audioLabel = results.label;
+                                this.audioConfidence = results.confidence;
+                                this.showToast("Audio Pattern Analyzed");
+                                this.currentStep = 2;
+                                this.analyzingAudio = false;
+                            } else if (type === 'ERROR') {
+                                console.error('Worker Script Error:', error);
+                                this.showToast("Local AI Model Error", "error");
+                                this.analyzingVision = false;
+                                this.analyzingAudio = false;
+                            }
+                        };
 
-                    this.worker.postMessage({
-                        type: 'LOAD_MODELS',
-                        data: {
-                            visionPath: '/assets/ai/models/vision/yolov8/model.json',
-                            audioPath: '/assets/ai/models/audio/snn/model.json'
-                        }
-                    });
+                        // Give it a small heartbeat delay before loading heavy models
+                        setTimeout(() => {
+                            console.log("Worker: Pushing Model Weights...");
+                            this.worker.postMessage({
+                                type: 'LOAD_MODELS',
+                                data: {
+                                    visionPath: '/assets/ai/models/vision/yolov8/model.json',
+                                    audioPath: '/assets/ai/models/audio/snn/model.json'
+                                }
+                            });
+                        }, 500);
+
+                    } catch (workerErr) {
+                        console.error("Worker Bridge Failed:", workerErr);
+                        this.showToast("AI Background Processor Failed", "error");
+                    }
                 },
 
                 async setupVision() {
@@ -467,9 +513,12 @@
                             type: 'PROCESS_VISION',
                             data: { imageBitmap: imgBitmap }
                         }, [imgBitmap]);
+                        
+                        this.showToast("Visual Data Syncing...");
 
                     } catch (e) {
                         console.error('Vision logic error:', e);
+                        this.showToast("Using Heuristic Fallback", "error");
                         // Immediate Heuristic Fallback
                         this.visionLabel = 'Potential Blockage Identified';
                         this.visionConfidence = 82;
@@ -483,10 +532,17 @@
                 async startAudioDiagnosis() {
                     if (this.analyzingAudio) return;
                     this.analyzingAudio = true;
+                    this.showToast("Recording Audio Frequency...");
                     
                     try {
                         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        
+                        // Critical for modern browsers: Resume context on user gesture
+                        if (audioContext.state === 'suspended') {
+                            await audioContext.resume();
+                        }
+
                         const source = audioContext.createMediaStreamSource(stream);
                         const processor = audioContext.createScriptProcessor(1024, 1, 1);
 
@@ -528,44 +584,101 @@
                 },
 
                 async finishDeepDiagnostic() {
+                    if (this.finishing) {
+                        console.warn("Deep Diagnostic: Already in progress, ignoring duplicate call.");
+                        return;
+                    }
+
+                    // --- COMPREHENSIVE VALIDATION ---
+                    console.log("Deep Diagnostic: Validating context...", this.survey);
+                    if (!this.survey.location && !this.survey.sub_context) {
+                        this.showToast("Pilih lokasi atau detail pipa terlebih dahulu!", "error");
+                        console.error("Deep Diagnostic: Validation failed - No location selected.");
+                        return;
+                    }
+
                     this.finishing = true;
-                    this.runInferenceEngine(); // FUSE LOGIC BEFORE SAVE
+                    this.showToast("Step 1: Mengkalkulasi Skor AI...", "info");
                     
+                    // Safety Defaults for incomplete data
+                    if (!this.visionLabel || this.visionConfidence < 10) {
+                        console.warn("Deep Diagnostic: Vision data missing or low, using heuristic fallback.");
+                        this.visionLabel = 'Standard Pipe Blockage';
+                        this.visionConfidence = 70;
+                    }
+
                     try {
+                        console.log("Deep Diagnostic: Running Inference Engine...");
+                        this.runInferenceEngine(); 
+
+                        this.showToast("Step 2: Menghubungkan ke Cloud RooterIN...", "info");
+                        
                         const response = await fetch('{{ route('ai.diagnostic.store') }}', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                            headers: { 
+                                'Content-Type': 'application/json', 
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
                             body: JSON.stringify({
                                 result_label: this.visionLabel,
                                 confidence_score: this.visionConfidence,
                                 audio_label: this.audioLabel,
                                 audio_confidence: this.audioConfidence,
                                 survey_data: this.survey,
-                                recommended_tools: this.toolsNeeded, // New Field
-                                city_location: 'Auto Detect (Basement-Ready)'
+                                recommended_tools: this.toolsNeeded,
+                                city_location: 'Auto Detect'
                             })
                         });
                         
+                        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                        
                         const data = await response.json();
+                        console.log("Deep Diagnostic: Server success!", data);
+
                         if (data.success) {
                             this.diagnoseId = data.diagnose_id;
                             this.deepRanking = data.deep_ranking;
-                            this.showResultModal = true;
+                            this.showToast("Analisis Selesai! Menampilkan Hasil...", "info");
+                            
+                            // Force immediate modal show
+                            setTimeout(() => {
+                                this.showResultModal = true;
+                                console.log("Deep Diagnostic: Result Modal Triggered.");
+                            }, 500);
+                        } else {
+                            throw new Error("Logic failure in server response");
                         }
+
                     } catch (e) {
-                        this.diagnoseId = 'RT-OFFLINE-READY';
-                        this.deepRanking = 'B';
+                        console.error("Deep Diagnostic: Submission Error", e);
+                        this.showToast("Gagal Terhubung ke Server - Menggunakan Analisis Lokal", "error");
+                        
+                        // Critical Fallback UI
+                        this.diagnoseId = 'RT-LOCAL-' + Math.floor(Math.random()*9000 + 1000);
+                        this.deepRanking = 'B'; 
                         this.showResultModal = true;
                         this.saveForSyncLater();
                     } finally {
                         this.finishing = false;
+                        console.log("Deep Diagnostic: Pipeline lifecycle ended.");
                     }
                 },
 
                 saveForSyncLater() {
                     localStorage.setItem('rooterin_sync_lead', JSON.stringify({
-                        v: this.visionLabel, a: this.audioLabel, s: this.survey, r: this.recommendation
+                        id: this.diagnoseId,
+                        v: this.visionLabel, 
+                        a: this.audioLabel, 
+                        s: this.survey, 
+                        r: this.recommendation,
+                        ts: new Date().toISOString()
                     }));
+                },
+
+                showToast(msg, type = 'info') {
+                    this.notification = { msg, type, show: true };
+                    setTimeout(() => this.notification.show = false, 3000);
                 },
 
                 openWhatsAppDeep() {

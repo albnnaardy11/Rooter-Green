@@ -16,6 +16,10 @@ class AiDiagnose extends Model
         'analysis_version',
         'recommended_tools',
         'confidence_score',
+        'latitude',
+        'longitude',
+        'material_type',
+        'location_context',
         'city_location',
         'image_path',
         'status',
@@ -25,6 +29,8 @@ class AiDiagnose extends Model
     protected $casts = [
         'metadata' => 'array',
         'survey_data' => 'array',
+        'latitude' => 'float',
+        'longitude' => 'float',
         'confidence_score' => 'integer',
         'audio_confidence' => 'integer'
     ];

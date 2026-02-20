@@ -69,7 +69,7 @@ class PostController extends Controller
         // SEO Automation
         if ($post->status === 'published') {
             $this->sitemapService->generate();
-            $this->indexingService->updateUrl(url("/tips/{$post->slug}"));
+            $this->indexingService->notifyUpdate(url("/tips/{$post->slug}"));
         }
 
         return redirect()->route('admin.posts.index')->with('success', 'Article created and indexed successfully.');
@@ -115,7 +115,7 @@ class PostController extends Controller
         // SEO Automation
         if ($validated['status'] === 'published') {
             $this->sitemapService->generate();
-            $this->indexingService->updateUrl(url("/tips/{$post->slug}"));
+            $this->indexingService->notifyUpdate(url("/tips/{$post->slug}"));
         }
 
         return redirect()->route('admin.posts.index')->with('success', 'Article updated and re-indexed.');
@@ -134,7 +134,7 @@ class PostController extends Controller
 
         // SEO Automation
         $this->sitemapService->generate();
-        $this->indexingService->updateUrl($url, 'URL_DELETED');
+        $this->indexingService->notifyUpdate($url, 'URL_DELETED');
 
         return redirect()->route('admin.posts.index')->with('success', 'Article deleted and removed from index.');
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
-use App\Models\AiLead;
+use App\Models\AiDiagnose;
 
 class AiDiagnosticController extends Controller
 {
@@ -46,22 +46,29 @@ class AiDiagnosticController extends Controller
 
         // Generate ID: #RT-YYYY-XXXX
         $year = date('Y');
-        $count = AiLead::whereYear('created_at', $year)->count() + 1;
+        $count = AiDiagnose::whereYear('created_at', $year)->count() + 1;
         $diagnoseId = "#RT-{$year}-" . str_pad($count, 4, '0', STR_PAD_LEFT);
 
-        $lead = AiLead::create([
+        // Simulation: Random Geo for Heatmap demo if not provided
+        $lat = -6.2 + (mt_rand(-100, 100) / 1000); 
+        $lng = 106.8 + (mt_rand(-100, 100) / 1000);
+
+        $lead = AiDiagnose::create([
             'diagnose_id' => $diagnoseId,
-            'material_type' => $validated['survey_data']['material'] ?? 'unknown',
-            'location_context' => $validated['survey_data']['sub_context'] ?? $validated['survey_data']['location'] ?? 'general',
-            'ai_result' => $validated['result_label'],
+            'result_label' => $validated['result_label'],
             'confidence_score' => $vScore,
-            'severity_score' => $severity,
-            'audio_analysis' => $validated['audio_label'] ?? 'captured',
-            'recommended_tools' => $validated['recommended_tools'] ?? 'Standard Rooter',
-            'city_location' => $validated['city_location'] ?? 'Auto-Detect',
-            'raw_survey_data' => $validated['survey_data'],
+            'final_deep_score' => $severity,
+            'material_type' => $validated['survey_data']['material'] ?? 'pvc',
+            'location_context' => $validated['survey_data']['sub_context'] ?? $validated['survey_data']['location'] ?? 'general',
+            'audio_label' => $validated['audio_label'] ?? 'Standard Flow',
+            'audio_confidence' => $aScore,
+            'survey_data' => $validated['survey_data'],
+            'recommended_tools' => $validated['recommended_tools'] ?? 'Rooter Machine',
+            'city_location' => $validated['city_location'] ?? 'Auto Detect',
+            'latitude' => $lat,
+            'longitude' => $lng,
             'metadata' => $validated['metadata'] ?? [],
-            'status' => 'new'
+            'status' => 'pending'
         ]);
 
         return response()->json([

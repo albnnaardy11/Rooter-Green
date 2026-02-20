@@ -108,6 +108,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::delete('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'delete'])->name('wiki.destroy');
     Route::post('/wiki/auto-generate', [\App\Http\Controllers\Admin\WikiManagementController::class, 'autoGenerate'])->name('wiki.generate');
 
+    // AI Intelligence Center
+    Route::get('/ai-intelligence', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'index'])->name('ai.intelligence.index');
+    Route::get('/ai-intelligence/export', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'export'])->name('ai.intelligence.export');
+
     // Audit & Activity
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');
 });

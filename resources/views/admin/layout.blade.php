@@ -72,6 +72,10 @@
                     <i class="ri-search-eye-line text-xl"></i>
                     <span class="text-sm font-bold">SEO Central</span>
                 </a>
+                <a href="{{ route('admin.ai.intelligence.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.ai.intelligence.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-radar-box-line text-xl"></i>
+                    <span class="text-sm font-bold font-heading">AI Intelligence</span>
+                </a>
                 <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.messages.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-mail-line text-xl"></i>
                     <span class="font-bold text-sm">Messages</span>
