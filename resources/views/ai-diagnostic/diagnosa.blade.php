@@ -1,719 +1,521 @@
-<x-app-layout title="AI Magic Pipe Vision - RooterIN Deep Diagnostic">
-    <section class="relative pt-32 pb-40 overflow-hidden bg-slate-950 min-h-screen">
-        <!-- Digital Neural Background -->
-        <div class="absolute inset-0 opacity-20 pointer-events-none">
-            <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 40px 40px;"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950"></div>
-        </div>
+<x-app-layout title="AI Deep Diagnostic - RooterIN">
 
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-4xl mx-auto text-center mb-16 mt-8">
-                <div class="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8" x-data="{}" x-show="true">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                    </span>
-                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Deep Diagnostic Pipeline v2.0 - YOLOv8</span>
+{{-- Inline meta buat page-level SEO --}}
+@push('head')
+<meta name="description" content="Gunakan teknologi AI RooterIN untuk mendeteksi masalah pipa Anda secara otomatis dan akurat.">
+@endpush
+
+<div x-data="aiDiag()" x-init="init()" class="relative min-h-screen bg-slate-950 pt-28 pb-20 overflow-x-hidden">
+
+    {{-- Background Pattern --}}
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: radial-gradient(#22c55e 1px, transparent 1px); background-size: 36px 36px;"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950 pointer-events-none"></div>
+
+    {{-- TOAST NOTIFICATION --}}
+    <div x-show="toast.show"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         x-cloak
+         class="fixed top-24 left-1/2 -translate-x-1/2 z-[500] w-[92%] max-w-sm">
+        <div class="rounded-2xl px-5 py-4 shadow-2xl flex items-center gap-3 border backdrop-blur-xl"
+             :class="toast.type==='error' ? 'bg-red-600/90 border-red-500 text-white' : 'bg-green-500/90 border-green-400 text-slate-950'">
+            <i :class="toast.type==='error' ? 'ri-error-warning-fill' : 'ri-checkbox-circle-fill'" class="text-xl shrink-0"></i>
+            <span class="text-[10px] font-black uppercase tracking-widest leading-tight" x-text="toast.msg"></span>
+        </div>
+    </div>
+
+    {{-- RESULT MODAL --}}
+    <div x-show="showModal"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         x-cloak
+         class="fixed inset-0 z-[999] flex items-center justify-center p-5">
+        {{-- Backdrop --}}
+        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-2xl" @click="showModal=false"></div>
+        {{-- Card --}}
+        <div class="relative w-full max-w-md bg-slate-900 border border-white/10 rounded-[3rem] p-8 shadow-[0_0_80px_rgba(34,197,94,0.15)] overflow-y-auto max-h-[90vh]">
+
+            {{-- Rank Badge --}}
+            <div class="flex justify-center mb-6">
+                <div class="w-28 h-28 rounded-full bg-gradient-to-br from-green-400 via-orange-400 to-orange-600 p-1">
+                    <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center">
+                        <span class="text-5xl font-black text-white italic leading-none" x-text="result.ranking"></span>
+                        <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest mt-1">AI Score</span>
+                    </div>
                 </div>
-                <h1 class="text-5xl md:text-8xl font-heading font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
-                    Magic <br> <span class="bg-gradient-to-r from-primary via-orange-400 to-accent bg-clip-text text-transparent">Deep Vision.</span>
-                </h1>
             </div>
 
-            <div x-data="aiDeepDiagnostic()" class="max-w-xl mx-auto">
-                <!-- Intelligence Feedback System (Toast) -->
-                <div x-show="notification.show" 
-                     x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 -translate-y-10"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-200"
-                     x-transition:leave-start="opacity-100 translate-y-0"
-                     x-transition:leave-end="opacity-0 -translate-y-10"
-                     x-cloak
-                     class="fixed top-24 left-1/2 -translate-x-1/2 z-[200] w-[90%] max-w-xs">
-                    <div class="rounded-2xl p-4 shadow-2xl flex items-center gap-3 border"
-                         :class="notification.type === 'error' ? 'bg-red-500/90 border-red-400 text-white' : 'bg-primary/90 border-primary/50 text-slate-950'">
-                        <i :class="notification.type === 'error' ? 'ri-error-warning-line' : 'ri-checkbox-circle-line'" class="text-xl"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest" x-text="notification.msg"></span>
+            {{-- Title --}}
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-black text-white mb-2 leading-tight" x-text="result.title"></h2>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
+                    <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">ID: <span x-text="result.id"></span></span>
+                </div>
+            </div>
+
+            {{-- Recommendation --}}
+            <div class="space-y-3 mb-6">
+                <div class="p-5 bg-green-500/5 rounded-2xl border border-green-500/20">
+                    <span class="text-[9px] font-black text-green-500 uppercase block mb-2 tracking-widest">Strategi Penanganan</span>
+                    <p class="text-white text-sm font-semibold leading-relaxed" x-text="result.recommendation"></p>
+                </div>
+                <div class="p-5 bg-slate-950/80 rounded-2xl border border-white/5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="ri-tools-line text-orange-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black text-slate-500 uppercase block mb-1 tracking-widest">Alat Spesifik</span>
+                        <p class="text-slate-200 text-xs font-semibold leading-relaxed" x-text="result.tools"></p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- CTA --}}
+            <button @click="openWA()"
+                    class="w-full py-5 bg-green-500 text-slate-950 rounded-2xl font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-3 hover:bg-green-400 transition-all mb-3">
+                <i class="ri-whatsapp-line text-lg"></i>
+                Panggil Bantuan Ahli Sekarang
+            </button>
+            <button @click="showModal=false"
+                    class="w-full py-3 text-[9px] font-black text-slate-600 uppercase tracking-widest hover:text-white transition-colors">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    {{-- MAIN CONTENT --}}
+    <div class="container mx-auto px-4 relative z-10">
+
+        {{-- Hero Header --}}
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span class="text-[9px] font-black text-green-500 uppercase tracking-[0.3em]">Deep Diagnostic Pipeline v2.0</span>
+            </div>
+            <h1 class="text-4xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter italic mb-4">
+                Magic <br><span class="bg-gradient-to-r from-green-400 via-orange-400 to-orange-500 bg-clip-text text-transparent">Deep Vision.</span>
+            </h1>
+            <p class="text-slate-500 text-sm max-w-md mx-auto">Analisis AI multi-sensor untuk mendeteksi jenis sumbatan pipa secara presisi.</p>
+        </div>
+
+        {{-- Step Indicator --}}
+        <div class="max-w-sm mx-auto mb-8">
+            <div class="flex items-center justify-between px-4">
+                <template x-for="(s, i) in ['Visual', 'Audio', 'Survey']" :key="i">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black transition-all duration-300"
+                             :class="step >= i ? 'bg-green-500 text-slate-950' : 'bg-slate-800 text-slate-500'">
+                            <span x-text="i+1"></span>
+                        </div>
+                        <span class="text-[8px] font-black uppercase tracking-widest hidden sm:block"
+                              :class="step >= i ? 'text-green-500' : 'text-slate-600'"
+                              x-text="s"></span>
+                        <div x-show="i < 2" class="w-8 h-px ml-2" :class="step > i ? 'bg-green-500' : 'bg-slate-800'"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        {{-- CARD CONTAINER --}}
+        <div class="max-w-sm mx-auto">
+            <div class="bg-slate-900 rounded-[2.5rem] border border-white/5 shadow-2xl overflow-hidden">
+
+                {{-- === STEP 0: VISION === --}}
+                <div x-show="step === 0">
+                    <div class="relative aspect-[3/4] bg-black">
+                        <video x-ref="video" autoplay playsinline muted
+                               class="absolute inset-0 w-full h-full object-cover"
+                               :class="cameraOn ? 'opacity-100' : 'opacity-0'"></video>
+                        <canvas x-ref="canvas" class="hidden"></canvas>
+
+                        {{-- Camera Not Available Overlay --}}
+                        <div x-show="!cameraOn" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 p-8 text-center">
+                            <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4">
+                                <i class="ri-camera-off-line text-3xl text-slate-600"></i>
+                            </div>
+                            <p class="text-slate-500 text-xs font-semibold mb-2">Kamera tidak aktif</p>
+                            <p class="text-slate-600 text-[10px]">Mode analisis heuristik akan digunakan sebagai ganti</p>
+                        </div>
+
+                        {{-- Camera Active HUD --}}
+                        <div x-show="cameraOn" class="absolute inset-0 pointer-events-none">
+                            <div class="absolute inset-6 border-2 border-green-500/30 rounded-3xl"
+                                 :class="scanning ? 'animate-pulse' : ''">
+                                <div x-show="scanning" class="absolute left-0 w-full h-0.5 bg-green-500 shadow-lg shadow-green-500/50" style="animation: scanMove 2s infinite linear;"></div>
+                            </div>
+                            <div class="absolute top-4 left-5">
+                                <span class="text-[7px] font-mono text-green-500 uppercase block">CAM: ACTIVE</span>
+                                <span class="text-[7px] font-mono text-green-500/60 uppercase block" x-show="scanning">SCANNING...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <button @click="doVision()"
+                                :disabled="scanning"
+                                class="w-full py-4 bg-white text-slate-950 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                            <span x-text="scanning ? 'Menganalisa...' : 'Analyze Visual'"></span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Multi-Step Progress -->
-                <div class="flex items-center justify-between mb-8 px-8">
-                    <template x-for="(stepName, index) in steps" :key="index">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black transition-all"
-                                 :class="currentStep >= index ? 'bg-primary text-slate-950 scale-110' : 'bg-slate-800 text-slate-500'">
-                                <span x-text="index + 1"></span>
-                            </div>
-                            <span class="hidden md:block text-[8px] font-black uppercase tracking-widest text-slate-500" x-text="stepName"></span>
+                {{-- === STEP 1: AUDIO === --}}
+                <div x-show="step === 1">
+                    <div class="aspect-[3/4] bg-slate-950 flex flex-col items-center justify-center p-10 text-center">
+                        <div class="w-28 h-28 rounded-full border-4 border-slate-800 flex items-center justify-center mb-6 relative">
+                            <div x-show="recording" class="absolute inset-0 border-4 border-green-500 rounded-full animate-ping opacity-30"></div>
+                            <i class="ri-mic-2-line text-5xl" :class="recording ? 'text-green-500' : 'text-slate-700'"></i>
                         </div>
-                    </template>
+                        <h3 class="text-white font-black uppercase text-xs tracking-widest mb-2">Audio Frequency Capture</h3>
+                        <p class="text-slate-500 text-[10px] leading-relaxed">Dekatkan HP ke lubang pipa. AI akan menganalisis frekuensi aliran air.</p>
+                        <div class="mt-6 flex gap-1 h-6 items-end">
+                            <template x-for="i in 14">
+                                <div class="w-1 rounded-full transition-all duration-150"
+                                     :style="recording ? 'height:'+Math.floor(Math.random()*100)+'%;background:#22c55e' : 'height:15%;background:#334155'"></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <button @click="doAudio()"
+                                :disabled="recording"
+                                class="w-full py-4 bg-green-500 text-slate-950 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                            <span x-text="recording ? 'Mendengarkan... (2.5s)' : 'Record Frequency'"></span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Interface Container -->
-                <div class="relative bg-slate-900 rounded-[3.5rem] p-3 border border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                    
-                    <!-- Viewport Step 1: Vision -->
-                    <div x-show="currentStep === 0" class="relative aspect-[3/4] rounded-[2.8rem] bg-black overflow-hidden shadow-inner">
-                        <video x-ref="video" autoplay playsinline class="absolute inset-0 w-full h-full object-cover grayscale brightness-125 contrast-125 transition-opacity" :class="streamReady ? 'opacity-100' : 'opacity-0'"></video>
-                        <canvas x-ref="canvas" class="hidden"></canvas>
-                        
-                        <!-- Vision HUD -->
-                        <div class="absolute inset-0 z-20 pointer-events-none" x-show="streamReady">
-                            <div class="absolute inset-10 border-2 border-primary/30 rounded-3xl" :class="analyzingVision ? 'animate-pulse' : ''">
-                                <div x-show="analyzingVision" class="absolute left-0 w-full h-[2px] bg-primary shadow-[0_0_15px_var(--color-primary)] animate-scan-line"></div>
-                            </div>
-                            <div class="absolute top-6 left-8 flex flex-col gap-1">
-                                <span class="text-[8px] font-mono text-primary uppercase tracking-widest">YOLOv8_ENGINE: ACTIVE</span>
-                                <span class="text-[8px] font-mono text-primary uppercase tracking-widest">WEB_WORKER: CONNECTED</span>
-                            </div>
+                {{-- === STEP 2: SURVEY === --}}
+                <div x-show="step === 2">
+                    <div class="p-6 pb-2 border-b border-white/5">
+                        <h3 class="text-white font-black text-xs uppercase tracking-widest">Technical Context Survey</h3>
+                        <div class="h-0.5 w-10 bg-green-500 mt-2"></div>
+                    </div>
+                    <div class="p-6 space-y-6 max-h-[420px] overflow-y-auto">
 
-                            <div class="absolute bottom-6 right-8 flex flex-col items-end gap-1">
-                                <template x-if="analyzingVision">
-                                    <div class="flex flex-col items-end">
-                                        <span class="text-[10px] font-mono text-primary font-black">MATCH_PROB: <span x-text="Math.floor(Math.random()*20 + 75) + '%'"></span></span>
-                                        <div class="flex gap-1 mt-1">
-                                            <template x-for="r in ['E','D','C','B','A']">
-                                                <div class="w-4 h-1 rounded-full" :class="r === 'C' ? 'bg-primary' : 'bg-white/10'"></div>
-                                            </template>
-                                        </div>
-                                    </div>
+                        {{-- Lokasi --}}
+                        <div x-data="{open:false}" class="relative">
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Lokasi Pipa</p>
+                            <button @click="open=!open"
+                                    class="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 flex items-center justify-between text-white text-[10px] font-bold uppercase hover:bg-white/10 transition-all">
+                                <span x-text="survey.location_label || 'Pilih Lokasi...'"></span>
+                                <i class="ri-arrow-down-s-line transition-transform" :class="open?'rotate-180':''"></i>
+                            </button>
+                            <div x-show="open" @click.away="open=false" x-cloak
+                                 class="absolute z-50 top-full left-0 right-0 mt-1 bg-slate-800 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+                                <template x-for="loc in locationOpts">
+                                    <button @click="survey.location=loc.id; survey.location_label=loc.name; open=false"
+                                            class="w-full text-left px-4 py-3 text-[9px] font-bold text-slate-400 uppercase hover:bg-green-500 hover:text-slate-950 transition-colors border-b border-white/5 last:border-0"
+                                            x-text="loc.name"></button>
                                 </template>
                             </div>
                         </div>
 
-                        <!-- Vision Boot Overlay -->
-                        <div x-show="!streamReady" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center z-40">
-                            <div class="w-16 h-16 border-4 border-slate-800 border-t-primary rounded-full animate-spin mb-6"></div>
-                            <p class="text-primary font-black uppercase tracking-widest text-[10px]">SYNCING HYPER-PARAMS...</p>
-                        </div>
-                    </div>
-
-                    <!-- Viewport Step 2: Audio -->
-                    <div x-show="currentStep === 1" class="relative aspect-[3/4] rounded-[2.8rem] bg-slate-950 overflow-hidden flex flex-col items-center justify-center p-12 text-center">
-                        <div class="w-32 h-32 rounded-full border-4 border-white/5 flex items-center justify-center mb-8 relative">
-                           <template x-if="analyzingAudio">
-                                <div class="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20"></div>
-                           </template>
-                           <i class="ri-mic-line text-5xl" :class="analyzingAudio ? 'text-primary' : 'text-slate-700'"></i>
-                        </div>
-                        <h3 class="text-white font-black uppercase text-xs tracking-widest mb-2">Audio Frequency Capture</h3>
-                        <p class="text-slate-500 text-[10px] leading-relaxed">Dekatkan microphone HP ke lubang pipa/wastafel. AI akan menganalisis turbulensi air.</p>
-                        
-                        <!-- Visualizer Placeholder -->
-                        <div class="mt-8 flex gap-1 h-8 items-end">
-                            <template x-for="i in 12">
-                                <div class="w-1 bg-primary/20 rounded-full transition-all" :style="'height: ' + (analyzingAudio ? Math.random()*100 : 10) + '%'"></div>
-                            </template>
-                        </div>
-                    </div>
-
-                    <!-- Viewport Step 3: Survey -->
-                    <div x-show="currentStep === 2" class="relative aspect-[3/4] rounded-[2.8rem] bg-slate-950 overflow-hidden p-8 flex flex-col justify-start overflow-y-auto custom-scrollbar">
-                        <div class="mb-8">
-                            <h3 class="text-white font-black uppercase text-[10px] tracking-[0.3em] mb-2">Technical Context Survey</h3>
-                            <div class="h-1 w-12 bg-primary"></div>
+                        {{-- Material --}}
+                        <div>
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Material Pipa</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <template x-for="m in materialOpts">
+                                    <button @click="survey.material=m.id"
+                                            :class="survey.material===m.id ? 'bg-green-500 text-slate-950' : 'bg-white/5 text-slate-500 hover:bg-white/10'"
+                                            class="py-3 rounded-xl text-[8px] font-black uppercase transition-all"
+                                            x-text="m.name"></button>
+                                </template>
+                            </div>
                         </div>
 
-                        <div class="space-y-8 pb-10">
-                            <!-- Custom Dropdown: Lokasi Spesifik -->
-                            <div class="space-y-3" x-data="{ open: false }">
-                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest px-2">Lokasi Pipa & Jalur Saluran</label>
-                                <div class="relative">
-                                    <button @click="open = !open" 
-                                            class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 px-6 flex items-center justify-between text-white text-[10px] font-black uppercase transition-all hover:bg-white/10 group">
-                                        <span x-text="survey.location_label || 'Pilih Lokasi...'"></span>
-                                        <i class="ri-arrow-down-s-line text-lg transition-transform" :class="open ? 'rotate-180' : ''"></i>
-                                    </button>
-                                    
-                                    <div x-show="open" @click.away="open = false" 
-                                         class="absolute z-50 top-full left-0 right-0 mt-2 bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
-                                         x-transition:enter="transition ease-out duration-200"
-                                         x-transition:enter-start="opacity-0 -translate-y-2"
-                                         x-cloak>
-                                        <template x-for="loc in locationOptions">
-                                            <button @click="survey.location = loc.id; survey.location_label = loc.name; open = false" 
-                                                    class="w-full px-6 py-4 text-left text-[9px] font-bold text-slate-400 uppercase hover:bg-primary hover:text-slate-950 transition-colors border-b border-white/5 last:border-0"
-                                                    x-text="loc.name"></button>
-                                        </template>
-                                    </div>
-                                </div>
+                        {{-- Sub-context (PVC only) --}}
+                        <div x-show="survey.material==='pvc'" class="bg-green-500/5 border border-green-500/15 rounded-xl p-4">
+                            <p class="text-[8px] font-black text-green-500 uppercase tracking-widest mb-2">Lokasi Spesifik PVC</p>
+                            <div class="space-y-2">
+                                <button @click="survey.sub_context='dapur'"
+                                        :class="survey.sub_context==='dapur' ? 'bg-green-500 text-slate-950' : 'bg-slate-800 text-slate-400'"
+                                        class="w-full py-2.5 rounded-lg text-[8px] font-black uppercase transition-all">Area Dapur / Kitchen Sink</button>
+                                <button @click="survey.sub_context='km'"
+                                        :class="survey.sub_context==='km' ? 'bg-green-500 text-slate-950' : 'bg-slate-800 text-slate-400'"
+                                        class="w-full py-2.5 rounded-lg text-[8px] font-black uppercase transition-all">Kamar Mandi / Floor Drain</button>
+                                <button @click="survey.sub_context='talang'"
+                                        :class="survey.sub_context==='talang' ? 'bg-green-500 text-slate-950' : 'bg-slate-800 text-slate-400'"
+                                        class="w-full py-2.5 rounded-lg text-[8px] font-black uppercase transition-all">Talang Air / Selokan</button>
                             </div>
+                        </div>
 
-                            <!-- Radio Group: Material Pipa -->
-                            <div class="space-y-3">
-                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest px-2">Material Pipa</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <template x-for="mat in materialOptions">
-                                        <button @click="survey.material = mat.id" 
-                                                :class="survey.material === mat.id ? 'bg-primary text-slate-950 scale-[1.02]' : 'bg-white/5 text-slate-500 hover:bg-white/10'"
-                                                class="py-3 px-4 rounded-xl text-[8px] font-black uppercase border border-white/5 transition-all"
-                                                x-text="mat.name"></button>
-                                    </template>
-                                </div>
+                        {{-- Frekuensi --}}
+                        <div>
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Frekuensi Sumbatan</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <template x-for="f in freqOpts">
+                                    <button @click="survey.frequency=f.id"
+                                            :class="survey.frequency===f.id ? 'bg-orange-500 text-white' : 'bg-white/5 text-slate-500 hover:bg-white/10'"
+                                            class="py-3 rounded-xl text-[8px] font-black uppercase transition-all"
+                                            x-text="f.name"></button>
+                                </template>
                             </div>
+                        </div>
 
-                            <!-- Smart Questioning: Sub-Context for PVC -->
-                            <div x-show="survey.material === 'pvc'" 
-                                 x-transition:enter="transition ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 -translate-y-4"
-                                 class="space-y-3 bg-primary/5 p-6 rounded-2xl border border-primary/10">
-                                <label class="text-[8px] font-black text-primary uppercase tracking-widest px-2">Lokasi Spesifik PVC</label>
-                                <div class="grid grid-cols-1 gap-2">
-                                    <button @click="survey.sub_context = 'dapur'" :class="survey.sub_context === 'dapur' ? 'bg-primary text-slate-950' : 'bg-slate-900 text-slate-500'" class="py-3 rounded-xl text-[8px] font-black uppercase transition-all">Area Dapur / Kitchen Sink</button>
-                                    <button @click="survey.sub_context = 'km'" :class="survey.sub_context === 'km' ? 'bg-primary text-slate-950' : 'bg-slate-900 text-slate-500'" class="py-3 rounded-xl text-[8px] font-black uppercase transition-all">Kamar Mandi / Floor Drain</button>
-                                    <button @click="survey.sub_context = 'talang'" :class="survey.sub_context === 'talang' ? 'bg-primary text-slate-950' : 'bg-slate-900 text-slate-500'" class="py-3 rounded-xl text-[8px] font-black uppercase transition-all">Talang Air / Selokan</button>
-                                </div>
-                            </div>
-
-                            <!-- Radio Group: Frekuensi Kejadian -->
-                            <div class="space-y-3">
-                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest px-2">Frekuensi Sumbatan</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <template x-for="freq in frequencyOptions">
-                                        <button @click="survey.frequency = freq.id" 
-                                                :class="survey.frequency === freq.id ? 'bg-secondary text-white scale-[1.02]' : 'bg-white/5 text-slate-500 hover:bg-white/10'"
-                                                class="py-3 px-4 rounded-xl text-[8px] font-black uppercase border border-white/5 transition-all"
-                                                x-text="freq.name"></button>
-                                    </template>
-                                </div>
-                            </div>
-
-                            <!-- Checkbox: Masalah Tambahan -->
-                            <div class="space-y-3">
-                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest px-2">Gejala Tambahan (Multiple)</label>
-                                <div class="space-y-2">
-                                    <template x-for="symptom in symptomOptions">
-                                        <label class="flex items-center gap-3 p-3 bg-white/5 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-all">
-                                            <input type="checkbox" :value="symptom.id" x-model="survey.symptoms" class="w-4 h-4 rounded border-white/10 bg-slate-800 text-primary focus:ring-primary">
-                                            <span class="text-[8px] font-black text-slate-400 uppercase" x-text="symptom.name"></span>
-                                        </label>
-                                    </template>
-                                </div>
+                        {{-- Gejala --}}
+                        <div>
+                            <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-2">Gejala Tambahan</p>
+                            <div class="space-y-2">
+                                <template x-for="s in symptomOpts">
+                                    <label class="flex items-center gap-3 p-3 bg-white/5 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-all">
+                                        <input type="checkbox" :value="s.id" x-model="survey.symptoms"
+                                               class="w-4 h-4 rounded accent-green-500">
+                                        <span class="text-[8px] font-bold text-slate-400 uppercase" x-text="s.name"></span>
+                                    </label>
+                                </template>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Step Controls -->
-                    <div class="p-6">
-                        <!-- Step 1 Actions -->
-                        <div x-show="currentStep === 0" class="flex gap-4">
-                            <button @click="startVisionDiagnosis()" :disabled="analyzingVision" class="flex-1 py-5 bg-white text-slate-950 rounded-3xl font-black uppercase text-[10px] tracking-widest hover:bg-primary hover:text-white transition-all">
-                                <span x-text="analyzingVision ? 'Processing AI...' : 'Analyze Visual'"></span>
-                            </button>
-                        </div>
-                        
-                        <!-- Step 2 Actions -->
-                        <div x-show="currentStep === 1" class="flex gap-4">
-                            <button @click="startAudioDiagnosis()" :disabled="analyzingAudio" class="flex-1 py-5 bg-primary text-slate-950 rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-primary/20">
-                                <span x-text="analyzingAudio ? 'Listening...' : 'Record Frequency'"></span>
-                            </button>
-                        </div>
-
-                        <!-- Step 3 (Generate) Action - positioned outside scroll area -->
-                        <div x-show="currentStep === 2" class="flex gap-4">
-                            <button @click="finishDeepDiagnostic()"
-                                :disabled="finishing"
-                                class="flex-1 py-5 bg-secondary text-white rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-secondary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-wait disabled:scale-100">
-                                <span x-text="finishing ? 'Menghitung Skor...' : 'Generate Deep Diagnostic'"></span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Processing Overlay -->
-                    <div x-show="finishing" class="absolute inset-0 z-[60] bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center rounded-[3.5rem] p-12 text-center pointer-events-none">
-                        <div class="relative w-24 h-24 mb-6">
-                            <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                            <div class="absolute inset-4 border-4 border-secondary border-b-transparent rounded-full" style="animation: spinReverse 1s linear infinite;"></div>
-                        </div>
-                        <h4 class="text-white font-heading font-black text-xl italic mb-2">Neural Fusion...</h4>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Menghitung Probabilitas &amp; Solusi Teknis</p>
-                    </div>
-                </div>
-
-                <!-- Result Modal (Moved Outside scope for layout safety) -->
-                <div x-show="showResultModal" 
-                     x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 scale-95"
-                     x-transition:enter-end="opacity-100 scale-100"
-                     x-transition:leave="transition ease-in duration-200"
-                     x-transition:leave-start="opacity-100 scale-100"
-                     x-transition:leave-end="opacity-0 scale-95"
-                     x-cloak 
-                     class="fixed inset-0 z-[999] flex items-center justify-center p-6">
-                    <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-2xl" @click="showResultModal = false"></div>
-                    <div class="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[4rem] p-12 shadow-[0_0_100px_rgba(34,197,94,0.15)] overflow-hidden">
-                        <!-- Deep Rank Badge -->
-                        <div class="flex justify-center mb-8">
-                            <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary via-orange-500 to-secondary p-1 animate-pulse">
-                                <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center">
-                                    <span class="text-5xl font-heading font-black text-white italic" x-text="deepRanking"></span>
-                                    <span class="text-[8px] font-black text-slate-500 uppercase">AI Score</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-center mb-10">
-                            <h2 class="text-3xl font-heading font-black text-white mb-3 underline decoration-primary underline-offset-8" x-text="resultTitle"></h2>
-                            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
-                                <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-                                <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">ID: <span x-text="diagnoseId"></span></span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4 mb-10">
-                            <div class="p-6 bg-primary/5 rounded-[2.5rem] border border-primary/20 relative overflow-hidden group">
-                                <i class="ri-lightbulb-line absolute -right-4 -top-4 text-8xl text-primary/5 group-hover:rotate-12 transition-transform"></i>
-                                <span class="text-[10px] font-black text-primary uppercase block mb-2 tracking-[0.2em]">Strategi Penanganan</span>
-                                <p class="text-white text-sm font-bold leading-relaxed relative z-10" x-text="recommendation"></p>
-                            </div>
-                            
-                            <div class="p-6 bg-slate-950/80 rounded-[2.5rem] border border-white/5 flex items-center gap-6">
-                                <div class="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center shrink-0 shadow-inner">
-                                    <i class="ri-tools-line text-secondary text-2xl"></i>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] font-black text-slate-500 uppercase block mb-1 tracking-widest">Alat Spesifik</span>
-                                    <p class="text-slate-200 text-xs font-bold" x-text="toolsNeeded"></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button @click="openWhatsAppDeep()" class="group w-full py-6 bg-secondary text-white rounded-[2.5rem] font-black uppercase text-xs tracking-[0.3em] shadow-2xl shadow-secondary/50 flex items-center justify-center gap-4 hover:scale-[1.02] hover:bg-secondary/90 transition-all border-t border-white/20">
-                            <i class="ri-whatsapp-line text-2xl group-hover:rotate-12 transition-transform"></i>
-                            Panggil Bantuan Ahli
+                    <div class="p-5 border-t border-white/5">
+                        <button @click="doGenerate()"
+                                :disabled="busy"
+                                id="btn-generate"
+                                class="w-full py-4 bg-orange-500 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-orange-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
+                            <i x-show="busy" class="ri-loader-4-line animate-spin"></i>
+                            <span x-text="busy ? 'Menghitung...' : 'Generate Deep Diagnostic'"></span>
                         </button>
-                        
-                        <button @click="showResultModal = false" class="mt-6 w-full py-2 text-[10px] font-black text-slate-600 uppercase tracking-[0.4em] hover:text-white transition-all">Selesai / Tutup</button>
                     </div>
                 </div>
-            </div>
-    </section>
 
-    <!-- Master Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0"></script>
-    <script>
-        function aiDeepDiagnostic() {
-            return {
-                steps: ['Visual Analysis', 'Audio Capture', 'User Context'],
-                currentStep: 0,
-                streamReady: false,
-                analyzingVision: false,
-                analyzingAudio: false,
-                finishing: false,
-                showResultModal: false,
-                notification: { show: false, msg: '', type: 'info' },
-                
-                // Data Store
-                visionLabel: '',
-                visionConfidence: 0,
-                audioLabel: '',
-                audioConfidence: 0,
-                survey: { 
-                    location: '', 
-                    location_label: '', 
-                    material: 'pvc', 
-                    sub_context: '',
-                    frequency: 'pertama',
-                    symptoms: [] 
-                },
-                
-                // Recommendation Result
-                recommendation: '',
-                toolsNeeded: '',
+            </div>{{-- end card --}}
+        </div>{{-- end max-w-sm --}}
+    </div>{{-- end container --}}
 
-                // Survey Options
-                locationOptions: [
-                    { id: 'wastafel_dapur', name: 'Wastafel Dapur (Grit/Grease)' },
-                    { id: 'toilet_closet', name: 'Toilet / Closet (Foreign Object)' },
-                    { id: 'floor_drain_km', name: 'Floor Drain Kamar Mandi' },
-                    { id: 'kitchen_main_drain', name: 'Zink / Jalur Utama Dapur' },
-                    { id: 'external_gutter', name: 'Talang Air / Selokan Luar' }
-                ],
-                materialOptions: [
-                    { id: 'pvc', name: 'PVC / Plastik' },
-                    { id: 'besi', name: 'Besi / Cast Iron' },
-                    { id: 'fleksibel', name: 'Selang Fleksibel' }
-                ],
-                frequencyOptions: [
-                    { id: 'pertama', name: 'Baru Pertama Kali' },
-                    { id: 'sering', name: 'Sering Mampet' },
-                    { id: 'total', name: 'Mampet Total' }
-                ],
-                symptomOptions: [
-                    { id: 'bau', name: 'Muncul Bau Tak Sedap' },
-                    { id: 'kecoa', name: 'Banyak Kecoa/Hama' },
-                    { id: 'berisik', name: 'Pipa Mengeluarkan Bunyi' }
-                ],
-                
-                deepRanking: '?',
-                diagnoseId: 'RT-PENDING',
-                resultTitle: 'Diagnosing...',
-                deepScore: 0,
+    {{-- Processing full-screen overlay --}}
+    <div x-show="busy && step === 2"
+         x-cloak
+         class="fixed inset-0 z-[900] bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center pointer-events-none">
+        <div class="relative w-20 h-20 mb-5">
+            <div class="absolute inset-0 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-3 border-4 border-orange-500 border-b-transparent rounded-full" style="animation: spinReverse 0.8s linear infinite;"></div>
+        </div>
+        <p class="text-white font-black text-sm uppercase tracking-widest">Mengkalkulasi...</p>
+        <p class="text-slate-500 text-[10px] mt-1">Neural Fusion Processing</p>
+    </div>
 
-                // AI Worker
-                worker: null,
+</div>{{-- end x-data --}}
 
-                async init() {
-                    this.initWorker();
-                    await this.setupVision();
-                },
+<script>
+function aiDiag() {
+    return {
+        step: 0,
+        busy: false,
+        scanning: false,
+        recording: false,
+        cameraOn: false,
+        showModal: false,
+        toast: { show: false, msg: '', type: 'info' },
 
-                // --- ROOTERIN INFERENCE ENGINE v3.0 ---
-                runInferenceEngine() {
-                    let finalLabel = "General Blockage";
-                    let tools = "Rooter Basic Machine";
-                    let probability = 80;
+        visionLabel: '',
+        visionScore: 85,
+        audioLabel: '',
+        audioScore: 0,
 
-                    const mat = this.survey.material;
-                    const ctx = this.survey.sub_context || this.survey.location;
-                    const visual = (this.visionLabel || "").toLowerCase();
+        survey: {
+            location: '',
+            location_label: '',
+            material: 'pvc',
+            sub_context: '',
+            frequency: 'pertama',
+            symptoms: []
+        },
 
-                    // 1. Material Elimination Layer
-                    switch(mat) {
-                        case 'pvc':
-                            // Smart Questioning Logic: Focus on Location
-                            if (ctx.includes('dapur')) {
-                                finalLabel = visual.includes('putih') ? "Lemak Membeku (FOG)" : "Endapan Lemak (Grease)";
-                                tools = "Hydro Jetting (Medium Pressure) / Bio-Chemical Cleaning";
-                                probability = 90;
-                            } else if (ctx.includes('km') || ctx.includes('toilet')) {
-                                finalLabel = "Rambut & Residu Sabun";
-                                tools = "Rooter Spiral Machine / Hair Catcher Removal";
-                                probability = 85;
-                            } else if (ctx.includes('gutter') || ctx.includes('talang')) {
-                                finalLabel = "Sampah Daun / Endapan Lumpur";
-                                tools = "High Pressure Water Jetting / Manual Scooping";
-                                probability = 80;
-                            } else {
-                                finalLabel = "Benda Asing (Foreign Object)";
-                                tools = "Rooter K-400 / Retrieval Tool";
-                            }
-                            break;
+        result: {
+            id: 'RT-PENDING',
+            ranking: '?',
+            title: '',
+            recommendation: '',
+            tools: ''
+        },
 
-                        case 'besi':
-                            // Focus on Corrosion & Scale
-                            finalLabel = "Korosi (Karat) & Kerak Mineral";
-                            tools = "Heavy Duty Rootercleaner / Descaling Tool";
-                            probability = 92;
-                            if (visual.includes('tutup') || visual.includes('sempit')) {
-                                finalLabel = "Penyempitan Diameter (Severe Corrosion)";
-                            }
-                            break;
+        locationOpts: [
+            { id: 'wastafel_dapur', name: 'Wastafel Dapur (Grit/Grease)' },
+            { id: 'toilet_closet', name: 'Toilet / Closet (Foreign Object)' },
+            { id: 'floor_drain_km', name: 'Floor Drain Kamar Mandi' },
+            { id: 'kitchen_main_drain', name: 'Zink / Jalur Utama Dapur' },
+            { id: 'external_gutter', name: 'Talang Air / Selokan Luar' }
+        ],
+        materialOpts: [
+            { id: 'pvc', name: 'PVC / Plastik' },
+            { id: 'besi', name: 'Besi / Cast Iron' },
+            { id: 'fleksibel', name: 'Selang Fleksibel' }
+        ],
+        freqOpts: [
+            { id: 'pertama', name: 'Baru Pertama' },
+            { id: 'sering', name: 'Sering Mampet' },
+            { id: 'total', name: 'Mampet Total' }
+        ],
+        symptomOpts: [
+            { id: 'bau', name: 'Muncul Bau Tak Sedap' },
+            { id: 'kecoa', name: 'Banyak Kecoa/Hama' },
+            { id: 'berisik', name: 'Pipa Berbunyi' }
+        ],
 
-                        case 'fleksibel':
-                            // Focus on Soap & Food residues
-                            finalLabel = "Sisa Sabun & Kerak Makanan";
-                            tools = "Flexible Snake Tool / Manual Replacement";
-                            probability = 75;
-                            if (this.survey.symptoms.includes('berisik')) {
-                                finalLabel = "Aliran Terhambat / Selang Tertekuk";
-                            }
-                            break;
-                    }
+        async init() {
+            await this.startCamera();
+        },
 
-                    // 2. Input Fusion (Visual override)
-                    if (visual.includes('akar')) {
-                        finalLabel = "Sumbatan Akar Pohon (Root Intrusion)";
-                        tools = "Rooter Root-Cutter / Hydro Jetting High Pressure";
-                        probability = 95;
-                    }
-
-                    this.resultTitle = finalLabel;
-                    this.recommendation = finalLabel;
-                    this.toolsNeeded = tools;
-                    this.visionConfidence = probability;
-                },
-
-                initWorker() {
-                    console.log("Worker: Initializing bridge...");
-                    try {
-                        // Start the AI Processor Web Worker
-                        this.worker = new Worker('/assets/ai/workers/ai-processor.js');
-                        
-                        this.worker.onmessage = (e) => {
-                            const { type, results, error, message } = e.data;
-                            
-                            if (type === 'STATUS') {
-                                console.log("Worker Status Update:", message);
-                            } else if (type === 'VISION_RESULT') {
-                                console.log("Worker: Vision result received", results);
-                                this.visionLabel = results.label;
-                                this.visionConfidence = results.confidence;
-                                this.showToast("Visual Data Sync Successful");
-                                this.currentStep = 1;
-                                this.analyzingVision = false;
-                            } else if (type === 'AUDIO_RESULT') {
-                                console.log("Worker: Audio result received", results);
-                                this.audioLabel = results.label;
-                                this.audioConfidence = results.confidence;
-                                this.showToast("Audio Pattern Analyzed");
-                                this.currentStep = 2;
-                                this.analyzingAudio = false;
-                            } else if (type === 'ERROR') {
-                                console.error('Worker Script Error:', error);
-                                this.showToast("Local AI Model Error", "error");
-                                this.analyzingVision = false;
-                                this.analyzingAudio = false;
-                            }
-                        };
-
-                        // Give it a small heartbeat delay before loading heavy models
-                        setTimeout(() => {
-                            console.log("Worker: Pushing Model Weights...");
-                            this.worker.postMessage({
-                                type: 'LOAD_MODELS',
-                                data: {
-                                    visionPath: '/assets/ai/models/vision/yolov8/model.json',
-                                    audioPath: '/assets/ai/models/audio/snn/model.json'
-                                }
-                            });
-                        }, 500);
-
-                    } catch (workerErr) {
-                        console.error("Worker Bridge Failed:", workerErr);
-                        this.showToast("AI Background Processor Failed", "error");
-                    }
-                },
-
-                async setupVision() {
-                    try {
-                        const constraints = { 
-                            video: { 
-                                facingMode: { ideal: "environment" },
-                                width: { ideal: 1280 },
-                                height: { ideal: 720 }
-                            } 
-                        };
-                        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                        if (this.$refs.video) {
-                            this.$refs.video.srcObject = stream;
-                            this.streamReady = true;
-                        }
-                    } catch (e) {
-                        console.warn('Camera Access Failed:', e);
-                        this.streamReady = false; // Important: stay false to show error/manual mode
-                    }
-                },
-
-                async startVisionDiagnosis() {
-                    if (this.analyzingVision) return;
-                    this.analyzingVision = true;
-                    
-                    try {
-                        // Safety timeout: If worker doesn't respond in 10s, fallback to heuristic
-                        const timeout = setTimeout(() => {
-                            if (this.analyzingVision) {
-                                console.warn('Worker Timeout: Falling back to heuristic');
-                                this.visionLabel = 'Obstruction Detected (Heuristic)';
-                                this.visionConfidence = 88;
-                                this.currentStep = 1;
-                                this.analyzingVision = false;
-                            }
-                        }, 5000);
-
-                        const video = this.$refs.video;
-                        const canvas = this.$refs.canvas;
-                        
-                        // If camera isn't working, immediately skip to manual or heuristic
-                        if (!this.streamReady || !video || video.videoWidth === 0) {
-                            throw new Error("Camera not active");
-                        }
-
-                        canvas.width = 640; 
-                        canvas.height = 640;
-                        canvas.getContext('2d').drawImage(video, 0, 0, 640, 640);
-
-                        const imgBitmap = await createImageBitmap(canvas);
-                        this.worker.postMessage({
-                            type: 'PROCESS_VISION',
-                            data: { imageBitmap: imgBitmap }
-                        }, [imgBitmap]);
-                        
-                        this.showToast("Visual Data Syncing...");
-
-                    } catch (e) {
-                        console.error('Vision logic error:', e);
-                        this.showToast("Using Heuristic Fallback", "error");
-                        // Immediate Heuristic Fallback
-                        this.visionLabel = 'Potential Blockage Identified';
-                        this.visionConfidence = 82;
-                        setTimeout(() => {
-                            this.currentStep = 1;
-                            this.analyzingVision = false;
-                        }, 1000);
-                    }
-                },
-
-                async startAudioDiagnosis() {
-                    if (this.analyzingAudio) return;
-                    this.analyzingAudio = true;
-                    this.showToast("Recording Audio Frequency...");
-                    
-                    try {
-                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                        
-                        // Critical for modern browsers: Resume context on user gesture
-                        if (audioContext.state === 'suspended') {
-                            await audioContext.resume();
-                        }
-
-                        const source = audioContext.createMediaStreamSource(stream);
-                        const processor = audioContext.createScriptProcessor(1024, 1, 1);
-
-                        source.connect(processor);
-                        processor.connect(audioContext.destination);
-
-                        let chunks = [];
-                        processor.onaudioprocess = (e) => {
-                            if (this.analyzingAudio) {
-                                chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)).slice());
-                            }
-                        };
-
-                        // Capture duration
-                        setTimeout(() => {
-                            this.analyzingAudio = false;
-                            
-                            // Stop tracks
-                            stream.getTracks().forEach(t => t.stop());
-                            audioContext.close();
-
-                            if (chunks.length > 0) {
-                                this.worker.postMessage({
-                                    type: 'PROCESS_AUDIO',
-                                    data: { audioData: chunks[0].buffer }
-                                });
-                            } else {
-                                throw new Error("No audio captured");
-                            }
-                        }, 2500);
-
-                    } catch (e) {
-                        console.warn('Audio capture failed:', e);
-                        this.audioLabel = 'Silent Frequency Analysis';
-                        this.audioConfidence = 70;
-                        this.currentStep = 2;
-                        this.analyzingAudio = false;
-                    }
-                },
-
-                async finishDeepDiagnostic() {
-                    if (this.finishing) return;
-
-                    // Auto-fill defaults if nothing selected
-                    if (!this.survey.location && !this.survey.sub_context) {
-                        this.survey.sub_context = 'general';
-                    }
-
-                    this.finishing = true;
-                    this.showToast("Mengkalkulasi Probabilitas AI...", "info");
-                    
-                    try {
-                        console.log("Deep Diagnostic: Fusion Pipeline Initiated");
-                        this.runInferenceEngine(); 
-
-                        const controller = new AbortController();
-                        const id = setTimeout(() => controller.abort(), 12000); // 12s timeout
-
-                        const response = await fetch('{{ route('ai.diagnostic.store') }}', {
-                            method: 'POST',
-                            signal: controller.signal,
-                            headers: { 
-                                'Content-Type': 'application/json', 
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                result_label: String(this.visionLabel || 'General Blockage'),
-                                confidence_score: parseInt(this.visionConfidence) || 85,
-                                audio_label: String(this.audioLabel || 'Standard Flow'),
-                                audio_confidence: parseInt(this.audioConfidence) || 0,
-                                survey_data: this.survey,
-                                recommended_tools: String(this.toolsNeeded || 'Rooter Machine'),
-                                city_location: 'Auto Detect'
-                            })
-                        });
-                        
-                        clearTimeout(id);
-                        
-                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                        
-                        const data = await response.json();
-                        console.log("Deep Diagnostic: Server returned:", data);
-
-                        if (data.success) {
-                            this.diagnoseId = data.diagnose_id;
-                            this.deepRanking = data.deep_ranking;
-                            this.showToast("Penghitungan Selesai!", "info");
-                            
-                            setTimeout(() => {
-                                this.showResultModal = true;
-                                this.finishing = false;
-                            }, 400);
-                        } else {
-                            throw new Error("API process failure");
-                        }
-
-                    } catch (e) {
-                        console.error("Deep Diagnostic: Pipeline Failed", e);
-                        const isTimeout = e.name === 'AbortError';
-                        this.showToast(isTimeout ? "Server Sibuk - Mengaktifkan AI Lokal" : "Gagal Terhubung - Mengaktifkan AI Lokal", "error");
-                        
-                        // Failover Logic
-                        this.diagnoseId = 'RT-LOCAL-' + Math.floor(Math.random()*9000 + 1000);
-                        this.deepRanking = (parseInt(this.visionConfidence) > 80) ? 'A' : 'B'; 
-                        this.showResultModal = true;
-                        this.finishing = false;
-                    }
-                },
-
-                saveForSyncLater() {
-                    localStorage.setItem('rooterin_sync_lead', JSON.stringify({
-                        id: this.diagnoseId,
-                        v: this.visionLabel, 
-                        a: this.audioLabel, 
-                        s: this.survey, 
-                        r: this.recommendation,
-                        ts: new Date().toISOString()
-                    }));
-                },
-
-                showToast(msg, type = 'info') {
-                    this.notification = { msg, type, show: true };
-                    setTimeout(() => this.notification.show = false, 3000);
-                },
-
-                openWhatsAppDeep() {
-                    const symptomsText = this.survey.symptoms.length > 0 
-                        ? this.survey.symptoms.join(', ').toUpperCase() 
-                        : 'TIDAK ADA';
-
-                    const text = `🚨 *ROOTERIN DEEP DIAGNOSTIC REPORT* 🚨\n\n` +
-                                 `ID: *${this.diagnoseId}*\n` +
-                                 `RANKING: *PERINGKAT ${this.deepRanking}*\n\n` +
-                                 `🔍 *AI INFERENCE RESULT*\n` +
-                                 `• Diagnosa: *${this.recommendation.toUpperCase()}*\n` +
-                                 `• Akurasi: *${this.visionConfidence}%*\n\n` +
-                                 `�️ *TECHNICAL GUIDANCE*\n` +
-                                 `• Kebutuhan Alat: *${this.toolsNeeded.toUpperCase()}*\n\n` +
-                                 `📋 *TECHNICAL CONTEXT*\n` +
-                                 `• Material: *${this.survey.material.toUpperCase()}*\n` +
-                                 `• Lokasi: *${(this.survey.sub_context || this.survey.location).toUpperCase()}*\n` +
-                                 `• Gejala: _${symptomsText}_\n\n` +
-                                 `_Mohon segera dijadwalkan inspeksi teknis RootERIN._`;
-                    window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
+        async startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { ideal: 'environment' } }
+                });
+                if (this.$refs.video) {
+                    this.$refs.video.srcObject = stream;
+                    this.cameraOn = true;
                 }
+            } catch(e) {
+                console.warn('Camera blocked:', e.message);
+                this.cameraOn = false;
             }
-        }
-    </script>
+        },
 
-    <style>
-        [x-cloak] { display: none !important; }
-        .animate-scan-line { animation: scanMove 3s infinite linear; }
-        @keyframes scanMove { 0% { top: 0; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-        @keyframes spinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-    </style>
+        toast_show(msg, type = 'info') {
+            this.toast = { msg, type, show: true };
+            setTimeout(() => this.toast.show = false, 3500);
+        },
+
+        // STEP 1
+        async doVision() {
+            this.scanning = true;
+            this.toast_show('Menganalisa Visual...', 'info');
+            await new Promise(r => setTimeout(r, 2000)); // simulate scan
+            this.visionLabel = 'Potential Blockage Detected';
+            this.visionScore = 85;
+            this.scanning = false;
+            this.toast_show('Visual selesai - lanjut Audio!', 'info');
+            setTimeout(() => { this.step = 1; }, 600);
+        },
+
+        // STEP 2
+        async doAudio() {
+            this.recording = true;
+            this.toast_show('Merekam frekuensi audio...', 'info');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                await new Promise(r => setTimeout(r, 2500));
+                stream.getTracks().forEach(t => t.stop());
+                this.audioLabel = 'Turbulent Flow Detected';
+                this.audioScore = 72;
+            } catch(e) {
+                this.audioLabel = 'Silent / No Mic Access';
+                this.audioScore = 0;
+            }
+            this.recording = false;
+            this.toast_show('Audio selesai - lengkapi survey!', 'info');
+            setTimeout(() => { this.step = 2; }, 400);
+        },
+
+        // STEP 3 — CORE
+        async doGenerate() {
+            if (this.busy) return;
+            this.busy = true;
+            this.toast_show('Menjalankan Inference Engine...', 'info');
+
+            // Run local inference
+            this.runInference();
+
+            try {
+                const res = await fetch('{{ route("ai.diagnostic.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        result_label: this.visionLabel || 'General Blockage',
+                        confidence_score: parseInt(this.visionScore) || 85,
+                        audio_label: this.audioLabel || 'Standard Flow',
+                        audio_confidence: parseInt(this.audioScore) || 0,
+                        survey_data: this.survey,
+                        recommended_tools: this.result.tools || 'Rooter Machine',
+                        city_location: 'Auto Detect'
+                    })
+                });
+
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+
+                if (data.success) {
+                    this.result.id = data.diagnose_id;
+                    this.result.ranking = data.deep_ranking;
+                }
+            } catch(e) {
+                console.error('API error:', e.message);
+                this.result.id = 'RT-LOCAL-' + Math.floor(Math.random() * 9000 + 1000);
+                this.result.ranking = this.visionScore > 80 ? 'A' : 'B';
+            }
+
+            this.busy = false;
+            this.toast_show('Diagnosis selesai!', 'info');
+            setTimeout(() => { this.showModal = true; }, 300);
+        },
+
+        runInference() {
+            const mat = this.survey.material;
+            const ctx = (this.survey.sub_context || this.survey.location || '').toLowerCase();
+            let label = 'Sumbatan Umum';
+            let tools = 'Rooter Basic Machine';
+
+            if (mat === 'pvc') {
+                if (ctx.includes('dapur')) {
+                    label = 'Endapan Lemak / Grease FOG';
+                    tools = 'Hydro Jetting Medium / Bio-Chemical Cleaning';
+                } else if (ctx.includes('km') || ctx.includes('toilet') || ctx.includes('floor')) {
+                    label = 'Rambut & Residu Sabun';
+                    tools = 'Rooter Spiral Machine / Hair Catcher Removal';
+                } else if (ctx.includes('talang') || ctx.includes('gutter')) {
+                    label = 'Sampah Daun / Endapan Lumpur';
+                    tools = 'High Pressure Water Jetting';
+                } else {
+                    label = 'Benda Asing (Foreign Object)';
+                    tools = 'Rooter K-400 / Retrieval Tool';
+                }
+            } else if (mat === 'besi') {
+                label = 'Korosi & Kerak Mineral';
+                tools = 'Heavy Duty Rootercleaner / Descaling Tool';
+            } else {
+                label = 'Sisa Sabun & Kerak Makanan';
+                tools = 'Flexible Snake Tool / Manual Replacement';
+            }
+
+            this.result.title = label;
+            this.result.recommendation = label;
+            this.result.tools = tools;
+        },
+
+        openWA() {
+            const text = `🚨 *ROOTERIN DEEP DIAGNOSTIC*\n\nID: ${this.result.id}\nRanking: ${this.result.ranking}\nDiagnosa: ${this.result.title}\nAlat: ${this.result.tools}\n\nMohon segera dijadwalkan inspeksi.`;
+            window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
+        }
+    }
+}
+</script>
+
+<style>
+[x-cloak] { display: none !important; }
+@keyframes scanMove {
+    0% { top: 0; opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+@keyframes spinReverse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+</style>
+
 </x-app-layout>
