@@ -33,10 +33,10 @@ class SecurityShield
             $this->security->killDebugMode();
         }
 
-        // 3. Neural Asset Protection (Handshake Required)
+        // 3. Neural Asset Protection (Phantom Token Exchange)
         if ($request->is('models/*')) {
-            if (!$this->security->verifyHandshake($request) && !$this->security->protectNeuralAssets($request)) {
-                $this->security->blockIp($request->ip(), 'Neural Handshake Failure');
+            if (!$this->security->verifyHandshake($request)) {
+                $this->security->blockIp($request->ip(), 'Neural Handshake Failure (Invalid Phantom Token)');
                 abort(403, 'Akses model ditolak. Koneksi tidak tersinkronisasi.');
             }
         }

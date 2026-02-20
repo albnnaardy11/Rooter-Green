@@ -106,7 +106,7 @@
     </div>
 
     <!-- Defensive Strategies -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="bg-slate-900 border border-white/5 rounded-[32px] overflow-hidden">
             <div class="p-8 border-b border-white/5 flex items-center justify-between">
                 <h3 class="text-white font-heading font-black uppercase tracking-widest text-sm flex items-center gap-3">
@@ -134,6 +134,28 @@
                         </div>
                     </div>
                     <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 border border-white/5 rounded-[32px] overflow-hidden">
+            <div class="p-8 border-b border-white/5">
+                <h3 class="text-white font-heading font-black uppercase tracking-widest text-sm flex items-center gap-3">
+                    <i class="ri-fingerprint-line text-primary"></i>
+                    Kriptografi & Token
+                </h3>
+            </div>
+            <div class="p-8 space-y-4">
+                <div class="p-4 rounded-2xl bg-primary/5 border border-primary/10">
+                    <p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">Protocol: PASETO v4.local</p>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Menggunakan <b>Phantom Token Pattern</b> untuk menyembunyikan identitas asli di sisi publik.</p>
+                    
+                    <form action="{{ route('admin.vault.rotate') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white uppercase tracking-widest hover:bg-primary hover:border-primary transition-all flex items-center justify-center gap-2">
+                            <i class="ri-loop-right-line"></i> Rotate Global Tokens
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

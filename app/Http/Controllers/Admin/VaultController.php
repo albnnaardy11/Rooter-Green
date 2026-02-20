@@ -38,9 +38,20 @@ class VaultController extends Controller
         Cache::put('system_lockdown', !$current, 3600);
         
         $status = !$current ? 'ACTIVATED' : 'DEACTIVATED';
+        
+        if (!$current) {
+            $this->security->rotateTokens(); // UNICORP-GRADE: Auto-rotate on lockdown
+        }
+
         $this->security->auditLog("Manual System Lockdown $status");
 
-        return redirect()->route('admin.vault.index')->with('success', "System Lockdown has been $status.");
+        return redirect()->route('admin.vault.index')->with('success', "System Lockdown has been $status and tokens rotated.");
+    }
+
+    public function rotateTokens()
+    {
+        $this->security->rotateTokens();
+        return redirect()->route('admin.vault.index')->with('success', "Global Token Rotation completed.");
     }
 
     public function clearBlockedIps()

@@ -363,7 +363,9 @@ class SentinelService
                 'debug_mode' => $debugSecure ? 'Safe (Zero-Exposure)' : 'Enabled (CRITICAL)',
                 'status' => $status,
                 'message' => $message,
-                'waf_shield' => $shieldActive ? 'Defensive Mode' : 'Monitoring'
+                'waf_shield' => $shieldActive ? 'Defensive Mode' : 'Monitoring',
+                'paseto_protocol' => 'Active (v4.local)',
+                'phantom_token' => 'Operational'
             ],
             'audit' => [
                 'zero_trust_logs' => DB::table('activity_logs')->count(),

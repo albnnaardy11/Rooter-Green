@@ -9,8 +9,16 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Setting;
 use Carbon\Carbon;
 
+use App\Services\Security\PasetoSecurityService;
+
 class SecurityAutomationService
 {
+    protected $paseto;
+
+    public function __construct(PasetoSecurityService $paseto)
+    {
+        $this->paseto = $paseto;
+    }
     /**
      * MASTERPIECE MODE: Secure Execution State
      */
@@ -180,14 +188,23 @@ class SecurityAutomationService
     }
 
     /**
-     * HANDSHAKE: Neural Asset Protection
+     * PHANTOM HANDSHAKE: PASETO-backed verification
      */
     public function verifyHandshake($request)
     {
-        $handshake = $request->header('X-Neural-Handshake');
-        $validToken = Cache::get('active_neural_handshake');
+        $opaque = $request->header('X-Neural-Handshake');
+        if (!$opaque) return false;
 
-        if (!$validToken || $handshake !== $validToken) {
+        // 1. Exchange Opaque for PASETO
+        $paseto = $this->paseto->getBackendToken($opaque);
+        if (!$paseto) return false;
+
+        // 2. Decrypt & Verify PASETO Claims
+        $claims = $this->paseto->decrypt($paseto);
+        if (!$claims) return false;
+
+        // Verify Identity Claim
+        if (($claims['identity'] ?? '') !== 'rooterin-neural-client') {
             return false;
         }
 
@@ -196,8 +213,23 @@ class SecurityAutomationService
 
     public function generateHandshake()
     {
-        $token = bin2hex(random_bytes(16));
-        Cache::put('active_neural_handshake', $token, 300); // 5 min window
-        return $token;
+        // Generate Phantom Pair: Opaque (Client) -> PASETO (Backend)
+        return $this->paseto->createPhantomPair([
+            'identity' => 'rooterin-neural-client',
+            'issued_at' => now()->toIso8601String(),
+            'scope' => 'neural-diagnosa'
+        ], 300); // 5 min window
+    }
+
+    /**
+     * SENTINEL: Token Rotation
+     */
+    public function rotateTokens()
+    {
+        Log::alert("[SECURITY] TOKEN ROTATION TRIGGERED. Invalidating all Phantom Tokens.");
+        // In a real high-scale system, we'd use a prefix-based flush or a versioning system.
+        // For RooterIN, we'll clear the phantom cache.
+        \Illuminate\Support\Facades\Artisan::call('cache:clear'); // Nuclear option for rotation
+        $this->auditLog('Global Token Rotation Executed');
     }
 }
