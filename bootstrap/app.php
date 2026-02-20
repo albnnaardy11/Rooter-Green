@@ -23,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'track' => \App\Http\Middleware\TrackVisitors::class,
             'shield' => \App\Http\Middleware\SecurityShield::class,
+            'super_admin' => \App\Http\Middleware\SuperAdminOnly::class,
+            'audit' => \App\Http\Middleware\AdminAuditLogger::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

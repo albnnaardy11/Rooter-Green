@@ -11,6 +11,24 @@ Route::get('/api/search/suggest', [\App\Http\Controllers\SearchController::class
 Route::get('/wiki', [\App\Http\Controllers\WikiController::class, 'index'])->name('wiki.index');
 Route::get('/wiki/{slug}', [\App\Http\Controllers\WikiController::class, 'show'])->name('wiki.detail');
 
+// NEURAL ASSET VAULT: Handshake Required
+Route::get('/models/{file}', function($file) {
+    if (!str_ends_with($file, '.json') && !str_ends_with($file, '.bin')) {
+        abort(404);
+    }
+    
+    $security = app(\App\Services\Security\SecurityAutomationService::class);
+    if (!$security->verifyHandshake(request())) {
+        $security->blockIp(request()->ip(), 'Illegal Model Access (No Handshake)');
+        abort(403, 'Akses model ditolak. Koneksi tidak tersinkronisasi.');
+    }
+    
+    $path = storage_path('app/models/' . $file);
+    if (!file_exists($path)) abort(404);
+    
+    return response()->file($path, ['Content-Type' => 'application/octet-stream']);
+})->name('neural.asset.serve');
+
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/tentang', function () {
@@ -34,7 +52,7 @@ Route::get('/panduan-aksesibilitas', function () {
 })->name('accessibility-guide');
 
 // Admin Routes
-Route::prefix('admin')->name('admin.')->group(function() {
+Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     // Content
@@ -72,36 +90,38 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::post('/media', [\App\Http\Controllers\Admin\MediaController::class, 'store'])->name('media.store');
     Route::delete('/media/{id}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
 
-    // SEO Management
-    Route::get('/seo', [\App\Http\Controllers\Admin\SeoController::class, 'index'])->name('seo.index');
-    Route::post('/seo/settings', [\App\Http\Controllers\Admin\SeoController::class, 'updateSettings'])->name('seo.settings.update');
-    Route::post('/seo/redirects', [\App\Http\Controllers\Admin\SeoController::class, 'storeRedirect'])->name('seo.redirects.store');
-    Route::delete('/seo/redirects/{redirect}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteRedirect'])->name('seo.redirects.destroy');
-    Route::post('/seo/robots', [\App\Http\Controllers\Admin\SeoController::class, 'updateRobots'])->name('seo.robots.update');
-    Route::post('/seo/ping', [\App\Http\Controllers\Admin\SeoController::class, 'ping'])->name('seo.ping');
-    Route::get('/seo/ping', function() { return redirect()->route('admin.seo.index'); });
-    Route::post('/seo/clear-cache', [\App\Http\Controllers\Admin\SeoController::class, 'clearCache'])->name('seo.clear-cache');
-    Route::get('/seo/clear-cache', function() { return redirect()->route('admin.seo.index'); });
+    // SEO Management (Super Admin Only)
+    Route::middleware(['super_admin'])->group(function() {
+        Route::get('/seo', [\App\Http\Controllers\Admin\SeoController::class, 'index'])->name('seo.index');
+        Route::post('/seo/settings', [\App\Http\Controllers\Admin\SeoController::class, 'updateSettings'])->name('seo.settings.update');
+        Route::post('/seo/redirects', [\App\Http\Controllers\Admin\SeoController::class, 'storeRedirect'])->name('seo.redirects.store');
+        Route::delete('/seo/redirects/{redirect}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteRedirect'])->name('seo.redirects.destroy');
+        Route::post('/seo/robots', [\App\Http\Controllers\Admin\SeoController::class, 'updateRobots'])->name('seo.robots.update');
+        Route::post('/seo/ping', [\App\Http\Controllers\Admin\SeoController::class, 'ping'])->name('seo.ping');
+        Route::get('/seo/ping', function() { return redirect()->route('admin.seo.index'); });
+        Route::post('/seo/clear-cache', [\App\Http\Controllers\Admin\SeoController::class, 'clearCache'])->name('seo.clear-cache');
+        Route::get('/seo/clear-cache', function() { return redirect()->route('admin.seo.index'); });
 
-    // API-like routes for conversion tracking (using web middleware for CSRF)
+        // Authority Keywords
+        Route::post('/seo/keywords', [\App\Http\Controllers\Admin\SeoController::class, 'storeKeyword'])->name('seo.keywords.store');
+        Route::delete('/seo/keywords/{keyword}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteKeyword'])->name('seo.keywords.destroy');
+
+        // Local SEO Cities
+        Route::post('/seo/cities', [\App\Http\Controllers\Admin\SeoController::class, 'storeCity'])->name('seo.cities.store');
+        Route::put('/seo/cities/{city}', [\App\Http\Controllers\Admin\SeoController::class, 'updateCity'])->name('seo.cities.update');
+        Route::delete('/seo/cities/{city}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteCity'])->name('seo.cities.destroy');
+
+        // Trust Architect (Reviews)
+        Route::post('/seo/reviews', [\App\Http\Controllers\Admin\SeoController::class, 'storeReview'])->name('seo.reviews.store');
+        Route::delete('/seo/reviews/{review}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteReview'])->name('seo.reviews.destroy');
+
+        // Indexing Rocket
+        Route::post('/seo/rocket', [\App\Http\Controllers\Admin\SeoController::class, 'pushIndexing'])->name('seo.rocket');
+        Route::get('/seo/rocket', function() { return redirect()->route('admin.seo.index'); });
+    });
+
+    // API-like routes for conversion tracking
     Route::post('/api/track-whatsapp', [\App\Http\Controllers\Api\EventTrackerController::class, 'trackWhatsApp'])->name('api.track-whatsapp');
-
-    // Authority Keywords
-    Route::post('/seo/keywords', [\App\Http\Controllers\Admin\SeoController::class, 'storeKeyword'])->name('seo.keywords.store');
-    Route::delete('/seo/keywords/{keyword}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteKeyword'])->name('seo.keywords.destroy');
-
-    // Local SEO Cities
-    Route::post('/seo/cities', [\App\Http\Controllers\Admin\SeoController::class, 'storeCity'])->name('seo.cities.store');
-    Route::put('/seo/cities/{city}', [\App\Http\Controllers\Admin\SeoController::class, 'updateCity'])->name('seo.cities.update');
-    Route::delete('/seo/cities/{city}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteCity'])->name('seo.cities.destroy');
-
-    // Trust Architect (Reviews)
-    Route::post('/seo/reviews', [\App\Http\Controllers\Admin\SeoController::class, 'storeReview'])->name('seo.reviews.store');
-    Route::delete('/seo/reviews/{review}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteReview'])->name('seo.reviews.destroy');
-
-    // Indexing Rocket
-    Route::post('/seo/rocket', [\App\Http\Controllers\Admin\SeoController::class, 'pushIndexing'])->name('seo.rocket');
-    Route::get('/seo/rocket', function() { return redirect()->route('admin.seo.index'); });
 
     // Wiki Management (Authority Builder)
     Route::get('/wiki', [\App\Http\Controllers\Admin\WikiManagementController::class, 'index'])->name('wiki.index');
@@ -109,9 +129,11 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::delete('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'delete'])->name('wiki.destroy');
     Route::post('/wiki/auto-generate', [\App\Http\Controllers\Admin\WikiManagementController::class, 'autoGenerate'])->name('wiki.generate');
 
-    // AI Intelligence Center
-    Route::get('/ai-intelligence', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'index'])->name('ai.intelligence.index');
-    Route::get('/ai-intelligence/export', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'export'])->name('ai.intelligence.export');
+    // AI Intelligence Center (Super Admin Only)
+    Route::middleware(['super_admin'])->group(function() {
+        Route::get('/ai-intelligence', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'index'])->name('ai.intelligence.index');
+        Route::get('/ai-intelligence/export', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'export'])->name('ai.intelligence.export');
+    });
 
     // Audit & Activity
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');
@@ -128,8 +150,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
         return app(\App\Services\Security\SecurityAutomationService::class)->triggerHoneyPot(request()->ip());
     })->name('security.honeypot');
 
-    // System Sentinel & Health Check
-    Route::get('/sentinel', [\App\Http\Controllers\Admin\SentinelController::class, 'index'])->name('sentinel.index');
-    Route::post('/sentinel/scan', [\App\Http\Controllers\Admin\SentinelController::class, 'scan'])->name('sentinel.scan');
-    Route::post('/sentinel/heartbeat', [\App\Http\Controllers\Admin\SentinelController::class, 'heartbeat'])->name('sentinel.heartbeat');
+    // System Sentinel & Health Check (Super Admin Only)
+    Route::middleware(['super_admin'])->group(function() {
+        Route::get('/sentinel', [\App\Http\Controllers\Admin\SentinelController::class, 'index'])->name('sentinel.index');
+        Route::post('/sentinel/scan', [\App\Http\Controllers\Admin\SentinelController::class, 'scan'])->name('sentinel.scan');
+        Route::post('/sentinel/heartbeat', [\App\Http\Controllers\Admin\SentinelController::class, 'heartbeat'])->name('sentinel.heartbeat');
+    });
 });

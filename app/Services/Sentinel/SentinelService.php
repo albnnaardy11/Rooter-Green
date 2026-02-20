@@ -340,7 +340,7 @@ class SentinelService
         $sslStatus = ($daysLeft === true || (is_numeric($daysLeft) && $daysLeft > 7)) ? 'Operational' : 'Degraded';
 
         // 4b. .env & Shield Audit (Zero-Exposure Policy)
-        $appDebug = config('app.debug');
+        $debugSecure = $automation->killDebugMode();
         $isProd = config('app.env') === 'production';
         $shieldActive = \Illuminate\Support\Facades\Cache::has('blocked_ips'); 
         
@@ -348,7 +348,7 @@ class SentinelService
         $status = 'Operational'; 
         $message = '100% SECURE';
 
-        if (($appDebug && $isProd) || $sslStatus === 'Degraded') {
+        if (($isProd && !$debugSecure) || $sslStatus === 'Degraded') {
             $status = 'Degraded';
             $message = 'Shield Active (Degraded)';
         }
@@ -360,7 +360,7 @@ class SentinelService
                 'auto_repair' => 'Active'
             ],
             'environment' => [
-                'debug_mode' => ($appDebug && $isProd) ? 'Enabled (CRITICAL)' : 'Safe (Zero-Exposure)',
+                'debug_mode' => $debugSecure ? 'Safe (Zero-Exposure)' : 'Enabled (CRITICAL)',
                 'status' => $status,
                 'message' => $message,
                 'waf_shield' => $shieldActive ? 'Defensive Mode' : 'Monitoring'

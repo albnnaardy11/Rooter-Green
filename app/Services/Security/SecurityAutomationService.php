@@ -41,7 +41,7 @@ class SecurityAutomationService
                 return true;
             }
         }
-        return false;
+        return config('app.debug') === false;
     }
 
     /**
