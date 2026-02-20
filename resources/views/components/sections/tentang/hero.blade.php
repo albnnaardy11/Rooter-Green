@@ -1,4 +1,4 @@
-<section class="relative bg-secondary min-h-[75vh] sm:min-h-[95vh] flex items-center overflow-hidden pt-20 sm:pt-46 lg:pt-42 pb-10 sm:pb-46 sm:pb-42">
+<section class="relative bg-secondary min-h-[75vh] sm:min-h-[95vh] flex items-center overflow-hidden pt-36 sm:pt-48 pb-10 sm:pb-46 sm:pb-42">
     <!-- Background Visuals (Consistent Brand DNA) -->
     <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
     <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>

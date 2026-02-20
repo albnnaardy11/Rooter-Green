@@ -1,7 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
-<section class="relative pt-32 pb-40 overflow-hidden">
+<x-app-layout>
+<section class="relative pt-36 sm:pt-48 pb-40 overflow-hidden">
     <!-- Background Decor -->
     <div class="absolute inset-0 z-0">
         <div class="absolute top-0 left-0 w-full h-full bg-slate-900"></div>
@@ -126,4 +124,4 @@
         </div>
     </div>
 </section>
-@endsection
+</x-app-layout>

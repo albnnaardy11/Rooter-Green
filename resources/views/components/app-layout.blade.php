@@ -36,6 +36,23 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Local Edge Pre-Rendering (Speculative Rules API) --}}
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "source": "list",
+        "urls": ["{{ route('home') }}", "{{ route('services') }}", "{{ route('ai.diagnostic') }}"]
+      }, {
+        "source": "document",
+        "where": { "and": [
+          { "href_matches": "/area/*" },
+          { "not": { "href_matches": "/admin/*" }}
+        ]},
+        "eagerness": "moderate"
+      }]
+    }
+    </script>
 </head>
 <body class="font-sans antialiased bg-stone-50 text-slate-800">
     <div id="site-content" class="min-h-screen flex flex-col transition-all duration-300">

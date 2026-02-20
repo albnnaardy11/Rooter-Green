@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Log;
 class GoogleIndexingService
 {
     protected $client;
+    protected $isConfigured = false;
 
     public function __construct()
     {
         $this->client = new Client();
-        $this->setupClient();
+        $this->isConfigured = $this->setupClient();
     }
 
     protected function setupClient()
@@ -27,11 +28,13 @@ class GoogleIndexingService
                 if ($credentials) {
                     $this->client->setAuthConfig($credentials);
                     $this->client->addScope('https://www.googleapis.com/auth/indexing');
+                    return true;
                 }
             } catch (\Exception $e) {
                 Log::error('Google Indexing API Auth Error: ' . $e->getMessage());
             }
         }
+        return false;
     }
 
     /**
@@ -39,7 +42,7 @@ class GoogleIndexingService
      */
     public function notifyUpdate(string $url)
     {
-        if (!$this->client->getAuthConfig()) {
+        if (!$this->isConfigured) {
             return ['success' => false, 'message' => 'Google Indexing Credentials not configured.'];
         }
 

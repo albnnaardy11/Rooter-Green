@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/area/{city}', [\App\Http\Controllers\LocalSeoController::class, 'cityLanding'])->name('local.city');
 Route::get('/area/{city}/{service}', [\App\Http\Controllers\LocalSeoController::class, 'show'])->name('local.service');
+Route::get('/ai-diagnostic', [\App\Http\Controllers\AiDiagnosticController::class, 'index'])->name('ai.diagnostic');
+Route::get('/api/search/suggest', [\App\Http\Controllers\SearchController::class, 'suggest'])->name('api.search.suggest');
+Route::get('/wiki', [\App\Http\Controllers\WikiController::class, 'index'])->name('wiki.index');
+Route::get('/wiki/{slug}', [\App\Http\Controllers\WikiController::class, 'show'])->name('wiki.detail');
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -73,7 +77,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::delete('/seo/redirects/{redirect}', [\App\Http\Controllers\Admin\SeoController::class, 'deleteRedirect'])->name('seo.redirects.destroy');
     Route::post('/seo/robots', [\App\Http\Controllers\Admin\SeoController::class, 'updateRobots'])->name('seo.robots.update');
     Route::post('/seo/ping', [\App\Http\Controllers\Admin\SeoController::class, 'ping'])->name('seo.ping');
+    Route::get('/seo/ping', function() { return redirect()->route('admin.seo.index'); });
     Route::post('/seo/clear-cache', [\App\Http\Controllers\Admin\SeoController::class, 'clearCache'])->name('seo.clear-cache');
+    Route::get('/seo/clear-cache', function() { return redirect()->route('admin.seo.index'); });
 
     // API-like routes for conversion tracking (using web middleware for CSRF)
     Route::post('/api/track-whatsapp', [\App\Http\Controllers\Api\EventTrackerController::class, 'trackWhatsApp'])->name('api.track-whatsapp');
@@ -93,6 +99,13 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Indexing Rocket
     Route::post('/seo/rocket', [\App\Http\Controllers\Admin\SeoController::class, 'pushIndexing'])->name('seo.rocket');
+    Route::get('/seo/rocket', function() { return redirect()->route('admin.seo.index'); });
+
+    // Wiki Management (Authority Builder)
+    Route::get('/wiki', [\App\Http\Controllers\Admin\WikiManagementController::class, 'index'])->name('wiki.index');
+    Route::post('/wiki', [\App\Http\Controllers\Admin\WikiManagementController::class, 'store'])->name('wiki.store');
+    Route::delete('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'delete'])->name('wiki.destroy');
+    Route::post('/wiki/auto-generate', [\App\Http\Controllers\Admin\WikiManagementController::class, 'autoGenerate'])->name('wiki.generate');
 
     // Audit & Activity
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');

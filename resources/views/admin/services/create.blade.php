@@ -30,8 +30,7 @@
 
                 <div>
                     <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Full Description</label>
-                    <textarea name="description_full" rows="6" required placeholder="Detailed explanation of the service..." 
-                              class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-all font-medium leading-relaxed">{{ old('description_full') }}</textarea>
+                    <x-admin.rich-editor name="description_full" :value="old('description_full')" />
                 </div>
             </div>
 

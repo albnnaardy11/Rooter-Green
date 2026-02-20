@@ -1,90 +1,133 @@
 @props(['name', 'value' => ''])
 
-<div x-data="editor(@js($value))" 
-     x-init="init()"
-     class="space-y-4">
-    <div class="flex flex-wrap gap-2 p-4 bg-white/5 border border-white/10 rounded-2xl">
-        <button type="button" @click="toggleBold()" :class="isBold ? 'bg-primary text-white' : 'text-slate-400'" class="p-2 rounded-lg hover:bg-white/10 transition-all">
-            <i class="ri-bold"></i>
-        </button>
-        <button type="button" @click="toggleItalic()" :class="isItalic ? 'bg-primary text-white' : 'text-slate-400'" class="p-2 rounded-lg hover:bg-white/10 transition-all">
-            <i class="ri-italic"></i>
-        </button>
-        <button type="button" @click="toggleHeading(1)" :class="isHeading(1) ? 'bg-primary text-white' : 'text-slate-400'" class="p-2 rounded-lg hover:bg-white/10 transition-all">
-            <span class="font-bold">H1</span>
-        </button>
-        <button type="button" @click="toggleHeading(2)" :class="isHeading(2) ? 'bg-primary text-white' : 'text-slate-400'" class="p-2 rounded-lg hover:bg-white/10 transition-all">
-            <span class="font-bold">H2</span>
-        </button>
-        <button type="button" @click="toggleBulletList()" :class="isBulletList ? 'bg-primary text-white' : 'text-slate-400'" class="p-2 rounded-lg hover:bg-white/10 transition-all">
-            <i class="ri-list-unordered"></i>
-        </button>
-    </div>
-
-    <div id="editor-{{ $name }}" class="prose prose-invert max-w-none w-full bg-white/5 border border-white/10 rounded-3xl min-h-[400px] p-8 text-white focus:outline-none focus:border-primary/50 transition-all"></div>
-    
-    <input type="hidden" name="{{ $name }}" :value="content">
+<div class="w-full">
+    <textarea name="{{ $name }}" id="editor-{{ $name }}" class="hidden">{{ $value }}</textarea>
 </div>
 
 @once
     @push('scripts')
-    <script src="https://unpkg.com/@tiptap/standalone"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('editor', (initialContent) => ({
-                editor: null,
-                content: initialContent,
-                isBold: false,
-                isItalic: false,
-                isBulletList: false,
-
-                init() {
-                    const { Editor } = window.Tiptap;
-                    const { StarterKit } = window.TiptapStarterKit;
-                    
-                    this.editor = new Editor({
-                        element: document.querySelector('#editor-{{ $name }}'),
-                        extensions: [
-                            StarterKit,
-                        ],
-                        content: this.content,
-                        onUpdate: ({ editor }) => {
-                            this.content = editor.getHTML();
-                            this.updateState();
+        document.addEventListener('DOMContentLoaded', () => {
+            const editors = document.querySelectorAll('[id^="editor-"]');
+            editors.forEach(el => {
+                ClassicEditor
+                    .create(el, {
+                        toolbar: {
+                            items: [
+                                'heading', '|',
+                                'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                                'outdent', 'indent', '|',
+                                'blockQuote', 'insertTable', 'undo', 'redo'
+                            ]
                         },
-                        onSelectionUpdate: () => {
-                            this.updateState();
+                        language: 'en',
+                        table: {
+                            contentToolbar: [
+                                'tableColumn',
+                                'tableRow',
+                                'mergeTableCells'
+                            ]
                         }
+                    })
+                    .then(editor => {
+                        window.cmsEditors = window.cmsEditors || {};
+                        window.cmsEditors['{{ $name }}'] = editor;
+                        
+                        editor.model.document.on('change:data', () => {
+                            const data = editor.getData();
+                            el.value = data;
+                            // Trigger change event for Alpine.js or other listeners
+                            el.dispatchEvent(new Event('input', { bubbles: true }));
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
                     });
-                },
-
-                updateState() {
-                    this.isBold = this.editor.isActive('bold');
-                    this.isItalic = this.editor.isActive('italic');
-                    this.isBulletList = this.editor.isActive('bulletList');
-                },
-
-                toggleBold() { this.editor.chain().focus().toggleBold().run() },
-                toggleItalic() { this.editor.chain().focus().toggleItalic().run() },
-                toggleHeading(level) { this.editor.chain().focus().toggleHeading({ level }).run() },
-                toggleBulletList() { this.editor.chain().focus().toggleBulletList().run() },
-                isHeading(level) { return this.editor ? this.editor.isActive('heading', { level }) : false }
-            }));
+            });
         });
     </script>
+    <style>
+        /* CKEditor 5 Dark Mode Branding */
+        :root {
+            --ck-color-base-foreground: #1e293b;
+            --ck-color-base-background: #0f172a;
+            --ck-color-base-border: rgba(255, 255, 255, 0.1);
+            --ck-color-base-action: #fb7185;
+            --ck-color-base-active: #e11d48;
+            --ck-color-base-active-focus: #be123c;
+            --ck-color-base-error: #db2777;
+            --ck-color-focus-border: #f43f5e;
+            --ck-color-focus-outer-shadow: rgba(244, 63, 94, 0.2);
+            
+            --ck-color-toolbar-background: #1e293b;
+            --ck-color-toolbar-border: rgba(255, 255, 255, 0.1);
+            
+            --ck-color-button-default-hover-background: #334155;
+            --ck-color-button-default-active-background: #475569;
+            --ck-color-button-on-background: #475569;
+            --ck-color-button-on-hover-background: #64748b;
+            
+            --ck-color-input-background: #0f172a;
+            --ck-color-input-border: rgba(255, 255, 255, 0.1);
+            --ck-color-input-text: #f1f5f9;
+            --ck-color-input-placeholder: #64748b;
+            
+            --ck-color-list-background: #1e293b;
+            --ck-color-list-button-hover-background: #334155;
+        }
+
+        .ck-reset_all, .ck-reset_all * {
+            color: #f1f5f9 !important;
+        }
+
+        .ck-editor__editable {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            border-bottom-left-radius: 1.5rem !important;
+            border-bottom-right-radius: 1.5rem !important;
+            min-height: 400px !important;
+            padding: 2rem !important;
+            color: #f1f5f9 !important;
+            font-size: 1.125rem !important;
+            line-height: 1.75 !important;
+        }
+
+        .ck-toolbar {
+            background-color: rgba(255, 255, 255, 0.07) !important;
+            border-top-left-radius: 1.5rem !important;
+            border-top-right-radius: 1.5rem !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            padding: 0.75rem !important;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable.ck-focused {
+            border-color: var(--color-primary) !important;
+            box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1) !important;
+        }
+
+        .ck.ck-button:not(.ck-disabled):hover,
+        a.ck.ck-button:not(.ck-disabled):hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .ck.ck-button.ck-on,
+        a.ck.ck-button.ck-on {
+            background: var(--color-primary) !important;
+            color: white !important;
+        }
+
+        /* Content Styling */
+        .ck-content h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; color: white; }
+        .ck-content h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: white; }
+        .ck-content p { margin-bottom: 1.25rem; }
+        .ck-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .ck-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .ck-content blockquote { border-left: 4px solid var(--color-primary); padding-left: 1.5rem; font-style: italic; margin-bottom: 1.25rem; color: #94a3b8; }
+    </style>
     @endpush
 @endonce
-
-<style>
-    .ProseMirror {
-        outline: none;
-        min-height: 350px;
-    }
-    .ProseMirror p.is-editor-empty:first-child::before {
-        content: attr(data-placeholder);
-        float: left;
-        color: #475569;
-        pointer-events: none;
-        height: 0;
-    }
-</style>

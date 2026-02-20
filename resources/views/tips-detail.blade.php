@@ -17,7 +17,7 @@
         <div class="h-full bg-primary transition-all duration-150 shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.5)]" :style="`width: ${percent}%`"></div>
     </div>
 
-    <section class="bg-stone-50/50 pt-24 sm:pt-48 pb-40 min-h-screen">
+    <section class="bg-stone-50/50 pt-32 sm:pt-48 pb-40 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Breadcrumb & Back --}}
