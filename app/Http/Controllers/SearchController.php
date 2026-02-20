@@ -14,20 +14,33 @@ class SearchController extends Controller
         if (strlen($query) < 2) return response()->json([]);
 
         // Search in Services
-        $services = Service::where('name', 'LIKE', "%{$query}%")
+        $services = \App\Models\Service::where('name', 'LIKE', "%{$query}%")
             ->limit(3)
             ->get()
             ->map(function ($s) {
                 return [
                     'type' => 'Service',
                     'title' => $s->name,
-                    'url' => route('services'), // Ideally link to detail, but this is a start
-                    'snippet' => "Solusi tuntas untuk {$s->name} tanp bongkar."
+                    'url' => route('services'),
+                    'snippet' => "Solusi tuntas untuk {$s->name} tanpa bongkar."
+                ];
+            });
+
+        // Search in WikiPipa (New)
+        $wiki = \App\Models\WikiEntity::where('title', 'LIKE', "%{$query}%")
+            ->limit(5)
+            ->get()
+            ->map(function ($w) {
+                return [
+                    'type' => 'WikiPipa',
+                    'title' => $w->title,
+                    'url' => route('wiki.detail', $w->slug),
+                    'snippet' => substr($w->description, 0, 80) . "..."
                 ];
             });
 
         // Search in Cities
-        $cities = SeoCity::where('name', 'LIKE', "%{$query}%")
+        $cities = \App\Models\SeoCity::where('name', 'LIKE', "%{$query}%")
             ->limit(3)
             ->get()
             ->map(function ($c) {
@@ -39,6 +52,10 @@ class SearchController extends Controller
                 ];
             });
 
-        return response()->json($services->merge($cities));
+        return response()->json(
+            $services->toBase()
+                ->merge($wiki)
+                ->merge($cities)
+        );
     }
 }

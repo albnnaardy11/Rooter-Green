@@ -75,16 +75,24 @@
                 <input type="text" x-model="query" @input.debounce.300ms="fetchSuggestions" placeholder="Cari masalah pipa anda..." class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-primary transition-all">
                 
                 <div class="mt-6 space-y-4 max-h-[300px] overflow-y-auto no-scrollbar">
-                    <template x-for="item in results" :key="item.title">
-                        <a :href="item.url" class="block p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[8px] font-black text-primary uppercase tracking-widest" x-text="item.type"></span>
-                            </div>
-                            <h4 class="text-white font-bold text-sm" x-text="item.title"></h4>
-                            <p class="text-slate-500 text-[10px] italic mt-1" x-text="item.snippet"></p>
-                        </a>
+                    <div x-show="loading" class="flex items-center justify-center py-10">
+                        <div class="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    </div>
+                    
+                    <template x-if="!loading">
+                        <div class="space-y-4">
+                            <template x-for="item in results" :key="item.title">
+                                <a :href="item.url" class="block p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[8px] font-black text-primary uppercase tracking-widest" x-text="item.type"></span>
+                                    </div>
+                                    <h4 class="text-white font-bold text-sm" x-text="item.title"></h4>
+                                    <p class="text-slate-500 text-[10px] italic mt-1" x-text="item.snippet"></p>
+                                </a>
+                            </template>
+                            <div x-show="results.length === 0 && query.length > 2" class="text-slate-500 text-xs italic text-center py-4">Tidak ada saran cepat...</div>
+                        </div>
                     </template>
-                    <div x-show="results.length === 0 && query.length > 2" class="text-slate-500 text-xs italic text-center py-4">Tidak ada saran cepat...</div>
                 </div>
             </div>
 
@@ -211,13 +219,19 @@
             searchOpen: false,
             query: '',
             results: [],
+            loading: false,
             async fetchSuggestions() {
                 if(this.query.length < 3) {
                     this.results = [];
                     return;
                 }
-                const response = await fetch(`/api/search/suggest?q=${this.query}`);
-                this.results = await response.json();
+                this.loading = true;
+                try {
+                    const response = await fetch(`/api/search/suggest?q=${this.query}`);
+                    this.results = await response.json();
+                } finally {
+                    this.loading = false;
+                }
             }
         }
     }
