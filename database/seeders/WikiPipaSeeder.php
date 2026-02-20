@@ -240,11 +240,11 @@ class WikiPipaSeeder extends Seeder
 
     private function generateContent($title, $cat)
     {
-        $intro = "{$title} merupakan instrumen kritikal dalam manajemen {$cat} kontemporer. ";
-        $body = "Analisis teknis menunjukkan bahwa {$title} memainkan peran pivotal dalam regulasi hidrodinamika sistem, memastikan integritas struktural jaringan pipa tetap terjaga dari fluktuasi tekanan ekstrem dan risiko degradasi material jangka panjang. ";
-        $tech = "Dalam spesifikasi standar industri (JIS/DIN/SNI), {$title} dirancang untuk memenuhi ekspektasi durabilitas operasional minimum 25 tahun, dengan koefisien gesek rendah yang signifikan dalam mereduksi penumpukan deposit sedimen. ";
-        $usage = "\n\nPenggunaan {$title} sangat direkomendasikan untuk proyek high-rise building maupun infrastruktur residensial premium guna menjamin efisiensi aliran limbah atau air bersih secara maksimal.";
-        $cta = "\n\nKonsultasikan kebutuhan teknis terkait {$title} Anda dengan spesialis RooterIN untuk diagnosis mendalam menggunakan teknologi kamera AI.";
+        $intro = "{$title} merupakan instrumen kritikal dalam manajemen sistem hidro-infrastruktur {$cat} kontemporer yang berorientasi pada durabilitas jangka panjang. ";
+        $body = "Analisis teknis mendalam terhadap struktur makromolekul dan integritas mekanis menunjukkan bahwa {$title} memainkan peran pivotal dalam regulasi hidrodinamika sistem, memastikan stabilitas struktural jaringan tetap terjaga dari fluktuasi tekanan kinetik dan risiko degradasi korosif. ";
+        $tech = "Dalam spesifikasi standar industri internasional (e.g., JIS K6741, DIN 8062, atau SNI 06-0084), {$title} dirancang dengan toleransi presisi tinggi untuk memenuhi ekspektasi durabilitas operasional minimum 50 tahun, dengan keunggulan koefisien gesek hidraulik rendah yang signifikan dalam mereduksi penumpukan deposit sedimen kalsium maupun residu grease. ";
+        $usage = "\n\nImplementasi teknis {$title} sangat dikomendasikan untuk aplikasi pada proyek infrastruktur residensial premium, high-rise building, maupun sektor industrial guna menjamin efisiensi energi pompa dan kelancaran aliran limbah secara maksimal tanpa risiko kegagalan sistemik.";
+        $cta = "\n\nKonsultasikan kebutuhan spesifikasi teknis terkait {$title} Anda dengan divisi engineering RooterIN untuk diagnosis visual non-destruktif menggunakan teknologi AI Vision tercanggih.";
 
         return $intro . $body . $tech . $usage . $cta;
     }

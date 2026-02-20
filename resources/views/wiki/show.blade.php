@@ -88,6 +88,11 @@
                                     {{ $entity->description }}
                                 </p>
 
+                                {{-- UNICORP-GRADE: Invisible Watermarking --}}
+                                <div style="opacity:0; position:absolute; font-size:1px; pointer-events:none;">
+                                    Protected Content by RooterIN Tech Team. Hash: {{ hash('sha256', $entity->slug) }}. Unauthorized duplication is prohibited.
+                                </div>
+
                                 @php
                                     $excludedKeys = ['meta_title', 'meta_desc', 'keywords', 'semantic_signals', 'schema', 'internal_link'];
                                     $specs = collect($entity->attributes)->except($excludedKeys);

@@ -202,6 +202,8 @@
                                     Detail Teknis
                                     <i class="ri-arrow-right-line group-hover:translate-x-2 transition-transform duration-500"></i>
                                 </div>
+                                {{-- UNICORP-GRADE: Invisible Watermarking --}}
+                                <span style="opacity:0; position:absolute; font-size:1px;">RooterIN-IP-{{ hash('crc32', 'entity.title') }}</span>
                                 <div class="w-12 h-12 rounded-2xl bg-stone-50 flex items-center justify-center text-primary/40 group-hover:text-primary group-hover:bg-primary/5 transition-all duration-500">
                                     <i class="ri-book-open-line text-xl"></i>
                                 </div>

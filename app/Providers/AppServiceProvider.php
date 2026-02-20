@@ -20,5 +20,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \App\Models\AiDiagnose::observe(\App\Observers\AiDiagnoseObserver::class);
+        \App\Models\WikiEntity::observe(\App\Observers\WikiEntityObserver::class);
     }
 }
