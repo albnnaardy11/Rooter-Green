@@ -31,7 +31,26 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        // Sentinel Core Observability
         $schedule->command('sentinel:scan')->everyFiveMinutes();
         $schedule->command('sentinel:report')->mondays()->at('08:00');
+        
+        // Automated Backup ke Google Drive (01:00 WIB setiap hari)
+        $schedule->command('backup:run --only-db')
+                 ->dailyAt('01:00')
+                 ->timezone('Asia/Jakarta')
+                 ->withoutOverlapping()
+                 ->onSuccess(function () {
+                     \Illuminate\Support\Facades\Cache::put('last_successful_backup', now());
+                     \Illuminate\Support\Facades\Log::info('[BACKUP] Google Drive sync successful.');
+                 })
+                 ->onFailure(function () {
+                     \Illuminate\Support\Facades\Log::critical('[BACKUP] Google Drive sync FAILED.');
+                 });
+
+        // Cleanup backup lama (jalankan setelah backup)
+        $schedule->command('backup:clean')
+                 ->dailyAt('01:30')
+                 ->timezone('Asia/Jakarta');
     })
     ->create();

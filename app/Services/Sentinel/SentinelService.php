@@ -158,7 +158,7 @@ class SentinelService
      */
     protected function healSystem()
     {
-        \Illuminate\Support\Facades\Log::warning("[SENTINEL] Resource limit reached. Executing System Healing Protocol...");
+        Log::warning("[SENTINEL] Resource limit reached. Executing System Healing Protocol...");
         
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
         \Illuminate\Support\Facades\Artisan::call('view:clear');
@@ -280,7 +280,9 @@ class SentinelService
             'database' => [
                 'pulse' => round($dbLatency, 2) . 'ms',
                 'diagnose_entities' => $diagnoseCount,
-                'status' => $dbStatus
+                'status' => $dbStatus,
+                'last_backup' => \Illuminate\Support\Facades\Cache::get('last_successful_backup', 'Never'),
+                'backup_status' => \Illuminate\Support\Facades\Cache::has('last_successful_backup') && \Illuminate\Support\Facades\Cache::get('last_successful_backup')->diffInHours(now()) <= 24 ? 'Operational' : 'Critical',
             ],
             'storage' => [
                 'free_space' => $this->formatSize($diskFree),
@@ -396,7 +398,7 @@ class SentinelService
     public function sendWhatsAppAlert($message)
     {
         $adminPhone = '6281234567890';
-        \Illuminate\Support\Facades\Log::channel('single')->critical("[UNICORN ALERT SENT TO $adminPhone]: " . $message);
+        Log::channel('single')->critical("[UNICORN ALERT SENT TO $adminPhone]: " . $message);
         return true;
     }
 

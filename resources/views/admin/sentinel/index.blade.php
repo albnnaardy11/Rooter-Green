@@ -165,6 +165,21 @@
                             </div>
 
                             <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                    <i class="ri-cloud-windy-line text-purple-500 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[10px] font-black text-white uppercase tracking-tight">Phantom Cloud Sync</p>
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Last Checked: {{ $healthData['infrastructure']['database']['last_backup'] }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase {{ $healthData['infrastructure']['database']['backup_status'] === 'Operational' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500' }}">
+                                        {{ $healthData['infrastructure']['database']['backup_status'] === 'Operational' ? 'SECURED' : 'CRITICAL' }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
                                     <i class="ri-whatsapp-line text-green-500 text-xl"></i>
                                 </div>
