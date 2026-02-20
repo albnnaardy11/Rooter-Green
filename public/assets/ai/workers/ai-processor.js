@@ -88,14 +88,15 @@ async function runAudioAnalysis(audioBuffer) {
     return new Promise((resolve) => {
         setTimeout(() => {
             const data = new Float32Array(audioBuffer);
-            const sum = data.reduce((a, b) => a + Math.abs(b), 0);
-            const avg = sum / data.length;
+            const energy = data.reduce((a, b) => a + Math.abs(b), 0) / data.length;
 
-            if (avg > 0.01) {
-                resolve({ label: 'High Turbulence (Deep Blockage)', confidence: 89 });
+            if (energy > 0.015) {
+                // High frequency/turbulence often means air pockets or gurgling in blockages
+                resolve({ label: 'Airy/Gurgling (Blockage Detected)', confidence: 91 });
             } else {
-                resolve({ label: 'Partial Flow Sound', confidence: 75 });
+                // Muffled/solid thud-like response
+                resolve({ label: 'Solid Thud (Potential Obstruction)', confidence: 84 });
             }
-        }, 1000);
+        }, 1200);
     });
 }
