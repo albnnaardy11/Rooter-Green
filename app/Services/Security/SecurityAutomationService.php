@@ -89,7 +89,7 @@ class SecurityAutomationService
     {
         if ($request->is('models/*')) {
             $token = $request->header('X-Neural-Token');
-            $validToken = config('app.neural_token', 'rooter-ai-verified-2026');
+            $validToken = config('app.neural_token'); // Phase 4: Zero-Guess Policy (No hardcoded fallback)
 
             if ($token !== $validToken) {
                 $ip = $request->ip();

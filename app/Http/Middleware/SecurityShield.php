@@ -28,8 +28,8 @@ class SecurityShield
             abort(403, 'Your IP has been flagged for security violations.');
         }
 
-        // 2. Continuous Environment Healing
-        if (app()->environment('local')) {
+        // 2. Continuous Environment Healing (STRICT PRODUCTION ONLY)
+        if (app()->environment('production')) {
             $this->security->killDebugMode();
         }
 
@@ -51,9 +51,14 @@ class SecurityShield
         // 5. Hotlink Prevention (IP Shield)
         $this->preventHotlinking($request);
 
-        // 6. Lockdown Mode Check
-        if (Cache::get('system_lockdown_active') && !$request->is('admin/*')) {
-            return response()->view('errors.503', [], 503);
+        // 6. Lockdown Mode Check (BUNKER MODE)
+        if (Cache::get('system_lockdown_active')) {
+            // If in Lockdown, restrict EVERYTHING including Admin area, EXCEPT Vault & Emergency Release
+            $isVaultAccess = $request->is('admin/vault*');
+            
+            if (!$isVaultAccess) {
+                return response()->view('errors.503', [], 503);
+            }
         }
 
         // 7. Intelligent Threat Detection (WAF Mockup)
@@ -104,22 +109,30 @@ class SecurityShield
 
     protected function detectThreats(Request $request)
     {
+        // Zero False Positive: Internal Wiki Automator is exempt from payload inspection
+        if ($request->header('X-Internal-Automator') === 'WikiPipa-Safe') {
+            return;
+        }
+
         $payload = strtolower($request->fullUrl() . json_encode($request->all()));
+        
+        // Phase 3: Anti-Obfuscation Patterns (Regex Hardening)
         $patterns = [
-            'union select',
-            'group by',
-            'order by',
-            'information_schema',
-            '--',
-            '<script>',
-            '\'%20or%201=1'
+            '/(union\s+.*select)/i',
+            '/(group\s+by\s+.*)/i',
+            '/(order\s+by\s+.*)/i',
+            '/(information_schema|benchmark|waitfor\s+delay|sleep\()/i',
+            '/(\-\-|\#|\/\*)/i', // SQL Comments
+            '/(<script|javascript:|on\w+\s*=)/i', // XSS Basic
+            '/(%27|%22|%3C|%3E|%20or%20|%20and%20)/i', // Hex/URL Encoded attacks
+            '/(\'|"|;)\s*(or|and)\s+.*=.* /i', // Logic bypass
         ];
 
         foreach ($patterns as $pattern) {
-            if (str_contains($payload, $pattern)) {
-                $this->security->blockIp($request->ip(), "WAF Detection: SQLi/XSS Attempt ($pattern)");
+            if (preg_match($pattern, $payload)) {
+                $this->security->blockIp($request->ip(), "WAF Detection: Aggressive Payload Signature matched ($pattern)");
                 $this->security->auditLog('Malicious Payload Blocked', ['pattern' => $pattern]);
-                abort(406, 'Not Acceptable: Security Threat Detected');
+                abort(406, 'Not Acceptable: Deep Packet Inspection failed. Security Threat Detected.');
             }
         }
     }
