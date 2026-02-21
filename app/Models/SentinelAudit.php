@@ -36,5 +36,18 @@ class SentinelAudit extends Model
                 $model->id = (string) Str::uuid();
             }
         });
+
+        // UNICORP-GRADE: Append-Only Immutable Seal
+        static::updating(function ($model) {
+            if (!defined('GENESIS_RESTORATION_ACTIVE')) {
+                throw new \Exception("[SENTINEL] IMMUTABILITY BREACH: Audit logs are sealed and cannot be modified.");
+            }
+        });
+
+        static::deleting(function ($model) {
+            if (!defined('GENESIS_RESTORATION_ACTIVE')) {
+                throw new \Exception("[SENTINEL] IMMUTABILITY BREACH: Audit logs are sealed and cannot be purged.");
+            }
+        });
     }
 }

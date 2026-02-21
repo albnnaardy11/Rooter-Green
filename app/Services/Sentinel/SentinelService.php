@@ -47,6 +47,17 @@ class SentinelService
         $isUnderBaseline = $memoryUsageMB < 38.00; // 40MB - 5%
         $isAligned = !$isOverLimit && !$isUnderBaseline;
         
+        // 7. LONG-TERM VITALITY GUARD (Phase 6: Lead SRE Protocol)
+        $this->pruneNeuralLogs();
+        $this->detectAnomalyDrift();
+        
+        // Monthly Master Key Sealing Check
+        $lastRotation = Cache::get('sentinel:last_master_key_rotation');
+        if (!$lastRotation || now()->diffInDays(Carbon::parse($lastRotation)) >= 30) {
+            app(\App\Services\Sentinel\Cluster\SentinelIntercomService::class)->rotateGossipKey();
+            Cache::put('sentinel:last_master_key_rotation', now());
+        }
+
         $metrics = [
             'neural_assets' => $assetIntegrity,
             'memory_usage' => $memoryUsageMB . ' MB',
@@ -61,7 +72,7 @@ class SentinelService
             'cluster_sync' => 'GOSSIP-STABLE'
         ];
 
-        // 7. Immutability Engine: Write to Security Vault
+        // 8. Immutability Engine: Write to Security Vault
         SentinelAudit::create([
             'event_type' => 'MEMORY_ALIGNMENT',
             'severity' => $isOverLimit ? 'CRITICAL' : 'INFO',
@@ -75,13 +86,48 @@ class SentinelService
             $this->sendWhatsAppAlert("[SRE ALERT] Memory Alignment Breach! Usage: {$memoryUsageMB}MB exceeds 5% threshold (Max: 42.00MB).");
         }
 
-        // 8. Final Sentinel Elevation
+        // 9. Final Sentinel Elevation
         Cache::put('security_pulse_status', 'ULTRA-SECURE (IRON-CLAD)', 86400);
         Cache::put('last_system_heartbeat', gmdate('Y-m-d H:i:s') . ' GMT+0000');
 
         Log::info("[SENTINEL] HOLISTIC AUDIT COMPLETE. Platform Stabilized in " . round($totalLatency, 2) . "ms.");
 
         return $metrics;
+    }
+
+    /**
+     * UNICORP-GRADE: Daily Neural Pruning (SRE Vitality)
+     */
+    protected function pruneNeuralLogs()
+    {
+        $count = \App\Models\SentinelBehaviorLog::where('created_at', '<', now()->subDays(30))->delete();
+        if ($count > 0) {
+            Log::info("[SENTINEL-SRE] Neural Pruning Complete. $count records purged for 40MB baseline.");
+        }
+    }
+
+    /**
+     * UNICORP-GRADE: Anomaly Drift Alert (Escalation Protocol)
+     */
+    protected function detectAnomalyDrift()
+    {
+        $hotspots = \App\Models\SentinelBehaviorLog::select('event_name', DB::raw('count(*) as count'))
+            ->where('created_at', '>', now()->subHours(2))
+            ->groupBy('event_name')
+            ->get();
+
+        foreach ($hotspots as $spot) {
+            // If more than 50 critical anomalies on same vector in 2 hours
+            if ($spot->count > 50) {
+                Log::emergency("[SENTINEL-DRIFT] Persistent Anomaly Detected on vector: {$spot->event_name}");
+                
+                // Escalate QuantumShield Level
+                app(\App\Services\Security\QuantumShield::class)->setSecurityLevel('MAX');
+                
+                $this->sendWhatsAppAlert("[FATAL] Anomaly Drift Alert! Vector '{$spot->event_name}' under sustained attack. Quantum-Shield Escalated to MAX.");
+                break;
+            }
+        }
     }
 
     /**
@@ -840,6 +886,7 @@ class SentinelService
      */
     public function genesisRestoration()
     {
+        define('GENESIS_RESTORATION_ACTIVE', true);
         Log::warning("[SENTINEL] INITIATING GENESIS RESTORATION PROTOCOL...");
 
         // 1. Mandatory Integrity Checksum Validation

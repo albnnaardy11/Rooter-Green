@@ -32,9 +32,22 @@ class SentinelIntercomService
 
     protected function generateSecretHandshake($ip)
     {
-        // Post-Quantum HMAC Placeholder
-        $secret = config('app.neural_token', 'fallback_secret');
+        // 1. Get rotated secret or fallback to config
+        $secret = Cache::get('sentinel:gossip:master_key', config('app.neural_token', 'fallback_secret'));
+        
         return hash_hmac('sha3-512', $ip . time(), $secret);
+    }
+
+    /**
+     * UNICORP-GRADE: Master Key Sealing (Lead SRE Protocol)
+     */
+    public function rotateGossipKey()
+    {
+        $newKey = bin2hex(random_bytes(64));
+        Cache::put('sentinel:gossip:master_key', $newKey, 32 * 24 * 3600); // 32 days
+        
+        Log::alert("[SENTINEL-CLUSTER] Master Key Sealed. Gossip Protocol Rotated.");
+        return true;
     }
 
     protected function transmitGossipPacket($payload)
