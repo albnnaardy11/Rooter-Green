@@ -11,7 +11,8 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-    self.skipWaiting(); // Force active immediately
+    // NOTE: skipWaiting() removed — it caused forced page reloads via clients.claim()
+    // The new SW will wait until all tabs are closed before activating.
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(ASSETS_TO_CACHE);
@@ -20,8 +21,8 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    event.waitUntil(clients.claim()); // Take control of all open tabs
-    // Clean up old caches
+    // NOTE: clients.claim() removed — it caused all open tabs to reload when SW updated.
+    // Clean up old caches only
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(

@@ -1,1605 +1,1605 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://localhost</loc>
+    <loc>http://127.0.0.1:8000</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://localhost/layanan</loc>
+    <loc>http://127.0.0.1:8000/layanan</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/galeri</loc>
+    <loc>http://127.0.0.1:8000/galeri</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/tips</loc>
+    <loc>http://127.0.0.1:8000/tips</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
             </url>
     <url>
-    <loc>http://localhost/layanan/saluran-pembuangan-mampet</loc>
+    <loc>http://127.0.0.1:8000/layanan/saluran-pembuangan-mampet</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/layanan/air-bersih-cuci-toren</loc>
+    <loc>http://127.0.0.1:8000/layanan/air-bersih-cuci-toren</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/layanan/instalasi-sanitary-pipa</loc>
+    <loc>http://127.0.0.1:8000/layanan/instalasi-sanitary-pipa</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/tips/cara-darurat-atasi-wastafel-mampet-tanpa-bongkar</loc>
+    <loc>http://127.0.0.1:8000/tips/cara-darurat-atasi-wastafel-mampet-tanpa-bongkar</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/tips/5-tanda-pipa-pembuangan-anda-mulai-berkerak</loc>
+    <loc>http://127.0.0.1:8000/tips/5-tanda-pipa-pembuangan-anda-mulai-berkerak</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/tips/mengapa-grease-trap-penting-untuk-restoran</loc>
+    <loc>http://127.0.0.1:8000/tips/mengapa-grease-trap-penting-untuk-restoran</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/tips/bahaya-menggunakan-soda-api-pada-pipa-pvc</loc>
+    <loc>http://127.0.0.1:8000/tips/bahaya-menggunakan-soda-api-pada-pipa-pvc</loc>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pvc-polyvinyl-chloride</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pvc-polyvinyl-chloride</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/spiral-pipe-cleaning-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/spiral-pipe-cleaning-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bak-kontrol-check-chamber</loc>
+    <loc>http://127.0.0.1:8000/wiki/bak-kontrol-check-chamber</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-hdpe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-hdpe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pvc</loc>
+    <loc>http://127.0.0.1:8000/wiki/pvc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hdpe</loc>
+    <loc>http://127.0.0.1:8000/wiki/hdpe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ppr</loc>
+    <loc>http://127.0.0.1:8000/wiki/ppr</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pex</loc>
+    <loc>http://127.0.0.1:8000/wiki/pex</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/galvanis</loc>
+    <loc>http://127.0.0.1:8000/wiki/galvanis</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tembaga</loc>
+    <loc>http://127.0.0.1:8000/wiki/tembaga</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/besi-cor</loc>
+    <loc>http://127.0.0.1:8000/wiki/besi-cor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/stainless-steel</loc>
+    <loc>http://127.0.0.1:8000/wiki/stainless-steel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/u-pvc</loc>
+    <loc>http://127.0.0.1:8000/wiki/u-pvc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cpvc</loc>
+    <loc>http://127.0.0.1:8000/wiki/cpvc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/spiral</loc>
+    <loc>http://127.0.0.1:8000/wiki/spiral</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/jetting</loc>
+    <loc>http://127.0.0.1:8000/wiki/jetting</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/kamera-pipa</loc>
+    <loc>http://127.0.0.1:8000/wiki/kamera-pipa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/drain-cleaner</loc>
+    <loc>http://127.0.0.1:8000/wiki/drain-cleaner</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/kunci-pipa</loc>
+    <loc>http://127.0.0.1:8000/wiki/kunci-pipa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/flaring-tool</loc>
+    <loc>http://127.0.0.1:8000/wiki/flaring-tool</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/welding-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/welding-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pressure-test</loc>
+    <loc>http://127.0.0.1:8000/wiki/pressure-test</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-cutter</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-cutter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hand-auger</loc>
+    <loc>http://127.0.0.1:8000/wiki/hand-auger</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/wastafel</loc>
+    <loc>http://127.0.0.1:8000/wiki/wastafel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/closet</loc>
+    <loc>http://127.0.0.1:8000/wiki/closet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/urinal</loc>
+    <loc>http://127.0.0.1:8000/wiki/urinal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bidet</loc>
+    <loc>http://127.0.0.1:8000/wiki/bidet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/floor-drain</loc>
+    <loc>http://127.0.0.1:8000/wiki/floor-drain</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bathtub</loc>
+    <loc>http://127.0.0.1:8000/wiki/bathtub</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/kitchen-sink</loc>
+    <loc>http://127.0.0.1:8000/wiki/kitchen-sink</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/shower</loc>
+    <loc>http://127.0.0.1:8000/wiki/shower</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/kran-air</loc>
+    <loc>http://127.0.0.1:8000/wiki/kran-air</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-heater</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-heater</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/septic-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/septic-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/grease-trap</loc>
+    <loc>http://127.0.0.1:8000/wiki/grease-trap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/toren</loc>
+    <loc>http://127.0.0.1:8000/wiki/toren</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bak-kontrol</loc>
+    <loc>http://127.0.0.1:8000/wiki/bak-kontrol</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/manhole</loc>
+    <loc>http://127.0.0.1:8000/wiki/manhole</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sumur-resapan</loc>
+    <loc>http://127.0.0.1:8000/wiki/sumur-resapan</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bio-septic</loc>
+    <loc>http://127.0.0.1:8000/wiki/bio-septic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-induk</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-induk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/vent-stack</loc>
+    <loc>http://127.0.0.1:8000/wiki/vent-stack</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gorong-gorong</loc>
+    <loc>http://127.0.0.1:8000/wiki/gorong-gorong</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/mampet</loc>
+    <loc>http://127.0.0.1:8000/wiki/mampet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bocor</loc>
+    <loc>http://127.0.0.1:8000/wiki/bocor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/scaling</loc>
+    <loc>http://127.0.0.1:8000/wiki/scaling</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/korosi</loc>
+    <loc>http://127.0.0.1:8000/wiki/korosi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/backflow</loc>
+    <loc>http://127.0.0.1:8000/wiki/backflow</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-hammer</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-hammer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bau-drainase</loc>
+    <loc>http://127.0.0.1:8000/wiki/bau-drainase</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-berisik</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-berisik</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/rembes-dinding</loc>
+    <loc>http://127.0.0.1:8000/wiki/rembes-dinding</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tekanan-rendah</loc>
+    <loc>http://127.0.0.1:8000/wiki/tekanan-rendah</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ball-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/ball-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gate-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/gate-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/check-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/check-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/float-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/float-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pressure-reducer</loc>
+    <loc>http://127.0.0.1:8000/wiki/pressure-reducer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pompa-pendorong</loc>
+    <loc>http://127.0.0.1:8000/wiki/pompa-pendorong</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pompa-celup</loc>
+    <loc>http://127.0.0.1:8000/wiki/pompa-celup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/air-release-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/air-release-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pompa-limbah</loc>
+    <loc>http://127.0.0.1:8000/wiki/pompa-limbah</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/expansion-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/expansion-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/elbow</loc>
+    <loc>http://127.0.0.1:8000/wiki/elbow</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tee</loc>
+    <loc>http://127.0.0.1:8000/wiki/tee</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/socket</loc>
+    <loc>http://127.0.0.1:8000/wiki/socket</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/reducer</loc>
+    <loc>http://127.0.0.1:8000/wiki/reducer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/union</loc>
+    <loc>http://127.0.0.1:8000/wiki/union</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/flange</loc>
+    <loc>http://127.0.0.1:8000/wiki/flange</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cross</loc>
+    <loc>http://127.0.0.1:8000/wiki/cross</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/plug</loc>
+    <loc>http://127.0.0.1:8000/wiki/plug</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cap</loc>
+    <loc>http://127.0.0.1:8000/wiki/cap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bush</loc>
+    <loc>http://127.0.0.1:8000/wiki/bush</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/y-strainer</loc>
+    <loc>http://127.0.0.1:8000/wiki/y-strainer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/seal-tape</loc>
+    <loc>http://127.0.0.1:8000/wiki/seal-tape</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/lem-pipa</loc>
+    <loc>http://127.0.0.1:8000/wiki/lem-pipa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/rubber-gasket</loc>
+    <loc>http://127.0.0.1:8000/wiki/rubber-gasket</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/p-trap-koper</loc>
+    <loc>http://127.0.0.1:8000/wiki/p-trap-koper</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/clean-out</loc>
+    <loc>http://127.0.0.1:8000/wiki/clean-out</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/floor-sink</loc>
+    <loc>http://127.0.0.1:8000/wiki/floor-sink</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/grease-interceptor</loc>
+    <loc>http://127.0.0.1:8000/wiki/grease-interceptor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/vacuum-breaker</loc>
+    <loc>http://127.0.0.1:8000/wiki/vacuum-breaker</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-meter</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-meter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hydrostatic-pump</loc>
+    <loc>http://127.0.0.1:8000/wiki/hydrostatic-pump</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-tracer</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-tracer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/smoke-test</loc>
+    <loc>http://127.0.0.1:8000/wiki/smoke-test</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/jetter-hose</loc>
+    <loc>http://127.0.0.1:8000/wiki/jetter-hose</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/root-cutter</loc>
+    <loc>http://127.0.0.1:8000/wiki/root-cutter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bio-ball</loc>
+    <loc>http://127.0.0.1:8000/wiki/bio-ball</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/chlorine-injector</loc>
+    <loc>http://127.0.0.1:8000/wiki/chlorine-injector</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sand-filter</loc>
+    <loc>http://127.0.0.1:8000/wiki/sand-filter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/carbon-filter</loc>
+    <loc>http://127.0.0.1:8000/wiki/carbon-filter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/manganese-filter</loc>
+    <loc>http://127.0.0.1:8000/wiki/manganese-filter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pompa-jet-pump</loc>
+    <loc>http://127.0.0.1:8000/wiki/pompa-jet-pump</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pompa-semi-jet</loc>
+    <loc>http://127.0.0.1:8000/wiki/pompa-semi-jet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/foot-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/foot-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/automatic-switch</loc>
+    <loc>http://127.0.0.1:8000/wiki/automatic-switch</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/radar-air</loc>
+    <loc>http://127.0.0.1:8000/wiki/radar-air</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/shock-drat-luar</loc>
+    <loc>http://127.0.0.1:8000/wiki/shock-drat-luar</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/shock-drat-dalam</loc>
+    <loc>http://127.0.0.1:8000/wiki/shock-drat-dalam</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/double-nipple</loc>
+    <loc>http://127.0.0.1:8000/wiki/double-nipple</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-mur</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-mur</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/clamping-saddle</loc>
+    <loc>http://127.0.0.1:8000/wiki/clamping-saddle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/expansion-joint</loc>
+    <loc>http://127.0.0.1:8000/wiki/expansion-joint</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/mechanical-joint</loc>
+    <loc>http://127.0.0.1:8000/wiki/mechanical-joint</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/electro-fusion</loc>
+    <loc>http://127.0.0.1:8000/wiki/electro-fusion</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/butt-fusion</loc>
+    <loc>http://127.0.0.1:8000/wiki/butt-fusion</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/solvent-cement</loc>
+    <loc>http://127.0.0.1:8000/wiki/solvent-cement</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/drain-cleaner-liquid</loc>
+    <loc>http://127.0.0.1:8000/wiki/drain-cleaner-liquid</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/soda-api</loc>
+    <loc>http://127.0.0.1:8000/wiki/soda-api</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/bak-cuci-piring</loc>
+    <loc>http://127.0.0.1:8000/wiki/bak-cuci-piring</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/toilet-wax-ring</loc>
+    <loc>http://127.0.0.1:8000/wiki/toilet-wax-ring</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/closet-flange</loc>
+    <loc>http://127.0.0.1:8000/wiki/closet-flange</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/urinal-sensor</loc>
+    <loc>http://127.0.0.1:8000/wiki/urinal-sensor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/auto-air-vent</loc>
+    <loc>http://127.0.0.1:8000/wiki/auto-air-vent</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/thermal-insulation</loc>
+    <loc>http://127.0.0.1:8000/wiki/thermal-insulation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-clamp</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-clamp</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hammer-arrestor</loc>
+    <loc>http://127.0.0.1:8000/wiki/hammer-arrestor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/mixing-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/mixing-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pressure-gauge</loc>
+    <loc>http://127.0.0.1:8000/wiki/pressure-gauge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/float-switch</loc>
+    <loc>http://127.0.0.1:8000/wiki/float-switch</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/t-manifold</loc>
+    <loc>http://127.0.0.1:8000/wiki/t-manifold</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pumping-station</loc>
+    <loc>http://127.0.0.1:8000/wiki/pumping-station</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sifon</loc>
+    <loc>http://127.0.0.1:8000/wiki/sifon</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/flexible-hose</loc>
+    <loc>http://127.0.0.1:8000/wiki/flexible-hose</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/silikon-sealant</loc>
+    <loc>http://127.0.0.1:8000/wiki/silikon-sealant</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-conduit</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-conduit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/elbow-45</loc>
+    <loc>http://127.0.0.1:8000/wiki/elbow-45</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tee-equal</loc>
+    <loc>http://127.0.0.1:8000/wiki/tee-equal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tee-reducing</loc>
+    <loc>http://127.0.0.1:8000/wiki/tee-reducing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cross-equal</loc>
+    <loc>http://127.0.0.1:8000/wiki/cross-equal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/union-socket</loc>
+    <loc>http://127.0.0.1:8000/wiki/union-socket</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/flange-blind</loc>
+    <loc>http://127.0.0.1:8000/wiki/flange-blind</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gasket-spiral-wound</loc>
+    <loc>http://127.0.0.1:8000/wiki/gasket-spiral-wound</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pressure-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/pressure-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/safety-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/safety-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/strainer-basket</loc>
+    <loc>http://127.0.0.1:8000/wiki/strainer-basket</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-meter-induk</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-meter-induk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sch-40</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sch-40</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sch-80</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sch-80</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-kelas-aw</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-kelas-aw</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-kelas-d</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-kelas-d</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/grey-water</loc>
+    <loc>http://127.0.0.1:8000/wiki/grey-water</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/black-water</loc>
+    <loc>http://127.0.0.1:8000/wiki/black-water</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/vacuum-truck</loc>
+    <loc>http://127.0.0.1:8000/wiki/vacuum-truck</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/roof-drain</loc>
+    <loc>http://127.0.0.1:8000/wiki/roof-drain</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/jet-washer</loc>
+    <loc>http://127.0.0.1:8000/wiki/jet-washer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/angle-valve</loc>
+    <loc>http://127.0.0.1:8000/wiki/angle-valve</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/stop-kran</loc>
+    <loc>http://127.0.0.1:8000/wiki/stop-kran</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/check-valve-swing</loc>
+    <loc>http://127.0.0.1:8000/wiki/check-valve-swing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/check-valve-spring</loc>
+    <loc>http://127.0.0.1:8000/wiki/check-valve-spring</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/foot-valve-brass</loc>
+    <loc>http://127.0.0.1:8000/wiki/foot-valve-brass</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pex-al-pex</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pex-al-pex</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sealant-tape</loc>
+    <loc>http://127.0.0.1:8000/wiki/sealant-tape</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-bracket</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-bracket</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/trap-door</loc>
+    <loc>http://127.0.0.1:8000/wiki/trap-door</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-hdpe-high-density-polyethylene</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-hdpe-high-density-polyethylene</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-cpvc-chlorinated-polyvinyl-chloride</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-cpvc-chlorinated-polyvinyl-chloride</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-ppr-polypropylene-random</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-ppr-polypropylene-random</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-galvanis</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-galvanis</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-besi-cor-cast-iron-pipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-besi-cor-cast-iron-pipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-tembaga-copper-pipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-tembaga-copper-pipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pex-cross-linked-polyethylene</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pex-cross-linked-polyethylene</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-stainless-steel</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-stainless-steel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-black-steel</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-black-steel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-grp-glass-reinforced-plastic</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-grp-glass-reinforced-plastic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-vitrified-clay</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-vitrified-clay</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-ductile-iron</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-ductile-iron</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sdr-11</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sdr-11</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sdr-17</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sdr-17</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-fleksibel-metal</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-fleksibel-metal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-akustik-soundproof-pipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-akustik-soundproof-pipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-limbah-corrugated</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-limbah-corrugated</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-conduit-listrik</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-conduit-listrik</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-hdpe-geopipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-hdpe-geopipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-thermal-ppr</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-thermal-ppr</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pvc-putih-jis</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pvc-putih-jis</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-ppr-ct</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-ppr-ct</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-gas-mdpe</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-gas-mdpe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-insulated-pre-isolated</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-insulated-pre-isolated</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-boiler-seamless</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-boiler-seamless</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-heat-exchanger</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-heat-exchanger</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-hydrant-medium-a</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-hydrant-medium-a</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sprinkler-schedule-10</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sprinkler-schedule-10</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-vacuum-sewer</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-vacuum-sewer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-polybutylene-pb</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-polybutylene-pb</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-abs-acrylonitrile-butadiene-styrene</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-abs-acrylonitrile-butadiene-styrene</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-composite-al-pex</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-composite-al-pex</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pe-rt</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pe-rt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-spiral-steel</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-spiral-steel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-lined-steel</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-lined-steel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pvc-o-oriented</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pvc-o-oriented</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-pvc-m-modified</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-pvc-m-modified</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-reinforced-concrete-rcp</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-reinforced-concrete-rcp</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-high-pressure-nitrogen</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-high-pressure-nitrogen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-anti-karat-epoxy</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-anti-karat-epoxy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-drainase-perforated</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-drainase-perforated</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-hdpe-spiral</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-hdpe-spiral</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sdr-21</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sdr-21</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-sdr-26</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-sdr-26</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-suction-hose</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-suction-hose</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-fire-sprinkler</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-fire-sprinkler</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipa-geothermal</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipa-geothermal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/rooter-machine-drain-cleaner</loc>
+    <loc>http://127.0.0.1:8000/wiki/rooter-machine-drain-cleaner</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hydro-jetting-pump</loc>
+    <loc>http://127.0.0.1:8000/wiki/hydro-jetting-pump</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cctv-pipe-inspection-camera</loc>
+    <loc>http://127.0.0.1:8000/wiki/cctv-pipe-inspection-camera</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/underground-pipe-locator</loc>
+    <loc>http://127.0.0.1:8000/wiki/underground-pipe-locator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-pressure-tester</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-pressure-tester</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hydraulic-pipe-bender</loc>
+    <loc>http://127.0.0.1:8000/wiki/hydraulic-pipe-bender</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/electric-pipe-threader</loc>
+    <loc>http://127.0.0.1:8000/wiki/electric-pipe-threader</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/manual-pipe-cutter</loc>
+    <loc>http://127.0.0.1:8000/wiki/manual-pipe-cutter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/flaring-swaging-tool</loc>
+    <loc>http://127.0.0.1:8000/wiki/flaring-swaging-tool</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-reamer-deburring</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-reamer-deburring</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/adjustable-pipe-wrench</loc>
+    <loc>http://127.0.0.1:8000/wiki/adjustable-pipe-wrench</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/basin-wrench</loc>
+    <loc>http://127.0.0.1:8000/wiki/basin-wrench</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/chain-pipe-wrench</loc>
+    <loc>http://127.0.0.1:8000/wiki/chain-pipe-wrench</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/strap-wrench</loc>
+    <loc>http://127.0.0.1:8000/wiki/strap-wrench</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/plunger-sedot-wc</loc>
+    <loc>http://127.0.0.1:8000/wiki/plunger-sedot-wc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/closet-auger</loc>
+    <loc>http://127.0.0.1:8000/wiki/closet-auger</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hand-drain-snake</loc>
+    <loc>http://127.0.0.1:8000/wiki/hand-drain-snake</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sectional-drain-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/sectional-drain-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/drum-drain-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/drum-drain-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-jetting-nozzle</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-jetting-nozzle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/thermal-imaging-camera</loc>
+    <loc>http://127.0.0.1:8000/wiki/thermal-imaging-camera</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ultrasonic-leak-detector</loc>
+    <loc>http://127.0.0.1:8000/wiki/ultrasonic-leak-detector</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gas-leak-detector</loc>
+    <loc>http://127.0.0.1:8000/wiki/gas-leak-detector</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/moisture-meter</loc>
+    <loc>http://127.0.0.1:8000/wiki/moisture-meter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/digital-manifold-gauge</loc>
+    <loc>http://127.0.0.1:8000/wiki/digital-manifold-gauge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hand-vacuum-pump</loc>
+    <loc>http://127.0.0.1:8000/wiki/hand-vacuum-pump</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/submersible-pump-pompa-celup</loc>
+    <loc>http://127.0.0.1:8000/wiki/submersible-pump-pompa-celup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/trash-pump-high-flow</loc>
+    <loc>http://127.0.0.1:8000/wiki/trash-pump-high-flow</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/diaphragm-test-pump</loc>
+    <loc>http://127.0.0.1:8000/wiki/diaphragm-test-pump</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sump-pump-automatic</loc>
+    <loc>http://127.0.0.1:8000/wiki/sump-pump-automatic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ppr-fusion-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/ppr-fusion-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hdpe-butt-fusion-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/hdpe-butt-fusion-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/electrofusion-welder</loc>
+    <loc>http://127.0.0.1:8000/wiki/electrofusion-welder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pvc-cement-solvent</loc>
+    <loc>http://127.0.0.1:8000/wiki/pvc-cement-solvent</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/soldering-brazing-torch</loc>
+    <loc>http://127.0.0.1:8000/wiki/soldering-brazing-torch</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/tube-expander-tool</loc>
+    <loc>http://127.0.0.1:8000/wiki/tube-expander-tool</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/crimping-tool-pex</loc>
+    <loc>http://127.0.0.1:8000/wiki/crimping-tool-pex</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/press-tool-hydraulic</loc>
+    <loc>http://127.0.0.1:8000/wiki/press-tool-hydraulic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hole-saw-pipe-cutter</loc>
+    <loc>http://127.0.0.1:8000/wiki/hole-saw-pipe-cutter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/roll-groover-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/roll-groover-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-freeze-kit</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-freeze-kit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/smoke-generator-leak-test</loc>
+    <loc>http://127.0.0.1:8000/wiki/smoke-generator-leak-test</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/anemometer-hvac</loc>
+    <loc>http://127.0.0.1:8000/wiki/anemometer-hvac</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/infrared-thermometer</loc>
+    <loc>http://127.0.0.1:8000/wiki/infrared-thermometer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/laser-pipe-alignment</loc>
+    <loc>http://127.0.0.1:8000/wiki/laser-pipe-alignment</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ultrasonic-flow-meter</loc>
+    <loc>http://127.0.0.1:8000/wiki/ultrasonic-flow-meter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/acoustic-ground-mic</loc>
+    <loc>http://127.0.0.1:8000/wiki/acoustic-ground-mic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/duct-blower-test</loc>
+    <loc>http://127.0.0.1:8000/wiki/duct-blower-test</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/digital-scale-refrigerant</loc>
+    <loc>http://127.0.0.1:8000/wiki/digital-scale-refrigerant</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/reclaiming-machine</loc>
+    <loc>http://127.0.0.1:8000/wiki/reclaiming-machine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gully-trap-perangkap-lemak</loc>
+    <loc>http://127.0.0.1:8000/wiki/gully-trap-perangkap-lemak</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/manhole-cover-tutup-got</loc>
+    <loc>http://127.0.0.1:8000/wiki/manhole-cover-tutup-got</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cleanout-pipe-fitting</loc>
+    <loc>http://127.0.0.1:8000/wiki/cleanout-pipe-fitting</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/grease-trap-bio-filter</loc>
+    <loc>http://127.0.0.1:8000/wiki/grease-trap-bio-filter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/septic-tank-biotech</loc>
+    <loc>http://127.0.0.1:8000/wiki/septic-tank-biotech</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sumur-resapan-infiltration</loc>
+    <loc>http://127.0.0.1:8000/wiki/sumur-resapan-infiltration</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/drainase-perkotaan-culvert</loc>
+    <loc>http://127.0.0.1:8000/wiki/drainase-perkotaan-culvert</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sewerage-system-main</loc>
+    <loc>http://127.0.0.1:8000/wiki/sewerage-system-main</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-treatment-plant-wtp</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-treatment-plant-wtp</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/wastewater-treatment-wwtp</loc>
+    <loc>http://127.0.0.1:8000/wiki/wastewater-treatment-wwtp</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/cooling-tower-system</loc>
+    <loc>http://127.0.0.1:8000/wiki/cooling-tower-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/boiler-plant-unit</loc>
+    <loc>http://127.0.0.1:8000/wiki/boiler-plant-unit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/fire-hydrant-pillar</loc>
+    <loc>http://127.0.0.1:8000/wiki/fire-hydrant-pillar</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/automatic-sprinkler-system</loc>
+    <loc>http://127.0.0.1:8000/wiki/automatic-sprinkler-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pump-house-rumah-pompa</loc>
+    <loc>http://127.0.0.1:8000/wiki/pump-house-rumah-pompa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ground-water-tank-gwt</loc>
+    <loc>http://127.0.0.1:8000/wiki/ground-water-tank-gwt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/roof-top-water-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/roof-top-water-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/air-release-valve-arv</loc>
+    <loc>http://127.0.0.1:8000/wiki/air-release-valve-arv</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pressure-reducing-valve-prv</loc>
+    <loc>http://127.0.0.1:8000/wiki/pressure-reducing-valve-prv</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/check-valve-swing-type</loc>
+    <loc>http://127.0.0.1:8000/wiki/check-valve-swing-type</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gate-valve-resilient</loc>
+    <loc>http://127.0.0.1:8000/wiki/gate-valve-resilient</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/ball-valve-full-bore</loc>
+    <loc>http://127.0.0.1:8000/wiki/ball-valve-full-bore</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/butterfly-valve-wafer</loc>
+    <loc>http://127.0.0.1:8000/wiki/butterfly-valve-wafer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/expansion-joint-rubber</loc>
+    <loc>http://127.0.0.1:8000/wiki/expansion-joint-rubber</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/anchor-block-concrete</loc>
+    <loc>http://127.0.0.1:8000/wiki/anchor-block-concrete</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/thrust-block-pipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/thrust-block-pipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/wall-sleeve-fitting</loc>
+    <loc>http://127.0.0.1:8000/wiki/wall-sleeve-fitting</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/floor-drain-stainless</loc>
+    <loc>http://127.0.0.1:8000/wiki/floor-drain-stainless</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/trench-drain-precast</loc>
+    <loc>http://127.0.0.1:8000/wiki/trench-drain-precast</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/catch-basin-mulut-air</loc>
+    <loc>http://127.0.0.1:8000/wiki/catch-basin-mulut-air</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/sewage-lift-station</loc>
+    <loc>http://127.0.0.1:8000/wiki/sewage-lift-station</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/force-main-pumping-line</loc>
+    <loc>http://127.0.0.1:8000/wiki/force-main-pumping-line</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/gravity-sewer-line</loc>
+    <loc>http://127.0.0.1:8000/wiki/gravity-sewer-line</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/inverted-siphon-structure</loc>
+    <loc>http://127.0.0.1:8000/wiki/inverted-siphon-structure</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/outfall-disposal-point</loc>
+    <loc>http://127.0.0.1:8000/wiki/outfall-disposal-point</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/surge-tank-water-hammer</loc>
+    <loc>http://127.0.0.1:8000/wiki/surge-tank-water-hammer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/hydro-pneumatic-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/hydro-pneumatic-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/chiller-water-cooling</loc>
+    <loc>http://127.0.0.1:8000/wiki/chiller-water-cooling</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/fire-standpipe-system</loc>
+    <loc>http://127.0.0.1:8000/wiki/fire-standpipe-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/distribution-water-main</loc>
+    <loc>http://127.0.0.1:8000/wiki/distribution-water-main</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/service-lateral-pipe</loc>
+    <loc>http://127.0.0.1:8000/wiki/service-lateral-pipe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/valve-chamber-box</loc>
+    <loc>http://127.0.0.1:8000/wiki/valve-chamber-box</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/meter-stand-box-air</loc>
+    <loc>http://127.0.0.1:8000/wiki/meter-stand-box-air</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/washout-valve-blow-off</loc>
+    <loc>http://127.0.0.1:8000/wiki/washout-valve-blow-off</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pumping-station-building</loc>
+    <loc>http://127.0.0.1:8000/wiki/pumping-station-building</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/wet-well-basin</loc>
+    <loc>http://127.0.0.1:8000/wiki/wet-well-basin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/combined-sewer-overflow</loc>
+    <loc>http://127.0.0.1:8000/wiki/combined-sewer-overflow</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/backflow-preventer-unit</loc>
+    <loc>http://127.0.0.1:8000/wiki/backflow-preventer-unit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/steam-trap-assembly</loc>
+    <loc>http://127.0.0.1:8000/wiki/steam-trap-assembly</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/condensate-return-system</loc>
+    <loc>http://127.0.0.1:8000/wiki/condensate-return-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/drip-leg-pipe-section</loc>
+    <loc>http://127.0.0.1:8000/wiki/drip-leg-pipe-section</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/secondary-containment</loc>
+    <loc>http://127.0.0.1:8000/wiki/secondary-containment</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-rack-support</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-rack-support</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/pipe-bridge-construction</loc>
+    <loc>http://127.0.0.1:8000/wiki/pipe-bridge-construction</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/culvert-box-section</loc>
+    <loc>http://127.0.0.1:8000/wiki/culvert-box-section</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/stormwater-holding-tank</loc>
+    <loc>http://127.0.0.1:8000/wiki/stormwater-holding-tank</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/wiki/water-intake-structure</loc>
+    <loc>http://127.0.0.1:8000/wiki/water-intake-structure</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
             </url>

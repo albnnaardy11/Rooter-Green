@@ -76,29 +76,20 @@
                 navigator.serviceWorker.register('/sw.js')
                     .then(reg => {
                         console.log('Service Worker Registered');
-                        // Force update if new worker found
+                        // NOTE: Auto-reload disabled to prevent interrupting AI Diagnostic modal
+                        // reg.onupdatefound fires but we DON'T force reload anymore
                         reg.onupdatefound = () => {
                             const installingWorker = reg.installing;
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('New version found, reloading...');
-                                    window.location.reload();
+                                    console.log('New SW version available (manual refresh to apply).');
+                                    // DO NOT auto-reload — would disrupt AI modal result display
                                 }
                             };
                         };
                     })
                     .catch(err => console.log('Service Worker Failed', err));
             });
-
-            // Prevent caching for AI Diagnostic page specifically
-            if (window.location.pathname.includes('/ai-diagnostic')) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for (let registration of registrations) {
-                        // We keep it registered but ensure it doesn't serve from cache
-                        // by the changes we made in sw.js and controller headers
-                    }
-                });
-            }
         }
     </script>
 </body>

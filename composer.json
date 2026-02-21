@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "artesaos/seotools": "*",
+        "google-gemini-php/client": "^2.7",
         "google/apiclient": "*",
         "intervention/image": "*",
         "jenssegers/agent": "^2.6",

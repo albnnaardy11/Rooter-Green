@@ -114,9 +114,15 @@
                                 <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width:{{ $item->confidence_score ?? 0 }}%"></div>
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex flex-wrap gap-2 mt-2">
                             <span class="px-2 py-0.5 bg-slate-950 text-slate-400 text-[7px] font-black rounded uppercase border border-white/5">{{ ($item->material_type ?? 'unknown') == 'unknown' ? 'STD' : strtoupper($item->material_type) }}</span>
                             <span class="px-2 py-0.5 bg-white/5 text-slate-500 text-[7px] font-black rounded uppercase border border-white/5">{{ $item->city_location ?: 'Detecting...' }}</span>
+                            @if(isset($item->metadata['ai_engine']))
+                                <span class="px-2 py-0.5 bg-primary/10 text-primary text-[7px] font-black rounded uppercase border border-primary/20"><i class="ri-brain-line mr-1"></i> {{ $item->metadata['ai_engine'] }}</span>
+                            @endif
+                            @if(isset($item->metadata['degradation_percentage']))
+                                <span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 text-[7px] font-black rounded uppercase border border-orange-500/20">Degradation: {{ $item->metadata['degradation_percentage'] }}%</span>
+                            @endif
                         </div>
                     </div>
                 </div>

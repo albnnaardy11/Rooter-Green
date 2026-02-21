@@ -21,8 +21,9 @@ class AiDiagnosticController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'result_label'     => 'required|string',
-            'confidence_score' => 'required|integer',
+            'image_base64'     => 'nullable|string',
+            'result_label'     => 'nullable|string',
+            'confidence_score' => 'nullable|integer',
             'audio_label'      => 'nullable|string',
             'audio_confidence' => 'nullable|integer',
             'survey_data'      => 'required|array',
@@ -33,12 +34,107 @@ class AiDiagnosticController extends Controller
             'metadata'         => 'nullable|array',
         ]);
 
-        // --- ROOTERIN INFERENCE ENGINE (WEIGHTED MULTI-INPUT) ---
-        $vScore = $validated['confidence_score'];
+        $base64Image = $request->input('image_base64');
+        $neuralDiagnosis = null;
+
+        // --- PHASE 4: SRE MAINTENANCE & RESOURCE GUARD (Pixel-Infiltration Scan) ---
+        if ($base64Image) {
+            if (!preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+                return response()->json(['success' => false, 'message' => 'Invalid image format. Sentinel Neural Guard Blocked.'], 400);
+            }
+            
+            $imageType = strtolower($type[1]);
+            if (!in_array($imageType, ['jpg', 'jpeg', 'png', 'webp'])) {
+                return response()->json(['success' => false, 'message' => 'Unsupported format. Sentinel Neural Guard Blocked.'], 400);
+            }
+            
+            $base64Data = substr($base64Image, strpos($base64Image, ',') + 1);
+            
+            // Check memory footprint size limit (e.g. max 5MB base64 decode limit)
+            if (strlen(base64_decode($base64Data)) > 5 * 1024 * 1024) {
+                 return response()->json(['success' => false, 'message' => 'Image too large. Sentinel Resource Guard Active.'], 400);
+            }
+
+            // --- PHASE 2: THE SECURE BRIDGE (GEMINI FORENSIC GUARD v2.0) ---
+            try {
+                $geminiService = app(\App\Services\AI\GeminiVisionService::class);
+                
+                $material = $validated['survey_data']['material'] ?? 'unknown';
+                $location = $validated['survey_data']['sub_context'] ?? $validated['survey_data']['location'] ?? 'general';
+
+                $neuralDiagnosis = $geminiService->analyzePipeImage(
+                    $base64Data, 
+                    "image/$imageType", 
+                    $material, 
+                    $location
+                );
+
+                // ── LAYER 1: SUBJECT VALIDATION ──────────────────────────────
+                if ($neuralDiagnosis && isset($neuralDiagnosis['is_plumbing_subject']) && $neuralDiagnosis['is_plumbing_subject'] === false) {
+                    return response()->json([
+                        'success'    => false,
+                        'error_code' => 'NOT_PIPE',
+                        'message'    => $neuralDiagnosis['rejection_reason'] ?? 'Gambar tidak menunjukkan pipa atau sistem perpipaan. Silakan ambil foto pipa/saluran Anda.',
+                        'action'     => 'RETAKE_PHOTO',
+                    ], 422);
+                }
+
+                // ── LAYER 2: IMAGE QUALITY CHECK ─────────────────────────────
+                if ($neuralDiagnosis && isset($neuralDiagnosis['image_quality']) && $neuralDiagnosis['image_quality'] !== 'GOOD') {
+                    $qualityMap = [
+                        'BLURRY'      => 'Foto terlalu buram/goyang. Pastikan kamera stabil dan fokus sebelum mengambil foto.',
+                        'TOO_DARK'    => 'Foto terlalu gelap. Nyalakan lampu atau gunakan flash untuk menerangi area pipa.',
+                        'POOR_ANGLE'  => 'Sudut pengambilan foto kurang optimal. Arahkan kamera langsung ke area bermasalah pada pipa.',
+                    ];
+                    $qualityMsg = $neuralDiagnosis['quality_message'] ?? ($qualityMap[$neuralDiagnosis['image_quality']] ?? 'Kualitas foto tidak memadai untuk analisis forensik.');
+                    
+                    return response()->json([
+                        'success'       => false,
+                        'error_code'    => 'POOR_IMAGE_QUALITY',
+                        'quality_type'  => $neuralDiagnosis['image_quality'],
+                        'message'       => $qualityMsg,
+                        'action'        => 'RETAKE_PHOTO',
+                    ], 422);
+                }
+
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("ForensicAI Unreachable: " . $e->getMessage());
+                // Fallback gracefully
+            }
+        }
+
+        // --- ROOTERIN INFERENCE ENGINE (NEURAL OR FALLBACK WEIGHTED SCORING) ---
+        $serviceType     = 'MAMPET';
+        $materialWarning = null;  // LAYER 3 output — surfaced to frontend
+
+        if ($neuralDiagnosis && is_array($neuralDiagnosis)) {
+            $validated['result_label']                        = $neuralDiagnosis['diagnosis'] ?? 'Neural Blockage Detect';
+            $vScore                                           = $neuralDiagnosis['blockage_percentage'] ?? 80;
+            $validated['recommended_tools']                   = $neuralDiagnosis['technical_report'] ?? 'CCTV Inspection Required';
+            $validated['metadata']['degradation_percentage']  = $neuralDiagnosis['degradation_percentage'] ?? 0;
+            $validated['metadata']['ai_engine']               = 'Google Gemini 2.5 Flash (ForensicGuard v2)';
+            $validated['metadata']['detected_material']       = $neuralDiagnosis['detected_material'] ?? null;
+            $serviceType                                      = $neuralDiagnosis['recommended_service_type'] ?? 'MAMPET';
+
+            // ── LAYER 3: MATERIAL CROSS-CHECK WARNING ────────────────────
+            if (!empty($neuralDiagnosis['material_mismatch']) && $neuralDiagnosis['material_mismatch'] === true) {
+                $materialWarning = $neuralDiagnosis['material_warning'] 
+                    ?? 'Perhatian: AI mendeteksi kemungkinan ketidaksesuaian antara material yang Anda pilih dengan yang terlihat di foto. Pastikan pilihan material sudah benar.';
+            }
+        } else {
+            $vScore = $validated['confidence_score'] ?? 85;
+            $validated['result_label'] = $validated['result_label'] ?? 'Potential Blockage';
+            
+            // Keyword fallback mapping
+            $diagLabel = strtolower($validated['result_label']);
+            if (str_contains($diagLabel, 'korosi') || str_contains($diagLabel, 'retak') || str_contains($diagLabel, 'bocor')) $serviceType = 'REPARASI';
+            elseif (str_contains($diagLabel, 'toren') || str_contains($diagLabel, 'tangki')) $serviceType = 'CUCI_TOREN';
+        }
+
         $aScore = $validated['audio_confidence'] ?? 0;
         $sScore = !empty($validated['survey_data']) ? 90 : 0;
 
-        // Composite Weighted Score Calculation
+        // Composite Weighted Score Calculation (Now integrating Neural output natively)
         $compositeScore = ($vScore * 0.5) + ($aScore * 0.3) + ($sScore * 0.2);
 
         // Deep Ranking Logic (A-E)
@@ -58,15 +154,15 @@ class AiDiagnosticController extends Controller
         $lat = isset($validated['latitude'])  ? (float) $validated['latitude']  : -6.200000;
         $lng = isset($validated['longitude']) ? (float) $validated['longitude'] : 106.816666;
 
-        // --- SERVICE INTEGRATION MAPPING ---
-        $serviceMap = [
-            'A' => ['slug' => 'saluran-pembuangan-mampet', 'name' => 'Saluran Pembuangan Mampet'],
-            'B' => ['slug' => 'saluran-pembuangan-mampet', 'name' => 'Saluran Pembuangan Mampet'],
-            'C' => ['slug' => 'air-bersih-cuci-toren',      'name' => 'Air Bersih & Cuci Toren'],
-            'D' => ['slug' => 'instalasi-sanitary-pipa',   'name' => 'Instalasi Sanitary & Pipa'],
-            'E' => ['slug' => 'instalasi-sanitary-pipa',   'name' => 'Instalasi Sanitary & Pipa']
+        // --- SERVICE INTEGRATION MAPPING (DYNAMIC) ---
+        $servicePool = [
+            'MAMPET'      => ['slug' => 'saluran-pembuangan-mampet', 'name' => 'Saluran Pembuangan Mampet'],
+            'REPARASI'    => ['slug' => 'instalasi-sanitary-pipa',   'name' => 'Instalasi Sanitary & Pipa'],
+            'CUCI_TOREN'  => ['slug' => 'air-bersih-cuci-toren',      'name' => 'Air Bersih & Cuci Toren'],
+            'INSTALASI'   => ['slug' => 'instalasi-sanitary-pipa',   'name' => 'Instalasi Sanitary & Pipa']
         ];
-        $targetService = $serviceMap[$severity] ?? $serviceMap['B'];
+        
+        $targetService = $servicePool[$serviceType] ?? $servicePool['MAMPET'];
 
         try {
             $lead = AiDiagnose::create([
@@ -98,10 +194,11 @@ class AiDiagnosticController extends Controller
             }
 
             return response()->json([
-                'success' => true,
-                'diagnose_id' => $lead->diagnose_id,
-                'deep_ranking' => $severity,
-                'data' => $lead
+                'success'          => true,
+                'diagnose_id'      => $lead->diagnose_id,
+                'deep_ranking'     => $severity,
+                'material_warning' => $materialWarning,
+                'data'             => $lead
             ]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Diagnostic Storage Failed: " . $e->getMessage());

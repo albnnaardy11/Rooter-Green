@@ -1,10 +1,6 @@
 <x-app-layout title="AI Deep Diagnostic - RooterIN">
 
 <script>
-// ============================================================
-// ROOTERIN AI DIAGNOSTIC — Vanilla JS Pure DOM
-// Runs immediately, no framework dependencies
-// ============================================================
 var _diag = {
     step: 0, busy: false, camOn: false, barTimer: null,
     vLabel: 'Potential Blockage', vScore: 85,
@@ -14,7 +10,6 @@ var _diag = {
     result: { id:'RT-PENDING', rank:'?', title:'', rec:'', tools:'' }
 };
 
-// Grab GPS immediately
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         function(p){ _diag.lat = p.coords.latitude; _diag.lng = p.coords.longitude; },
@@ -27,7 +22,7 @@ function _el(id){ return document.getElementById(id); }
 
 function _toast(msg, isErr) {
     var t = _el('rt-toast');
-    t.textContent = msg;
+    t.innerHTML = msg;
     t.style.display = 'block';
     t.style.opacity = '1';
     t.style.cssText = [
@@ -51,17 +46,25 @@ function _toast(msg, isErr) {
 
 function _goStep(n) {
     _diag.step = n;
-    ['s0','s1','s2'].forEach(function(id, i){
-        _el(id).style.display = (i === n) ? 'block' : 'none';
-    });
-    ['d0','d1','d2'].forEach(function(id, i){
-        var d = _el(id);
-        d.style.background  = i <= n ? '#22c55e' : '#1e293b';
-        d.style.color       = i <= n ? '#0f172a' : '#64748b';
-    });
-    ['dl0','dl1'].forEach(function(id, i){
-        _el(id).style.background = i < n ? '#22c55e' : '#1e293b';
-    });
+    
+    var s0 = document.getElementById('s0');
+    var s2 = document.getElementById('s2');
+    if(s0) s0.style.display = (n === 0) ? 'block' : 'none';
+    if(s2) s2.style.display = (n === 2) ? 'block' : 'none';
+
+    var d0 = document.getElementById('d0');
+    if(d0) { d0.style.background = '#22c55e'; d0.style.color = '#0f172a'; }
+
+    var d2 = document.getElementById('d2');
+    var dl0 = document.getElementById('dl0');
+
+    if (n >= 2) {
+        if(d2) { d2.style.background = '#22c55e'; d2.style.color = '#0f172a'; }
+        if(dl0) { dl0.style.background = '#22c55e'; }
+    } else {
+        if(d2) { d2.style.background = '#1e293b'; d2.style.color = '#64748b'; }
+        if(dl0) { dl0.style.background = '#1e293b'; }
+    }
 }
 
 function _btnState(id, disabled, html) {
@@ -70,14 +73,12 @@ function _btnState(id, disabled, html) {
     b.innerHTML = html;
 }
 
-// ── STEP 1: VISION ──────────────────────────────────────────
 async function rtVision() {
     if (_diag.busy) return;
     _diag.busy = true;
-    _btnState('btn-v', true, 'Negotiating...');
+    _btnState('btn-v', true, 'Handshake...');
     
     try {
-        // HANDSHAKE PROTOCOL: Secure Token Exchange
         const hResp = await fetch('{{ route("ai.diagnostic.handshake") }}');
         const hData = await hResp.json();
         _diag.handshake = hData.token;
@@ -86,61 +87,78 @@ async function rtVision() {
         _toast('Handshake Failure: Using Local Cache', true);
     }
 
-    _btnState('btn-v', true, 'Menganalisa...');
-    _toast('Memindai visual dengan AI...');
+    _btnState('btn-v', true, 'Menangkap Visual...');
+    _toast('Menyimpan frame observasi...');
     if (_diag.camOn) {
         _el('scan-ln').style.display = 'block';
     }
-    setTimeout(function(){
-        _diag.vLabel = 'Potential Blockage Detected';
-        _diag.vScore = 87;
+
+    setTimeout(function() {
+        var v = _el('rt-vid');
+        var c = _el('rt-cvs');
+        if (_diag.uploadedBase64) {
+             _diag.imageBase64 = _diag.uploadedBase64;
+             _toast('Menggunakan gambar yang diunggah...');
+        } else if (_diag.camOn && v && v.videoWidth > 0) {
+            c.width = v.videoWidth;
+            c.height = v.videoHeight;
+            var ctx = c.getContext('2d');
+            ctx.drawImage(v, 0, 0, c.width, c.height);
+            _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85); // Capture Real Base64 Image
+        } else {
+            // Fallback base64 transparent
+            c.width = 640; c.height = 480;
+            var ctx = c.getContext('2d');
+            ctx.fillStyle = "#A9A9A9";
+            ctx.fillRect(0, 0, 640, 480);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "30px Arial";
+            ctx.fillText("Simulated Degradation Frame", 100, 240);
+            _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85);
+        }
+
+        _diag.vScore = 85; 
         if (_diag.camOn) _el('scan-ln').style.display = 'none';
         _diag.busy = false;
-        _btnState('btn-v', false, '✓ Visual Analyzed');
-        _toast('Visual selesai! Lanjut Audio ›');
-        setTimeout(function(){ _goStep(1); }, 700);
-    }, 2000);
+
+        _btnState('btn-v', false, '✓ Frame Captured');
+        _toast('Frame visual disimpan! Lanjut Isi Survei ›');
+        setTimeout(function(){ _goStep(2); }, 700);
+    }, 600); 
 }
 
-// ── STEP 2: AUDIO ───────────────────────────────────────────
-function rtAudio() {
-    if (_diag.busy) return;
-    _diag.busy = true;
-    _btnState('btn-a', true, 'Mendengarkan... (2.5s)');
-    _el('mic-i').style.color = '#22c55e';
-    _toast('Merekam frekuensi audio...');
+function rtUploadFile(e) {
+    var file = e.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            _diag.uploadedBase64 = evt.target.result;
+            _diag.camOn = false;
+            
+            var v = _el('rt-vid');
+            if (v) {
+                if (v.srcObject) { v.srcObject.getTracks().forEach(function(t){ t.stop(); }); }
+                v.srcObject = null;
+                v.style.opacity = '0';
+                v.style.display = 'none';
+            }
 
-    _diag.barTimer = setInterval(function(){
-        document.querySelectorAll('.rt-bar').forEach(function(b){
-            b.style.height = (Math.random()*80+15)+'%';
-            b.style.background = '#22c55e';
-        });
-    }, 100);
+            var hud = _el('cam-hud');
+            if (hud) hud.style.display = 'none';
 
-    function _done(){
-        clearInterval(_diag.barTimer);
-        document.querySelectorAll('.rt-bar').forEach(function(b){
-            b.style.height='18%'; b.style.background='#1e293b';
-        });
-        _el('mic-i').style.color = '#334155';
-        _diag.aLabel = 'Turbulent Flow Detected';
-        _diag.aScore = 74;
-        _diag.busy = false;
-        _btnState('btn-a', false, '✓ Audio Captured');
-        _toast('Audio selesai! Isi survey ›');
-        setTimeout(function(){ _goStep(2); }, 600);
-    }
-
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({audio:true})
-            .then(function(str){ setTimeout(function(){ str.getTracks().forEach(function(t){t.stop();}); _diag.aScore=80; _done(); }, 2500); })
-            .catch(function(){ setTimeout(_done, 2500); });
-    } else {
-        setTimeout(_done, 2500);
+            var nc = _el('no-cam');
+            if (nc) {
+                nc.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;background:#000;';
+                nc.innerHTML = '<img src="' + evt.target.result + '" style="width:100%;height:100%;object-fit:cover;">';
+            }
+            
+            _toast('\u2713 Foto berhasil diunggah! Klik Analyze Visual');
+            _btnState('btn-v', false, '\u25b6 Analyze Visual');
+        };
+        reader.readAsDataURL(file);
     }
 }
 
-// ── DROPDOWN ────────────────────────────────────────────────
 function rtLocToggle(){
     var d = _el('loc-d');
     d.style.display = d.style.display === 'block' ? 'none' : 'block';
@@ -152,7 +170,6 @@ function rtLocSel(id, lbl){
     _el('loc-d').style.display = 'none';
 }
 
-// ── MATERIAL ────────────────────────────────────────────────
 function rtMat(id){
     _diag.survey.material = id;
     ['pvc','besi','flex'].forEach(function(m){
@@ -184,7 +201,6 @@ function rtFreq(id){
     });
 }
 
-// ── INFERENCE ENGINE ────────────────────────────────────────
 function rtInfer(){
     var mat = _diag.survey.material;
     var ctx = (_diag.survey.sub_context||_diag.survey.location||'').toLowerCase();
@@ -210,30 +226,46 @@ function rtInfer(){
     _diag.result.rank  = _diag.vScore > 85 ? 'A' : 'B';
 }
 
-// ── GENERATE ────────────────────────────────────────────────
 function rtGenerate(){
     if (_diag.busy) return;
+
+    // ── GUARD: Require camera or uploaded photo ──
+    if (!_diag.imageBase64 && !_diag.uploadedBase64) {
+        _toast('\u26a0\ufe0f Anda harus mengambil foto atau upload gambar pipa atau saluran terlebih dahulu!', true);
+        return;
+    }
 
     // Collect symptoms
     _diag.survey.symptoms = [];
     document.querySelectorAll('.rt-sym:checked').forEach(function(cb){ _diag.survey.symptoms.push(cb.value); });
 
     _diag.busy = true;
-    rtInfer();
     _el('proc-ov').style.display = 'flex';
-    _btnState('btn-g', true, 'Menghitung...');
-    _toast('Menjalankan Neural Fusion...');
+    _btnState('btn-g', true, 'ForensicAI Active...');
+    _toast('<i class="ri-brain-line"></i> Inisiasi Gemini ForensicGuard v2.0...');
+    
+    var msgs = [
+        'Layer 1: Memverifikasi subjek gambar pipa...',
+        'Layer 2: Menganalisis kualitas & kejernihan foto...',
+        'Layer 3: Cross-checking material vs visual...',
+        'Layer 4: Diagnosis forensik mendalam ASTM D2321...',
+        'Layer 5: Menyusun rekomendasi layanan...'
+    ];
+    msgs.forEach(function(m, i){
+        setTimeout(function(){
+            if (_diag.busy && _el('proc-msg')) _el('proc-msg').textContent = m;
+        }, i * 2500);
+    });
 
     var payload = {
-        result_label:      _diag.result.title || _diag.vLabel,
+        image_base64:      _diag.imageBase64 || null,
+        result_label:      _diag.vLabel || 'Pending Engine Inference',
         city_location:     _diag.city || 'Auto Detect',
         material_type:     _diag.survey.material || 'unknown',
         location_context:  _diag.survey.location || 'umum',
         confidence_score:  parseInt(_diag.vScore) || 85,
-        audio_label:       _diag.aLabel || 'Standard Flow',
-        audio_confidence:  parseInt(_diag.aScore) || 0,
         survey_data:       _diag.survey,
-        recommended_tools: _diag.result.tools || 'Rooter Machine',
+        recommended_tools: 'Professional Diagnostics Rooter Equipment',
         metadata: {
             symptoms: _diag.survey.symptoms || [],
             sub_context: _diag.survey.sub_context || ''
@@ -251,56 +283,192 @@ function rtGenerate(){
         },
         body: JSON.stringify(payload)
     })
-    .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
-    .then(function(d){
-        rtShowResult(d.success ? d.data : null);
+    .then(function(r){ 
+        return r.json().then(function(data){ 
+            return { ok: r.ok, status: r.status, data: data }; 
+        });
+    })
+    .then(function(res){
+        _el('proc-ov').style.display = 'none';
+        _btnState('btn-g', false, 'Generate Ulang');
+        _diag.busy = false;
+
+        if (!res.ok) {
+            // ── Forensic Guard Rejection Handling ──
+            var err = res.data;
+            var code = err.error_code || '';
+            
+            if (code === 'NOT_PIPE') {
+                // Layer 1: Not a pipe image — show full-screen rejection
+                rtShowRejection(
+                    'ri-error-warning-fill',
+                    'Bukan Foto Pipa!',
+                    err.message || 'Gambar tidak menampilkan pipa atau saluran.',
+                    'Arahkan kamera ke pipa, saluran, atau area perpipaan yang bermasalah.',
+                    '#ef4444'
+                );
+            } else if (code === 'POOR_IMAGE_QUALITY') {
+                // Layer 2: Poor photo quality
+                var iconClass = err.quality_type === 'TOO_DARK' ? 'ri-flashlight-line' : 'ri-camera-lens-line';
+                rtShowRejection(
+                    iconClass,
+                    'Kualitas Foto Tidak Memadai',
+                    err.message || 'Foto tidak cukup jelas untuk analisis forensik.',
+                    'Ambil ulang foto dengan pencahayaan yang baik dan kamera yang stabil.',
+                    '#f97316'
+                );
+            } else if (code === 'RATE_LIMIT_EXCEEDED') {
+                rtShowRejection(
+                    'ri-timer-flash-line',
+                    'Limit Harian Tercapai',
+                    err.message,
+                    'Gunakan kuota diagnosa Anda secara bijak atau hubungi teknisi kami untuk bantuan langsung.',
+                    '#3b82f6'
+                );
+            } else {
+                _toast('<i class="ri-close-circle-line"></i> Terjadi kesalahan: ' + (err.message || 'Server Error'), true);
+            }
+            return;
+        }
+        
+        // Success — pass correct data object and optional material warning
+        rtShowResult(res.data || null, res.data.material_warning || null);
     })
     .catch(function(e){
         console.error('API Error:', e);
-        rtShowResult(null);
+        _el('proc-ov').style.display = 'none';
+        _btnState('btn-g', false, 'Generate Ulang');
+        _diag.busy = false;
+        rtShowResult(null, null);
     });
 }
 
-function rtShowResult(res){
+// ── FORENSIC REJECTION UI ─────────────────────────────────
+function rtShowRejection(iconClass, title, reason, hint, color) {
+    var m = _el('rt-modal');
+    if (!m) return;
+
+    // Temporarily use modal for rejection display
+    m.innerHTML = `
+    <div onclick="event.stopPropagation()" style="position:relative;width:100%;max-width:34rem;background:#0f172a;border:2px solid ${color};border-radius:2rem;padding:2.5rem;text-align:center;box-shadow:0 0 60px ${color}33">
+        <div style="font-size:3.5rem;margin-bottom:1rem;color:${color}"><i class="${iconClass}"></i></div>
+        <h2 style="color:#fff;font-size:1.1rem;font-weight:900;margin:0 0 1rem;line-height:1.3">${title}</h2>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1.1rem;margin-bottom:.85rem">
+            <p style="color:#e2e8f0;font-size:.85rem;line-height:1.6;margin:0">${reason}</p>
+        </div>
+        <div style="background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.2);border-radius:1rem;padding:.9rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem">
+            <i class="ri-lightbulb-line" style="color:#4ade80"></i>
+            <p style="color:#4ade80;font-size:.75rem;font-weight:700;margin:0">${hint}</p>
+        </div>
+        <button onclick="rtCloseModal(event); rtResetToStep0();" style="width:100%;padding:1rem;background:${color};color:#fff;border:none;border-radius:1rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem">
+            <i class="ri-camera-fill"></i> Ambil Foto Ulang
+        </button>
+    </div>`;
+
+    m.style.setProperty('display', 'flex', 'important');
+    m.style.setProperty('opacity', '1', 'important');
+    m.style.setProperty('visibility', 'visible', 'important');
+}
+
+// Reset to step 0 for retake
+function rtResetToStep0() {
+    _diag.imageBase64    = null;
+    _diag.uploadedBase64 = null;
+    _diag.camOn          = false;
+    _goStep(0);
+    _btnState('btn-v', false, 'Analyze Visual');
+    
+    // Reset video element visibility
+    var v = _el('rt-vid');
+    if (v) { v.style.display = ''; v.style.opacity = '0'; }
+    var nc = _el('no-cam');
+    if (nc) { nc.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;z-index:2;background:#0f172a;'; }
+
+    // Rebuild modal innerHTML for next use
+    _el('rt-modal').innerHTML = document.getElementById('rt-modal-template').innerHTML;
+}
+
+function rtShowResult(res, materialWarning){
+    console.log('[DEBUG] AI Response Received:', res);
     _el('proc-ov').style.display = 'none';
     _btnState('btn-g', false, 'Generate Ulang');
     _diag.busy = false;
 
-    // Use server result if available, otherwise fallback to local diag
-    const finalData = res || {
-        diagnose_id: 'RT-LOCAL-'+Math.floor(Math.random()*9000+1000),
-        final_deep_score: _diag.result.rank || 'B',
-        result_label: _diag.result.title,
-        recommended_tools: _diag.result.tools,
-        metadata: { recommended_service_slug: 'saluran-pembuangan-mampet' }
-    };
+    if (!res) {
+        console.warn('[DEBUG] Using Fallback - Server response missing or error.');
+    }
 
-    _el('m-id').textContent    = finalData.diagnose_id;
-    _el('m-rank').textContent  = finalData.final_deep_score;
-    _el('m-title').textContent = finalData.result_label;
-    _el('m-rec').textContent   = finalData.result_label;
-    _el('m-tools').textContent = finalData.recommended_tools;
-    
-    // Integrated Service Link
-    const serviceSlug = finalData.metadata?.recommended_service_slug || 'saluran-pembuangan-mampet';
-    const serviceName = finalData.metadata?.recommended_service_name || 'Saluran Pembuangan Mampet';
-    _diag.targetServiceUrl = '/layanan/' + serviceSlug;
-    
-    // Update Service Display in Modal
-    if (_el('m-service')) _el('m-service').textContent = serviceName;
+    // Use server result if available, otherwise fallback to local diag structure
+    const finalData = res || {};
+    const modelData = res.data || {}; // Handle lead model if present
 
-    // Visual Updates
-    const colors = { 'A':'#ef4444', 'B':'#f97316', 'C':'#eab308', 'D':'#22c55e', 'E':'#3b82f6' };
-    const color = colors[finalData.final_deep_score] || '#64748b';
-    _el('m-rank').style.color = color;
-    
-    _toast('Diagnosis selesai!');
-    setTimeout(function(){ _el('rt-modal').style.display='flex'; }, 350);
+    try {
+        _el('m-id').textContent    = res.diagnose_id || modelData.diagnose_id || 'RT-UNKNOWN';
+        _el('m-rank').textContent  = res.deep_ranking || modelData.final_deep_score || '?';
+        _el('m-title').textContent = modelData.result_label || 'Analysis Complete';
+        _el('m-rec').textContent   = modelData.result_label || 'Analisis Selesai';
+        
+        var toolsText = modelData.recommended_tools || 'Pemeriksaan manual dibutuhkan.';
+        _el('m-tools').innerHTML   = toolsText.replace(/\. /g, '.<br><br>');
+        
+        // Integrated Service Link
+        const meta = modelData.metadata || {};
+        const serviceSlug = meta.recommended_service_slug || 'saluran-pembuangan-mampet';
+        const serviceName = meta.recommended_service_name || 'Saluran Pembuangan Mampet';
+        _diag.targetServiceUrl = '/layanan/' + serviceSlug;
+        
+        if (_el('m-service')) _el('m-service').textContent = serviceName;
+
+        // Visual Updates
+        const colors = { 'A':'#ef4444', 'B':'#f97316', 'C':'#eab308', 'D':'#22c55e', 'E':'#3b82f6' };
+        const colorCode = res.deep_ranking || modelData.final_deep_score || 'B';
+        const color = colors[colorCode] || '#64748b';
+        _el('m-rank').style.color = color;
+
+        // ── LAYER 3: Material Mismatch Warning Banner
+        var warnEl = _el('m-material-warn');
+        if (warnEl) {
+            if (materialWarning) {
+                warnEl.style.display = 'block';
+                warnEl.innerHTML = '<i class="ri-alert-line" style="font-size:.85rem"></i> ' + materialWarning;
+            } else {
+                warnEl.style.display = 'none';
+            }
+        }
+        
+        _toast(res ? '<i class="ri-checkbox-circle-fill"></i> Diagnosis ForensicAI Selesai!' : 'Diagnosis Fallback Aktif (Offline)', !res);
+        
+        // Final Display Trigger
+        setTimeout(function(){ 
+            var m = _el('rt-modal');
+            if (m) {
+                m.style.setProperty('display', 'flex', 'important');
+                m.style.setProperty('opacity', '1', 'important');
+                m.style.setProperty('visibility', 'visible', 'important');
+                console.log('[DEBUG] Modal Display Triggered Successfully');
+            }
+        }, 100);
+    } catch (err) {
+        console.error('[FATAL] Modal Injection Error:', err);
+        _toast('Gagal memproses data laporan', true);
+    }
 }
 
 
-function rtCloseModal(){ 
-    // Proactive Conversion: Redirect to the specific recommended service
+function rtCloseModal(e){ 
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    // Hard hide
+    var m = _el('rt-modal');
+    if (m) {
+        m.style.setProperty('display', 'none', 'important');
+        m.style.setProperty('opacity', '0', 'important');
+    }
+}
+
+function rtPesanLayanan(){
     window.location.href = _diag.targetServiceUrl || '/services';
 }
 
@@ -339,6 +507,19 @@ document.addEventListener('click', function(e){
         if (d) d.style.display = 'none';
     }
 });
+
+// Block Escape key from closing modal via Alpine.js or other handlers
+document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+        var m = _el('rt-modal');
+        if (m && m.style.display !== 'none') {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        }
+    }
+}, true); // capture phase = blocks before Alpine.js sees it
+
+// NOTE: Vite HMR guard removed — import.meta is not available in Blade classic scripts.
 </script>
 
 {{-- ============================================================
@@ -355,15 +536,18 @@ document.addEventListener('click', function(e){
         <div style="position:absolute;inset:.75rem;border:4px solid #f97316;border-bottom-color:transparent;border-radius:50%;animation:rtspinr .6s linear infinite"></div>
     </div>
     <p style="color:#fff;font-size:.85rem;font-weight:900;text-transform:uppercase;letter-spacing:.2em;margin:0">Mengkalkulasi...</p>
-    <p style="color:#64748b;font-size:.65rem;margin:.3rem 0 0">Neural Fusion Processing</p>
+    <p id="proc-msg" style="color:#64748b;font-size:.65rem;margin:.3rem 0 0">Neural Fusion Processing</p>
     <style>@keyframes rtspin{to{transform:rotate(360deg)}}@keyframes rtspinr{to{transform:rotate(-360deg)}}</style>
 </div>
 
 {{-- ============================================================
      RESULT MODAL
      ============================================================ --}}
-<div id="rt-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,6,23,.97);backdrop-filter:blur(24px);align-items:center;justify-content:center;padding:1.25rem">
-    <div style="position:relative;width:100%;max-width:26rem;background:#0f172a;border:1px solid rgba(255,255,255,.08);border-radius:2rem;padding:2rem;max-height:92vh;overflow-y:auto;box-shadow:0 0 80px rgba(34,197,94,.12)">
+<div id="rt-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,6,23,.97);backdrop-filter:blur(24px);align-items:center;justify-content:center;padding:1rem">
+    <div onclick="event.stopPropagation()" style="position:relative;width:100%;max-width:38rem;background:#0f172a;border:1px solid rgba(255,255,255,.08);border-radius:2.5rem;padding:2.5rem;max-height:85vh;overflow-y:auto;box-shadow:0 0 100px rgba(34,197,94,.15);scrollbar-width:thin;scrollbar-color:#1e293b transparent">
+        
+        {{-- Close btn --}}
+        <button id="rt-close-x" onclick="rtCloseModal(event)" style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.05);border:none;width:2.5rem;height:2.5rem;border-radius:50%;color:#64748b;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:1.2rem;transition:all .3s"><i class="ri-close-line"></i></button>
 
         {{-- Rank --}}
         <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
@@ -373,8 +557,8 @@ document.addEventListener('click', function(e){
                     <span style="font-size:.55rem;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.15em;margin-top:.2rem">AI Score</span>
                 </div>
             </div>
-        </div>
-
+        </div>              
+    
         {{-- Title & ID --}}
         <div style="text-align:center;margin-bottom:1.25rem">
             <h2 id="m-title" style="font-size:1.05rem;font-weight:900;color:#fff;margin:0 0 .75rem;line-height:1.3">Menganalisa...</h2>
@@ -382,18 +566,15 @@ document.addEventListener('click', function(e){
                 <span style="width:.5rem;height:.5rem;background:#22c55e;border-radius:50%;display:inline-block"></span>
                 <span style="font-size:.6rem;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.12em">ID: <span id="m-id">—</span></span>
             </div>
-        </div>
+        </div>                                                                          
 
         {{-- Recommendation --}}
-        <div style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:1rem;padding:1.1rem;margin-bottom:.75rem">
-            <div style="font-size:.6rem;font-weight:900;color:#22c55e;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem">Diagnosa & Solusi</div>
-            <p id="m-rec" style="color:#fff;font-size:.85rem;font-weight:600;line-height:1.5;margin:0">—</p>
+        <div style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:1.2rem;padding:1.4rem;margin-bottom:.85rem">
+            <div style="font-size:.6rem;font-weight:900;color:#22c55e;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.6rem">Diagnosa Utama</div>
+            <p id="m-rec" style="color:#fff;font-size:.95rem;font-weight:700;line-height:1.5;margin:0;letter-spacing:-0.01em">—</p>
         </div>
-        {{-- Service Link --}}
-        <div style="background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.15);border-radius:1rem;padding:1.1rem;margin-bottom:.75rem">
-            <div style="font-size:.6rem;font-weight:900;color:#3b82f6;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem">Layanan RooterIN</div>
-            <p id="m-service" style="color:#fff;font-size:1rem;font-weight:900;line-height:1.3;margin:0">Saluran Pembuangan Mampet</p>
-        </div>
+        {{-- Layer 3: Material Mismatch Warning Banner --}}
+        <div id="m-material-warn" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);color:#eab308;font-size:.7rem;padding:.75rem;border-radius:.75rem;margin-bottom:1rem;font-weight:700;line-height:1.4"></div>
 
         <div style="background:rgba(2,6,23,.8);border:1px solid rgba(255,255,255,.05);border-radius:1rem;padding:1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.85rem">
             <div style="width:2.75rem;height:2.75rem;background:rgba(249,115,22,.1);border-radius:.65rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -406,15 +587,58 @@ document.addEventListener('click', function(e){
         </div>
 
         {{-- CTA --}}
-        <button onclick="rtCloseModal()" style="width:100%;padding:1.1rem;background:#fff;color:#0f172a;border:none;border-radius:1.2rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.6rem;box-shadow:0 10px 30px rgba(255,255,255,0.1)">
+        <button onclick="rtPesanLayanan()" style="width:100%;padding:1.1rem;background:#fff;color:#0f172a;border:none;border-radius:1.2rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.6rem;box-shadow:0 10px 30px rgba(255,255,255,0.1)">
             PESAN LAYANAN SEKARANG
         </button>
-        <button onclick="rtWA()" style="width:100%;padding:.9rem;background:#22c55e;color:#0f172a;border:none;border-radius:1.1rem;font-weight:900;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.6rem">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1rem;height:1.1rem"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        {{-- WhatsApp CTA --}}
+        <a id="m-wa" href="#" target="_blank" style="width:100%;padding:1rem;background:#22c55e;color:#fff;text-decoration:none;border-radius:1.2rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .3s">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem"><path d="M12.011 2c-5.511 0-9.989 4.478-9.989 9.989 0 1.762.459 3.415 1.259 4.856l-1.281 4.673 4.783-1.255c1.405.748 3.003 1.177 4.703 1.177 5.511 0 9.989-4.478 9.989-9.989S17.521 2 12.011 2zm0 16.5c-1.579 0-3.056-.445-4.312-1.215l-.31-.188-2.613.685.698-2.541-.212-.338c-.859-1.371-1.351-2.99-1.351-4.724 0-4.68 3.809-8.489 8.489-8.489s8.489 3.809 8.489 8.489-3.809 8.489-8.489 8.489z"/></svg>
             Konsultasi WhatsApp
-        </button>
+        </a>
     </div>
 </div>
+
+{{-- Template to restore modal state after rejection --}}
+<script id="rt-modal-template" type="text/template">
+    <div onclick="event.stopPropagation()" style="position:relative;width:100%;max-width:38rem;background:#0f172a;border:1px solid rgba(255,255,255,.08);border-radius:2.5rem;padding:2.5rem;max-height:85vh;overflow-y:auto;box-shadow:0 0 100px rgba(34,197,94,.15);">
+        <button id="rt-close-x" onclick="rtCloseModal(event)" style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.05);border:none;width:2.5rem;height:2.5rem;border-radius:50%;color:#64748b;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:1.2rem;"><i class="ri-close-line"></i></button>
+        <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
+            <div style="width:7rem;height:7rem;border-radius:50%;padding:.2rem;background:linear-gradient(135deg,#4ade80,#fb923c,#ea580c)">
+                <div style="width:100%;height:100%;background:#020617;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                    <span id="m-rank" style="font-size:3.5rem;font-weight:900;color:#fff;font-style:italic;line-height:1">?</span>
+                    <span style="font-size:.55rem;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.15em;margin-top:.2rem">AI Score</span>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-bottom:1.25rem">
+            <h2 id="m-title" style="font-size:1.05rem;font-weight:900;color:#fff;margin:0 0 .75rem;line-height:1.3">Menganalisa...</h2>
+            <div style="display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .85rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5rem">
+                <span style="width:.5rem;height:.5rem;background:#22c55e;border-radius:50%;display:inline-block"></span>
+                <span style="font-size:.6rem;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.12em">ID: <span id="m-id">&mdash;</span></span>
+            </div>
+        </div>
+        <div style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:1.2rem;padding:1.4rem;margin-bottom:.85rem">
+            <div style="font-size:.6rem;font-weight:900;color:#22c55e;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.6rem">Diagnosa Utama</div>
+            <p id="m-rec" style="color:#fff;font-size:.95rem;font-weight:700;line-height:1.5;margin:0;">&mdash;</p>
+        </div>
+        <div style="background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.15);border-radius:1rem;padding:1.1rem;margin-bottom:.75rem">
+            <div style="font-size:.6rem;font-weight:900;color:#3b82f6;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem">Layanan RooterIN</div>
+            <p id="m-service" style="color:#fff;font-size:1rem;font-weight:900;line-height:1.3;margin:0">Saluran Pembuangan Mampet</p>
+        </div>
+        <div id="m-material-warn" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);color:#eab308;font-size:.7rem;padding:.75rem;border-radius:.75rem;margin-bottom:1rem;font-weight:700;line-height:1.4"></div>
+        <div style="background:rgba(2,6,23,.8);border:1px solid rgba(255,255,255,.05);border-radius:1rem;padding:1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.85rem">
+            <div style="width:2.75rem;height:2.75rem;background:rgba(249,115,22,.1);border-radius:.65rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" style="width:1.2rem;height:1.2rem"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div>
+                <div style="font-size:.6rem;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.3rem">Alat Teknis</div>
+                <p id="m-tools" style="color:#e2e8f0;font-size:.75rem;font-weight:600;line-height:1.4;margin:0;">&mdash;</p>
+            </div>
+        </div>
+        <button onclick="rtPesanLayanan()" style="width:100%;padding:1.1rem;background:#fff;color:#0f172a;border:none;border-radius:1.2rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.6rem;">PESAN LAYANAN SEKARANG</button>
+        <a id="m-wa" href="#" target="_blank" style="width:100%;padding:1rem;background:#22c55e;color:#fff;text-decoration:none;border-radius:1.2rem;font-weight:900;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;display:flex;align-items:center;justify-content:center;gap:.6rem;">Konsultasi WhatsApp</a>
+    </div>
+</script>
 
 {{-- ============================================================
      MAIN PAGE
@@ -435,16 +659,13 @@ document.addEventListener('click', function(e){
 
         {{-- Step Dots --}}
         <div style="max-width:18rem;margin:0 auto 2rem;display:flex;align-items:center;justify-content:space-between">
-            <div id="d0" style="width:2rem;height:2rem;border-radius:50%;background:#22c55e;color:#0f172a;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;transition:all .3s">1</div>
-            <div id="dl0" style="flex:1;height:2px;background:#1e293b;margin:0 .3rem;transition:background .3s"></div>
-            <div id="d1" style="width:2rem;height:2rem;border-radius:50%;background:#1e293b;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;transition:all .3s">2</div>
-            <div id="dl1" style="flex:1;height:2px;background:#1e293b;margin:0 .3rem;transition:background .3s"></div>
-            <div id="d2" style="width:2rem;height:2rem;border-radius:50%;background:#1e293b;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;transition:all .3s">3</div>
+            <div id="d0" style="width:2.5rem;height:2.5rem;border-radius:50%;background:#22c55e;color:#0f172a;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;flex-shrink:0;transition:all .3s">1</div>
+            <div id="dl0" style="flex:1;height:2px;background:#1e293b;margin:0 1rem;transition:background .3s"></div>
+            <div id="d2" style="width:2.5rem;height:2.5rem;border-radius:50%;background:#1e293b;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;flex-shrink:0;transition:all .3s">2</div>
         </div>
-        <div style="max-width:18rem;margin:-1.5rem auto 2rem;display:flex;justify-content:space-between;padding:0 .15rem">
-            <span style="font-size:.55rem;font-weight:900;color:#22c55e;text-transform:uppercase;letter-spacing:.1em">Visual</span>
-            <span id="dl-a" style="font-size:.55rem;font-weight:900;color:#64748b;text-transform:uppercase;letter-spacing:.1em;transform:translateX(-20%)">Audio</span>
-            <span style="font-size:.55rem;font-weight:900;color:#64748b;text-transform:uppercase;letter-spacing:.1em">Survey</span>
+        <div style="max-width:18rem;margin:-1.5rem auto 2rem;display:flex;justify-content:space-between;padding:0 1rem">
+            <span style="font-size:.65rem;font-weight:900;color:#22c55e;text-transform:uppercase;letter-spacing:.1em;transform:translateX(-25%)">Pemindai Visual</span>
+            <span style="font-size:.65rem;font-weight:900;color:#64748b;text-transform:uppercase;letter-spacing:.1em;transform:translateX(15%)">Data Kondisi</span>
         </div>
 
         {{-- CARD --}}
@@ -457,13 +678,16 @@ document.addEventListener('click', function(e){
                         <video id="rt-vid" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s"></video>
                         <canvas id="rt-cvs" style="display:none"></canvas>
 
-                        {{-- No cam state --}}
-                        <div id="no-cam" style="position:absolute;inset:0;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem">
+                        {{-- No cam state / Upload Frame --}}
+                        <div id="no-cam" style="position:absolute;inset:0;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;z-index:2">
                             <div style="width:3.5rem;height:3.5rem;background:#1e293b;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" style="width:1.5rem;height:1.5rem"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34m-7.72-2.06a4 4 0 1 1-5.56-5.56"/></svg>
                             </div>
                             <p style="color:#64748b;font-size:.75rem;font-weight:600;margin:0 0 .25rem">Kamera tidak aktif</p>
-                            <p style="color:#334155;font-size:.6rem;margin:0">Mode heuristik AI aktif sebagai pengganti</p>
+                            <label style="cursor:pointer;color:#22c55e;font-size:.6rem;font-weight:900;text-transform:uppercase;margin:0;padding:.3rem .8rem;background:rgba(34,197,94,.1);border-radius:.3rem;margin-top:.4rem;display:inline-block">
+                                ATAU UPLOAD FOTO PIPA LOKAL
+                                <input type="file" accept="image/*" style="display:none" onchange="rtUploadFile(this)">
+                            </label>
                         </div>
 
                         {{-- Cam HUD --}}
@@ -476,44 +700,15 @@ document.addEventListener('click', function(e){
                             </div>
                         </div>
                     </div>
-                    <div style="padding:1.1rem">
+                    <div style="padding:1.1rem;display:flex;flex-direction:column;gap:.5rem">
                         <button id="btn-v" onclick="rtVision()"
                                 style="width:100%;padding:1rem;background:#fff;color:#0f172a;border:none;border-radius:.85rem;font-weight:900;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer">
                             Analyze Visual
                         </button>
-                    </div>
-                </div>
-
-                {{-- ── STEP 1: AUDIO ── --}}
-                <div id="s1" style="display:none">
-                    <div style="aspect-ratio:3/4;background:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;text-align:center">
-                        <div style="position:relative;width:7rem;height:7rem;border-radius:50%;border:4px solid #1e293b;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
-                            <svg id="mic-i" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:2.5rem;height:2.5rem;transition:stroke .3s">
-                                <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
-                            </svg>
-                        </div>
-                        <h3 style="color:#fff;font-weight:900;font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;margin:0 0 .5rem">Audio Frequency Capture</h3>
-                        <p style="color:#64748b;font-size:.65rem;line-height:1.6;margin:0">Dekatkan HP ke lubang pipa. AI menganalisis frekuensi aliran untuk mendeteksi turbulensi.</p>
-                        <div style="margin-top:1.5rem;display:flex;gap:.2rem;height:1.75rem;align-items:flex-end">
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:18%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:30%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:15%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:50%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:22%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:40%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:18%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:35%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:12%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:45%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:28%;transition:height .1s"></div>
-                            <div class="rt-bar" style="width:.25rem;background:#1e293b;border-radius:.2rem;height:20%;transition:height .1s"></div>
-                        </div>
-                    </div>
-                    <div style="padding:1.1rem">
-                        <button id="btn-a" onclick="rtAudio()"
-                                style="width:100%;padding:1rem;background:#22c55e;color:#0f172a;border:none;border-radius:.85rem;font-weight:900;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer">
-                            Record Frequency
-                        </button>
+                        <label style="cursor:pointer;color:#94a3b8;font-size:.6rem;font-weight:900;text-transform:uppercase;margin:0;padding:.8rem;background:rgba(255,255,255,.05);border-radius:.85rem;text-align:center;display:block">
+                            ATAU UPLOAD FOTO SENDIRI
+                            <input type="file" accept="image/*" style="display:none" onchange="rtUploadFile(this)">
+                        </label>
                     </div>
                 </div>
 
@@ -531,7 +726,7 @@ document.addEventListener('click', function(e){
                             <button onclick="rtLocToggle()"
                                     style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:.65rem;padding:.7rem .9rem;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:.62rem;font-weight:700;text-transform:uppercase;cursor:pointer">
                                 <span id="loc-lbl">Pilih Lokasi...</span>
-                                <span>▾</span>
+                                <i class="ri-arrow-down-s-line"></i>
                             </button>
                             <div id="loc-d" style="display:none;position:absolute;z-index:50;top:100%;left:0;right:0;margin-top:.2rem;background:#1e293b;border:1px solid rgba(255,255,255,.1);border-radius:.75rem;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.5)">
                                 <button onclick="rtLocSel('wastafel_dapur','Wastafel Dapur (Grease/FOG)')" style="width:100%;text-align:left;padding:.6rem .9rem;font-size:.58rem;font-weight:700;color:#94a3b8;text-transform:uppercase;cursor:pointer;border:none;background:transparent;border-bottom:1px solid rgba(255,255,255,.04);display:block">Wastafel Dapur (Grease/FOG)</button>

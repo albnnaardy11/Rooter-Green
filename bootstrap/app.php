@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => \App\Http\Middleware\SuperAdminOnly::class,
             'audit' => \App\Http\Middleware\AdminAuditLogger::class,
             'phantom' => \App\Http\Middleware\PhantomExchangeMiddleware::class,
+            'ai.ratelimit' => \App\Http\Middleware\RateLimitAiDiagnose::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

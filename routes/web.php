@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/area/{city}', [\App\Http\Controllers\LocalSeoController::class, 'cityLanding'])->name('local.city');
 Route::get('/area/{city}/{service}', [\App\Http\Controllers\LocalSeoController::class, 'show'])->name('local.service');
 Route::get('/ai-diagnostic', [\App\Http\Controllers\AiDiagnosticController::class, 'index'])->name('ai.diagnostic');
-Route::post('/ai-diagnostic/store', [\App\Http\Controllers\AiDiagnosticController::class, 'store'])->middleware(['phantom', 'throttle:phantom-api'])->name('ai.diagnostic.store');
+Route::post('/ai-diagnostic/store', [\App\Http\Controllers\AiDiagnosticController::class, 'store'])->middleware(['phantom', 'throttle:phantom-api', 'ai.ratelimit'])->name('ai.diagnostic.store');
 Route::get('/ai-diagnostic/handshake', [\App\Http\Controllers\AiDiagnosticController::class, 'getHandshake'])->middleware('throttle:phantom-api')->name('ai.diagnostic.handshake');
 Route::get('/api/search/suggest', [\App\Http\Controllers\SearchController::class, 'suggest'])->name('api.search.suggest');
 Route::post('/api/phantom/introspect', [\App\Http\Controllers\Api\PhantomIntrospectionController::class, 'introspect'])->middleware('throttle:phantom-api')->name('api.phantom.introspect');
