@@ -25,6 +25,18 @@
             </div>
             
             <div class="flex items-center gap-4">
+                @if($incidents->count() > 3 && $stats['lockdown_active'])
+                <form action="{{ route('admin.vault.genesis') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="group relative px-8 py-4 bg-primary/20 border border-primary/20 rounded-2xl transition-all hover:bg-primary hover:text-white">
+                        <div class="flex items-center gap-3">
+                            <i class="ri-restart-line text-xl animate-spin-slow"></i>
+                            <span class="font-bold uppercase text-xs tracking-widest">Genesis Restoration</span>
+                        </div>
+                    </button>
+                </form>
+                @endif
+
                 @if($stats['lockdown_active'])
                 <form action="{{ route('admin.vault.emergency-release') }}" method="POST">
                     @csrf
@@ -311,6 +323,26 @@
             <div class="flex flex-col items-center justify-center py-12 text-center">
                 <i class="ri-shield-check-line text-6xl text-emerald-500/20 mb-4"></i>
                 <p class="text-sm text-slate-500 italic">No ARR incidents recorded in recent telemetry.</p>
+            </div>
+            @endif
+
+            @if(count($reports) > 0)
+            <div class="mt-8 pt-8 border-t border-white/5">
+                <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Laporan Pertahanan Elite (Archived PMs)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach($reports as $report)
+                    <a href="{{ route('admin.vault.reports', $report['id']) }}" target="_blank" class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/50 transition-all group">
+                        <div class="flex items-center gap-4">
+                            <i class="ri-file-shield-2-line text-2xl text-slate-500 group-hover:text-primary transition-all"></i>
+                            <div>
+                                <p class="text-xs font-bold text-white uppercase">{{ $report['id'] }}</p>
+                                <p class="text-[10px] text-slate-500 tracking-widest">{{ $report['date'] }}</p>
+                            </div>
+                        </div>
+                        <i class="ri-download-cloud-2-line text-slate-600"></i>
+                    </a>
+                    @endforeach
+                </div>
             </div>
             @endif
         </div>

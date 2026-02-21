@@ -151,6 +151,8 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
         Route::get('/vault/flush', function() { return redirect()->route('admin.vault.index'); });
         Route::post('/vault/rotate-tokens', [\App\Http\Controllers\Admin\VaultController::class, 'rotateTokens'])->name('vault.rotate');
         Route::get('/vault/forensics/{id}', [\App\Http\Controllers\Admin\VaultController::class, 'viewForensics'])->name('vault.forensics');
+        Route::post('/vault/genesis', [\App\Http\Controllers\Admin\VaultController::class, 'genesisRestoration'])->name('vault.genesis');
+        Route::get('/vault/reports/{id}', [\App\Http\Controllers\Admin\VaultController::class, 'viewPostMortem'])->name('vault.reports');
     });
 
     // Honey Pot Trap (Lead Cyber Security Implementation)

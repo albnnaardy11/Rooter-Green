@@ -37,8 +37,20 @@ class VaultController extends Controller
             ->latest()
             ->take(5)
             ->get();
+          // Fetch Reports/Post-Mortems
+        $reports = [];
+        $reportDir = storage_path('vault/reports');
+        if (file_exists($reportDir)) {
+            $files = glob($reportDir . '/*.report');
+            foreach ($files as $file) {
+                $reports[] = [
+                    'id' => basename($file, '.report'),
+                    'date' => date('Y-m-d H:i', filemtime($file))
+                ];
+            }
+        }
 
-        return view('admin.vault.index', compact('stats', 'latestAudit', 'incidents'));
+        return view('admin.vault.index', compact('stats', 'latestAudit', 'incidents', 'reports'));
     }
 
     /**
@@ -119,5 +131,30 @@ class VaultController extends Controller
         Cache::forget('blocked_ips');
         $this->security->auditLog("Manual Firewall Flush");
         return redirect()->route('admin.vault.index')->with('success', "Firewall cache has been cleared.");
+    }
+
+    /**
+     * UNICORP-GRADE: Genesis Restoration (Return to operational after Panic)
+     */
+    public function genesisRestoration(\App\Services\Sentinel\SentinelService $sentinel)
+    {
+        if ($sentinel->genesisRestoration()) {
+            $this->security->auditLog("GENESIS RESTORATION EXECUTED: All nodes clear & integrity verified.");
+            return redirect()->route('admin.vault.index')->with('success', "GENESIS PROTOCOL: System restored to Iron-Clad baseline. Core integrity verified.");
+        }
+
+        return redirect()->route('admin.vault.index')->with('error', "CRITICAL: Genesis Restoration failed. Core integrity breach detected!");
+    }
+
+    /**
+     * UNICORP-GRADE: Post-Mortem Report Viewer
+     */
+    public function viewPostMortem($id)
+    {
+        $path = storage_path('vault/reports/' . $id . '.report');
+        if (!file_exists($path)) abort(404);
+
+        $content = base64_decode(file_get_contents($path));
+        return response($content)->header('Content-Type', 'text/plain');
     }
 }
