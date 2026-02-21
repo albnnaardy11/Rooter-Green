@@ -140,15 +140,17 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
     // Audit & Activity
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');
 
-    // Security & Access Vault (New Defensive Core)
-    Route::get('/vault', [\App\Http\Controllers\Admin\VaultController::class, 'index'])->name('vault.index');
-    Route::post('/vault/lockdown', [\App\Http\Controllers\Admin\VaultController::class, 'toggleLockdown'])->name('vault.lockdown');
-    Route::post('/vault/scan', [\App\Http\Controllers\Admin\VaultController::class, 'executeHolisticScan'])->name('vault.scan');
-    Route::post('/vault/emergency-release', [\App\Http\Controllers\Admin\VaultController::class, 'emergencyRelease'])->name('vault.emergency-release');
-    Route::get('/vault/lockdown', function() { return redirect()->route('admin.vault.index'); });
-    Route::post('/vault/flush', [\App\Http\Controllers\Admin\VaultController::class, 'clearBlockedIps'])->name('vault.flush');
-    Route::get('/vault/flush', function() { return redirect()->route('admin.vault.index'); });
-    Route::post('/vault/rotate-tokens', [\App\Http\Controllers\Admin\VaultController::class, 'rotateTokens'])->name('vault.rotate');
+    // Security & Access Vault (New Defensive Core - Super Admin Only)
+    Route::middleware(['super_admin'])->group(function() {
+        Route::get('/vault', [\App\Http\Controllers\Admin\VaultController::class, 'index'])->name('vault.index');
+        Route::post('/vault/lockdown', [\App\Http\Controllers\Admin\VaultController::class, 'toggleLockdown'])->name('vault.lockdown');
+        Route::post('/vault/scan', [\App\Http\Controllers\Admin\VaultController::class, 'executeHolisticScan'])->name('vault.scan');
+        Route::post('/vault/emergency-release', [\App\Http\Controllers\Admin\VaultController::class, 'emergencyRelease'])->name('vault.emergency-release');
+        Route::get('/vault/lockdown', function() { return redirect()->route('admin.vault.index'); });
+        Route::post('/vault/flush', [\App\Http\Controllers\Admin\VaultController::class, 'clearBlockedIps'])->name('vault.flush');
+        Route::get('/vault/flush', function() { return redirect()->route('admin.vault.index'); });
+        Route::post('/vault/rotate-tokens', [\App\Http\Controllers\Admin\VaultController::class, 'rotateTokens'])->name('vault.rotate');
+    });
 
     // Honey Pot Trap (Lead Cyber Security Implementation)
     Route::get('/system/gatekeeper/neural-sync', function() {

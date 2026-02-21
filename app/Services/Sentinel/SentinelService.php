@@ -45,7 +45,7 @@ class SentinelService
         $metrics = [
             'neural_assets' => $assetIntegrity,
             'memory_baseline' => '40.00 MB',
-            'db_latency' => round($dbLatency, 4) . 'ms',
+            'db_latency' => 'Baseline: 2.05ms | Actual: ' . round($dbLatency, 4) . 'ms',
             'env_context' => $envContext,
             'node_status' => $connStatus,
             'system_efficiency' => '100%'
@@ -74,8 +74,8 @@ class SentinelService
      */
     protected function getEnvironmentTelemetry()
     {
-        $platform = str_contains(base_path(), 'laragon') ? 'Laragon' : 'cPanel';
-        $pathing = $platform === 'Laragon' ? 'Windows/Win64' : 'Linux/x86_64';
+        $platform = str_contains(base_path(), 'laragon') ? 'Laragon/Local' : 'cPanel/Production';
+        $pathing = str_contains(base_path(), 'laragon') ? 'Windows/Win64' : 'Linux/x86_64';
         
         return [
             'platform' => $platform,
