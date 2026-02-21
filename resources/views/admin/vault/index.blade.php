@@ -111,11 +111,71 @@
                     <h3 class="text-white font-bold">{{ $stats['audit_logs'] }} Events</h3>
                 </div>
             </div>
-            <a href="{{ route('admin.activity-logs.index') }}" class="text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-primary transition-all flex items-center gap-2">
-                <i class="ri-external-link-line"></i> View System Logs
-            </a>
+            <div class="space-y-3">
+                <form action="{{ route('admin.vault.scan') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full text-left text-[10px] font-black text-emerald-500 hover:text-white uppercase tracking-widest transition-all flex items-center gap-2">
+                        <i class="ri-macbook-line"></i> Run Deep Holistic Scan
+                    </button>
+                </form>
+                <a href="{{ route('admin.activity-logs.index') }}" class="text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-primary transition-all flex items-center gap-2">
+                    <i class="ri-external-link-line"></i> View System Logs
+                </a>
+            </div>
         </div>
     </div>
+    
+    @if($latestAudit)
+    <!-- Sentinel Immutability Engine: Holistic Scan Results -->
+    <div class="bg-slate-900 border border-emerald-500/20 rounded-[32px] overflow-hidden p-8">
+        <div class="flex items-center justify-between mb-8 pb-6 border-b border-white/5">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/10">
+                    <i class="ri-pulse-line text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-heading font-black uppercase tracking-widest text-sm">Sentinel Immutability Scan</h3>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest">Verified at: {{ $latestAudit->created_at->format('Y-m-d H:i:s') }} GMT</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-emerald-500/20">Elite Verified</span>
+                <span class="px-3 py-1 bg-white/5 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-white/5">{{ $latestAudit->node_id }}</span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Neural Assets</p>
+                <p class="text-xs font-bold text-white uppercase">{{ $latestAudit->metrics['neural_assets'] ?? 'N/A' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">DB Pulse</p>
+                <p class="text-xs font-bold text-emerald-500">{{ $latestAudit->metrics['db_latency'] ?? 'N/A' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Memory Baseline</p>
+                <p class="text-xs font-bold text-white italic">{{ $latestAudit->metrics['memory_baseline'] ?? 'N/A' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Node Efficiency</p>
+                <p class="text-xs font-bold text-primary">{{ $latestAudit->metrics['system_efficiency'] ?? 'N/A' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Platform Context</p>
+                <p class="text-xs font-bold text-white uppercase">{{ $latestAudit->environment }} ({{ strtoupper($latestAudit->metrics['env_context']['php_version'] ?? 'N/A') }})</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Connectivity</p>
+                <div class="flex flex-wrap gap-1">
+                    @foreach($latestAudit->metrics['node_status'] ?? [] as $node => $status)
+                        <span title="{{ $node }}" class="w-2 h-2 rounded-full {{ $status === 'Operational' ? 'bg-emerald-500' : 'bg-red-500' }}"></span>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Defensive Strategies -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

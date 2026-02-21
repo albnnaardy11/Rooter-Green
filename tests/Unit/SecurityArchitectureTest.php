@@ -11,6 +11,9 @@ use Mockery;
 
 class SecurityArchitectureTest extends TestCase
 {
+    private float $start_time;
+    private int $start_memory;
+
     protected function setUp(): void
     {
         parent::setUp();

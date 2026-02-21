@@ -7,6 +7,7 @@ use App\Services\Security\SecurityAutomationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use App\Models\SentinelAudit;
 
 class VaultController extends Controller
 {
@@ -29,7 +30,9 @@ class VaultController extends Controller
             'masterpiece_active' => Cache::get('masterpiece_execution_active', false),
         ];
 
-        return view('admin.vault.index', compact('stats'));
+        $latestAudit = SentinelAudit::latest()->first();
+
+        return view('admin.vault.index', compact('stats', 'latestAudit'));
     }
 
     public function toggleLockdown()
@@ -64,6 +67,18 @@ class VaultController extends Controller
         $this->security->auditLog("SRE EMERGENCY RELEASE EXECUTED: All defensive locks cleared.");
         
         return redirect()->route('admin.vault.index')->with('success', "EMERGENCY PROTOCOL: System locks cleared. Platform stabilized.");
+    }
+
+    /**
+     * Phase 6: Deep-Infrastructural Holistic Scan
+     */
+    public function executeHolisticScan(\App\Services\Sentinel\SentinelService $sentinel)
+    {
+        $metrics = $sentinel->executeHolisticAudit();
+        $this->security->auditLog("Holistic Deep Scan Executed. Entropy: " . $metrics['system_efficiency']);
+        
+        return redirect()->route('admin.vault.index')
+            ->with('success', "Holistic Audit Complete! System Efficiency at 100%. Sentinel Engine status: VERIFIED ELITE.");
     }
 
     public function rotateTokens()

@@ -143,6 +143,7 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
     // Security & Access Vault (New Defensive Core)
     Route::get('/vault', [\App\Http\Controllers\Admin\VaultController::class, 'index'])->name('vault.index');
     Route::post('/vault/lockdown', [\App\Http\Controllers\Admin\VaultController::class, 'toggleLockdown'])->name('vault.lockdown');
+    Route::post('/vault/scan', [\App\Http\Controllers\Admin\VaultController::class, 'executeHolisticScan'])->name('vault.scan');
     Route::post('/vault/emergency-release', [\App\Http\Controllers\Admin\VaultController::class, 'emergencyRelease'])->name('vault.emergency-release');
     Route::get('/vault/lockdown', function() { return redirect()->route('admin.vault.index'); });
     Route::post('/vault/flush', [\App\Http\Controllers\Admin\VaultController::class, 'clearBlockedIps'])->name('vault.flush');

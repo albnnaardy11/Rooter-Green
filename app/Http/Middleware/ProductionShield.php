@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class ProductionShield
 {
@@ -23,7 +24,7 @@ class ProductionShield
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
+    public function handle(Request $request, Closure $next): Response
     {
         $ip = $request->ip();
         $adminIps = ['127.0.0.1', '::1']; // Localhost & Secure Admin Subnets
@@ -45,14 +46,14 @@ class ProductionShield
             $key = 'brute_force_auth:' . $ip;
             $globalKey = 'brute_force_global_counter';
             
-            $attempts = \Illuminate\Support\Facades\Cache::increment($key);
-            $globalAttempts = \Illuminate\Support\Facades\Cache::increment($globalKey);
+            $attempts = Cache::increment($key);
+            $globalAttempts = Cache::increment($globalKey);
             
             if ($attempts === 1) {
-                \Illuminate\Support\Facades\Cache::put($key, 1, 60);
+                Cache::put($key, 1, 60);
             }
             if ($globalAttempts === 1) {
-                \Illuminate\Support\Facades\Cache::put($globalKey, 1, 60);
+                Cache::put($globalKey, 1, 60);
             }
 
             if ($attempts > 5 || $globalAttempts > 50) {
@@ -63,6 +64,13 @@ class ProductionShield
             }
         }
 
-        return $next($request);
+        $response = $next($request);
+
+        // 4. Cryptographic Fortification: HSTS (Zero-Trust Logic)
+        if ($request->isSecure() || config('app.env') === 'production') {
+            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+        }
+
+        return $response;
     }
 }
