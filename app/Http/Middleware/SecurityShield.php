@@ -61,7 +61,8 @@ class SecurityShield
                 // Priority 2: Read-Only (GET) only for other Admin modules
                 if ($request->is('admin/*')) {
                     if (!$request->isMethod('GET')) {
-                        return response()->json(['error' => 'IRON-CLAD POLICY: System is in Write-Protected Lockdown Mode.'], 503);
+                        $this->security->auditLog("Unauthorized Write Attempt blocked during Lockdown", ['path' => $request->path()]);
+                        abort(403, 'IRON-CLAD POLICY: System is in Write-Protected Lockdown Mode.');
                     }
                 } else {
                     // Priority 3: Stealth/Bunker 503 for all non-admin public traffic
