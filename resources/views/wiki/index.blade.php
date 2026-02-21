@@ -19,7 +19,7 @@
     }">
 
     {{-- HONEY POT: Bot Trap (Lead Cyber Security Implementation) --}}
-    <a href="{{ route('security.honeypot') }}" rel="nofollow" style="display:none; visibility:hidden; width:0; height:0;" aria-hidden="true">RooterIN Neural Asset Sync</a>
+    <a href="{{ route('admin.security.honeypot') }}" rel="nofollow" style="display:none; visibility:hidden; width:0; height:0;" aria-hidden="true">RooterIN Neural Asset Sync</a>
 
     {{-- 1. Hero Section - Knowledge Base Style --}}
     <section class="relative bg-secondary min-h-[75vh] sm:min-h-[90vh] flex items-center overflow-hidden pt-32 sm:pt-48 pb-10 sm:pb-42 scrap-prevent">

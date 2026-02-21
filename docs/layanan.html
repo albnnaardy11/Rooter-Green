@@ -1,260 +1,1362 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Katalog Layanan - RooterIn Indonesia</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+
+    <title>RooterIn - Promo Akhir Pekan: Deteksi Kamera AI Gratis!</title>
+<meta property="og:title" content="RooterIn - Promo Akhir Pekan: Deteksi Kamera AI Gratis!">
+<meta property="og:site_name" content="RooterIn">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama"}</script>
+    
+    
+    <link rel="alternate" hreflang="id" href="?lang=id" />
+<link rel="alternate" hreflang="en" href="?lang=en" />
+<link rel="alternate" hreflang="x-default" href="index.html" />
+    
+    
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"RooterIn","url":"","potentialAction":{"@type":"SearchAction","target":"/search?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"RooterIn","url":"","telephone":"0812-4666-8749","priceRange":"$$","image":"images/logo.png","address":{"@type":"PostalAddress","streetAddress":"Jakarta, Indonesia","addressLocality":"Jakarta","addressCountry":"ID"}}</script>
+
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#22c55e',
-                        secondary: '#0f172a',
-                        accent: '#f97316',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Poppins', 'sans-serif'],
-                    }
-                }
-            }
+        function trackWhatsAppClick(source = 'general') {
+            fetch('/api/track-whatsapp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    url: window.location.href,
+                    source: source
+                })
+            });
         }
     </script>
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #eee;
-            border-radius: 10px;
-        }
-    </style>
+    <!-- Scripts -->
+    <link rel="preload" as="style" href="build/assets/app-BkSpVVtQ.css" /><link rel="modulepreload" as="script" href="build/assets/app-CBbTb_k3.js" /><link rel="stylesheet" href="build/assets/app-BkSpVVtQ.css" /><script type="module" src="build/assets/app-CBbTb_k3.js"></script>
+    
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "source": "list",
+        "urls": ["", "layanan.html", "ai-diagnostic.html"]
+      }, {
+        "source": "document",
+        "where": { "and": [
+          { "href_matches": "/area/*" },
+          { "not": { "href_matches": "/admin/*" }}
+        ]},
+        "eagerness": "moderate"
+      }]
+    }
+    </script>
 </head>
-
 <body class="font-sans antialiased bg-stone-50 text-slate-800">
     <div id="site-content" class="min-h-screen flex flex-col transition-all duration-300">
-
-        <!-- Navbar -->
-        <nav x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 50)"
-            class="fixed top-0 left-0 right-0 z-50 pt-4 sm:pt-10 px-3 sm:px-4 transition-all duration-500 ease-in-out">
-            <div :class="scrolled ? 'max-w-7xl py-3' : 'max-w-[85rem] py-4.5 sm:py-5.5'"
-                class="mx-auto bg-secondary/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl transition-all px-6 lg:px-9 flex items-center justify-between">
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-4 group">
-                    <div
-                        class="w-10 h-10 sm:w-12 sm:h-12 bg-primary flex items-center justify-center rounded-2xl group-hover:scale-105 transition-all">
-                        <i class="ri-flashlight-fill text-white text-xl"></i>
-                    </div>
-                    <div class="flex flex-col"><span
-                            class="font-heading font-black text-xl text-white tracking-widest leading-none">ROOTER<span
-                                class="text-primary">IN</span></span></div>
-                </a>
-                <div class="hidden xl:flex items-center space-x-2">
-                    <a href="index.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">Home</a>
-                    <a href="about.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">About</a>
-                    <a href="layanan.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-primary transition-all">Layanan</a>
-                    <a href="galeri.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">Gallery</a>
-                    <a href="tips.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">Tips</a>
-                    <a href="ai-diagnostic.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">AI
-                        Diagnostic</a>
-                    <a href="wiki.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">WikiPipa</a>
-                    <a href="kontak.html"
-                        class="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-all">Kontak</a>
-                </div>
-                <a href="https://wa.me/6281246668749"
-                    class="hidden md:block px-6 py-3 bg-primary text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">WhatsApp
-                    SOS</a>
+        <!-- Modern Floating Navbar -->
+<nav x-data="{ open: false, scrolled: false }" 
+     @scroll.window="scrolled = (window.pageYOffset > 50)"
+     class="fixed top-0 left-0 right-0 z-50 pt-4 sm:pt-10 px-3 sm:px-4 transition-all duration-500 ease-in-out">
+    
+    <div :class="scrolled ? 'max-w-7xl py-3' : 'max-w-[85rem] py-4.5 sm:py-5.5'"
+          class="mx-auto bg-secondary/95 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-[1.75rem] shadow-[0_25px_50px_rgba(0,0,0,0.35)] transition-all duration-500 px-6 lg:px-9 flex items-center justify-between relative">
+        
+        <!-- Logo Area -->
+        <div class="flex-shrink-0 flex items-center gap-4 group cursor-pointer relative">
+            <div class="relative w-10 h-10 sm:w-12 sm:h-12 bg-primary flex items-center justify-center rounded-2xl shadow-lg shadow-primary/20 transition-all duration-500 group-hover:scale-105">
+                <i class="ri-flashlight-fill text-white text-2xl sm:text-2xl"></i>
             </div>
-        </nav>
+            <div class="relative flex flex-col">
+                <span class="font-heading font-black text-xl sm:text-2xl text-white tracking-widest leading-none">ROOTER<span class="text-primary">IN</span></span>
+                <span class="hidden sm:block text-[9px] text-gray-500 font-black tracking-[0.4em] uppercase mt-1.5">Organic Plumbing Hub</span>
+            </div>
+        </div>
 
-        <main class="flex-grow pt-32">
-            <!-- SERVICES HERO -->
-            <section class="py-24 bg-secondary relative overflow-hidden">
-                <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-                    <div
-                        class="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
-                        <span class="text-primary font-black text-[9px] uppercase tracking-[0.3em]">Technical
-                            catalog</span>
-                    </div>
-                    <h1
-                        class="text-5xl md:text-8xl font-heading font-black text-white leading-[0.9] tracking-tighter mb-12">
-                        Katalog Solusi <br> <span class="text-primary italic">Plumbing Modern.</span>
-                    </h1>
-                </div>
-            </section>
-
-            <!-- CATALOG SECTION -->
-            <section x-data="{ 
-                activeCategory: null,
-                categories: [
-                    {
-                        id: 'A',
-                        title: 'Saluran Pembuangan',
-                        icon: 'ri-water-flash-fill',
-                        color: 'primary',
-                        desc: 'Pembersihan saluran mampet dengan teknologi rooting tanpa bongkar.',
-                        items: ['Wastafel Dapur', 'Floor Drain Kamar Mandi', 'Saluran Air Hujan', 'Pipa Sink Restoran'],
-                        pricing: [{ type: 'Standard', price: 'Rp 450k+', note: 'Harga dasar sesuai tingkat kesulitan.' }]
-                    },
-                    {
-                        id: 'B',
-                        title: 'Air Bersih & Toren',
-                        icon: 'ri-drop-fill',
-                        color: 'accent',
-                        desc: 'Perawatan instalasi air bersih dan pembersihan tangki penampungan.',
-                        items: ['Cuci Toren Dasar', 'Cuci Toren & Pipa', 'Sirkulasi Pipa Kerak', 'Instalasi Radar Toren'],
-                        pricing: [{ type: 'Package', price: 'Rp 350k+', note: 'Sudah termasuk disinfeksi tuntas.' }]
-                    },
-                    {
-                        id: 'C',
-                        title: 'Inspeksi & Alat',
-                        icon: 'ri-tools-fill',
-                        color: 'secondary',
-                        desc: 'Audit teknis perpipaan menggunakan sensor dan kamera khusus.',
-                        items: ['Inspeksi Kamera (CCTV)', 'Deteksi Kebocoran Akustik', 'Mapping Jalur Pipa', 'Deep Cleaning Pipa'],
-                        pricing: [{ type: 'Advanced', price: 'Rp 600k+', note: 'Laporan digital forensic lengkap.' }]
-                    }
-                ]
-            }" class="py-32 bg-white relative overflow-hidden">
-                <div class="max-w-7xl mx-auto px-6 relative z-10">
-                    <div class="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
-                        <div class="max-w-2xl text-left">
-                            <h2
-                                class="text-4xl sm:text-6xl font-heading font-black text-secondary leading-tight tracking-tighter">
-                                Solusi Tuntas <br> <span class="text-primary italic">Masalah Saluran.</span>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <template x-for="cat in categories" :key="cat.id">
-                            <div @click="activeCategory = (activeCategory === cat.id ? null : cat.id)"
-                                class="group relative bg-stone-50 rounded-[3rem] p-10 cursor-pointer overflow-hidden transition-all duration-700 hover:-translate-y-4 border border-transparent shadow-sm"
-                                :class="activeCategory === cat.id ? 'border-primary/20 bg-white shadow-2xl ring-4 ring-primary/5' : ''">
-                                <div class="relative z-10">
-                                    <div class="flex items-center justify-between mb-12">
-                                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-xl transition-all duration-500"
-                                            :class="activeCategory === cat.id ? 'bg-primary text-white scale-110' : 'bg-white text-gray-400 group-hover:text-primary'">
-                                            <i :class="cat.icon"></i>
-                                        </div>
-                                        <span
-                                            class="px-5 py-2 rounded-full bg-white text-[9px] font-black uppercase tracking-widest text-gray-400 border border-gray-100 shadow-sm"
-                                            x-text="cat.pricing[0].price"></span>
-                                    </div>
-                                    <h3 class="text-2xl font-heading font-black text-secondary tracking-tight mb-4"
-                                        x-text="cat.title"></h3>
-                                    <p class="text-gray-500 text-sm font-medium leading-relaxed mb-8" x-text="cat.desc">
-                                    </p>
-                                    <button
-                                        class="w-full py-4 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-lg"
-                                        :class="activeCategory === cat.id ? 'bg-secondary text-white' : 'bg-white text-secondary group-hover:bg-primary group-hover:text-white'">
-                                        <span
-                                            x-text="activeCategory === cat.id ? 'Tutup Detail' : 'Lihat Detail Layanan'"></span>
-                                        <i class="ri-arrow-right-line"
-                                            :class="activeCategory === cat.id ? 'rotate-90' : ''"></i>
+        <!-- Desktop Menu -->
+        <div class="hidden xl:flex items-center space-x-2">
+                            <a href="index.html" 
+                   class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-gray-400 hover:text-white">
+                    Home
+                                    </a>
+                            <a href="about.html" 
+                   class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-gray-400 hover:text-white">
+                    About
+                                    </a>
+                            <a href="layanan.html" 
+                   class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-primary">
+                    Layanan
+                                            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-primary rounded-full"></span>
+                                    </a>
+                            <a href="galeri.html" 
+                   class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-gray-400 hover:text-white">
+                    Gallery
+                                    </a>
+                            <a href="ai-diagnostic.html" 
+                   class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-gray-400 hover:text-white">
+                    AI Diagnostic
+                                    </a>
+            
+            <!-- Branched Menu (Pengetahuan) -->
+            <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative group">
+                <button class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center gap-1.5 text-gray-400 hover:text-white">
+                    <span>Pengetahuan</span>
+                    <i class="ri-arrow-down-s-line text-[10px] transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
                                     </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                     style="display: none;"
+                     class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-secondary/95 backdrop-blur-2xl border border-white/10 rounded-2xl py-3 shadow-3xl z-[100]">
+                    <a href="wiki.html" class="block px-6 py-3 text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        WikiPipa
+                    </a>
+                    <a href="tips.html" class="block px-6 py-3 text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-all border-t border-white/5">
+                        Tips & Trik
+                    </a>
+                </div>
+            </div>
 
-                    <!-- DRAWERS -->
-                    <template x-for="cat in categories" :key="'drawer-' + cat.id">
-                        <div x-show="activeCategory === cat.id" x-collapse class="mt-12">
-                            <div
-                                class="bg-secondary rounded-[3.5rem] p-12 sm:p-20 text-white relative overflow-hidden shadow-2xl">
-                                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
-                                    <div>
-                                        <h4 class="text-3xl font-heading font-black mb-12 tracking-tight">Detail Lingkup
-                                            <br> <span class="text-white/60 italic">Pekerjaan Kami.</span>
-                                        </h4>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <template x-for="item in cat.items" :key="item">
-                                                <div
-                                                    class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
-                                                    <div class="w-2 h-2 rounded-full bg-primary"></div>
-                                                    <span class="text-xs font-bold tracking-wide" x-text="item"></span>
-                                                </div>
-                                            </template>
-                                        </div>
+            <a href="kontak.html" 
+               class="relative px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-300 text-gray-400 hover:text-white">
+                Kontak
+            </a>
+        </div>
+
+        <!-- Ghostwriting Search Component -->
+        <div x-data="ghostSearch()" class="hidden md:flex items-center gap-4 relative">
+            <div x-show="searchOpen" class="absolute right-0 top-full mt-4 w-[400px] bg-secondary/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-3xl z-[100]" x-cloak @click.away="searchOpen = false">
+                <input type="text" x-model="query" @input.debounce.300ms="fetchSuggestions" placeholder="Cari masalah pipa anda..." class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-primary transition-all">
+                
+                <div class="mt-6 space-y-4 max-h-[300px] overflow-y-auto no-scrollbar">
+                    <div x-show="loading" class="flex items-center justify-center py-10">
+                        <div class="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    </div>
+                    
+                    <template x-if="!loading">
+                        <div class="space-y-4">
+                            <template x-for="item in results" :key="item.title">
+                                <a :href="item.url" class="block p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[8px] font-black text-primary uppercase tracking-widest" x-text="item.type"></span>
                                     </div>
-                                    <div class="flex flex-col justify-between">
-                                        <div>
-                                            <p
-                                                class="text-[10px] text-primary font-black uppercase tracking-widest mb-4">
-                                                Estimasi Biaya</p>
-                                            <div class="p-8 rounded-3xl bg-white text-secondary">
-                                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2"
-                                                    x-text="cat.pricing[0].type"></p>
-                                                <p class="text-4xl font-heading font-black mb-2"
-                                                    x-text="cat.pricing[0].price"></p>
-                                                <p class="text-[11px] font-bold text-gray-500 italic"
-                                                    x-text="cat.pricing[0].note"></p>
-                                            </div>
-                                        </div>
-                                        <a href="https://wa.me/6281246668749"
-                                            class="mt-12 w-full bg-primary py-6 rounded-2xl flex items-center justify-center gap-4 text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
-                                            <i class="ri-whatsapp-line text-xl"></i>
-                                            <span>Pesan Layanan Sekarang</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                                    <h4 class="text-white font-bold text-sm" x-text="item.title"></h4>
+                                    <p class="text-slate-500 text-[10px] italic mt-1" x-text="item.snippet"></p>
+                                </a>
+                            </template>
+                            <div x-show="results.length === 0 && query.length > 2" class="text-slate-500 text-xs italic text-center py-4">Tidak ada saran cepat...</div>
                         </div>
                     </template>
                 </div>
-            </section>
-        </main>
+            </div>
 
-        <!-- Footer -->
-        <footer class="bg-secondary text-white pt-24 pb-12 relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 relative z-10">
-                <div class="flex flex-col lg:flex-row justify-between gap-20 mb-20 text-center md:text-left">
-                    <div class="lg:w-1/3">
-                        <div class="flex items-center gap-4 mb-8 justify-center md:justify-start">
-                            <div
-                                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg transform rotate-12">
-                                <i class="ri-flashlight-fill text-white text-2xl"></i>
-                            </div>
-                            <span class="font-heading font-black text-3xl tracking-tighter uppercase">ROOTER<span
-                                    class="text-primary italic">IN</span></span>
-                        </div>
-                        <p class="text-gray-400 font-medium mb-10 max-w-sm ml-auto mr-auto md:ml-0 md:mr-0">Solusi
-                            perpipaan modern tanpa bongkar.</p>
-                    </div>
+            <button @click="searchOpen = !searchOpen" class="w-11 h-11 flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all">
+                <i :class="searchOpen ? 'ri-close-line' : 'ri-search-line'" class="text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Action Area -->
+        <div class="flex items-center gap-3 sm:gap-5">
+            <a href="https://wa.me/6281234567890" 
+               class="hidden md:flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-4 xl:px-6 py-2.5 xl:py-3 rounded-2xl transition-all duration-300 group">
+                <div class="hidden xl:block text-right">
+                    <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1.5">Butuh Bantuan?</div>
+                    <div class="text-white font-black text-[11px] uppercase tracking-widest leading-none">WhatsApp SOS</div>
                 </div>
-                <div
-                    class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between gap-8 text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] text-center md:text-left">
-                    <p>© 2026 RooterIn Indonesia • Developed by Ardy Albanna</p>
+                <div class="w-8 h-8 xl:w-9 xl:h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all duration-300">
+                    <i class="ri-whatsapp-line text-base xl:text-lg text-primary group-hover:text-white transition-colors"></i>
+                </div>
+            </a>
+
+            <!-- Pop-out Hamburger -->
+            <button @click="open = ! open" 
+                    class="relative xl:hidden w-11 h-11 flex items-center justify-center rounded-2xl transition-all duration-500 z-[70]"
+                    :class="open ? 'bg-primary scale-110 shadow-[0_10px_25px_rgba(31,175,90,0.4)]' : 'bg-white/10'">
+                <div class="relative w-6 h-5 flex items-center justify-center">
+                    <span class="absolute h-[3px] bg-white rounded-full transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)]"
+                          :class="open ? 'w-6 rotate-45' : 'w-6 -translate-y-2'"></span>
+                    <span class="absolute h-[3px] bg-white rounded-full transition-all duration-300"
+                          :class="open ? 'w-0 opacity-0 translate-x-4' : 'w-4 translate-x-1.5'"></span>
+                    <span class="absolute h-[3px] bg-white rounded-full transition-all duration-500 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)]"
+                          :class="open ? 'w-6 -rotate-45' : 'w-6 translate-y-2'"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Smooth Mobile Menu Overlay: Hub & Landscape Optimized -->
+    <div x-show="open" 
+         x-transition:enter="transition ease-[cubic-bezier(0.34,1.56,0.64,1)] duration-700"
+         x-transition:enter-start="opacity-0 translate-y-20 scale-90"
+         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+         x-transition:leave="transition ease-in duration-400"
+         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+         x-transition:leave-end="opacity-0 translate-y-10 scale-95"
+         class="xl:hidden absolute top-[90px] sm:top-[120px] left-4 right-4 sm:left-8 sm:right-8 bg-secondary/98 backdrop-blur-3xl border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 shadow-[0_40px_100px_rgba(0,0,0,0.5)] max-h-[calc(100vh-140px)] overflow-y-auto no-scrollbar">
+        
+        <div class="relative flex flex-col gap-1 z-20">
+                        
+                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[60ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="index.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="group-hover:text-primary transition-all duration-300 group-hover:translate-x-2">Home</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[120ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="about.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="group-hover:text-primary transition-all duration-300 group-hover:translate-x-2">About Us</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[180ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="layanan.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="text-primary transition-all duration-300 group-hover:translate-x-2">Services</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[240ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="ai-diagnostic.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="group-hover:text-primary transition-all duration-300 group-hover:translate-x-2">AI Diagnostic</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[300ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="galeri.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="group-hover:text-primary transition-all duration-300 group-hover:translate-x-2">Project Gallery</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                                            <div x-show="open"
+                     x-transition:enter="transition ease-out duration-600 delay-[360ms]"
+                     x-transition:enter-start="opacity-0 translate-x-10 rotate-3"
+                     x-transition:enter-end="opacity-100 translate-x-0 rotate-0">
+                    <a @click="open = false" href="kontak.html" 
+                       class="text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between border-b border-white/5 group">
+                        <span class="group-hover:text-primary transition-all duration-300 group-hover:translate-x-2">Contact</span>
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-sm group-hover:shadow-primary/30">
+                            <i class="ri-arrow-right-line text-gray-400 group-hover:text-white text-base transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </a>
+                </div>
+                            
+            <!-- Mobile Branched Menu (Knowledge Hub) -->
+            <div x-data="{ subOpen: false }" 
+                 x-show="open"
+                 x-transition:enter="transition ease-out duration-600 delay-[500ms]"
+                 class="border-b border-white/5">
+                <button @click="subOpen = !subOpen" 
+                        class="w-full text-base sm:text-lg font-black text-white py-2.5 sm:py-3.5 flex items-center justify-between group">
+                    <span :class="subOpen ? 'text-primary' : 'group-hover:text-primary'" class="transition-all duration-300">Pengetahuan</span>
+                    <i class="ri-add-line text-xl transition-transform duration-500" :class="subOpen ? 'rotate-45 text-primary' : 'text-gray-400'"></i>
+                </button>
+                
+                <div x-show="subOpen" 
+                     x-collapse
+                     class="pl-4 pb-4 flex flex-col gap-2">
+                    <a href="wiki.html" 
+                       class="py-3 px-5 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between ">
+                        <span class="text-sm font-black text-gray-400 uppercase tracking-widest">WikiPipa</span>
+                        <i class="ri-book-read-line text-gray-600"></i>
+                    </a>
+                    <a href="tips.html" 
+                       class="py-3 px-5 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between ">
+                        <span class="text-sm font-black text-gray-400 uppercase tracking-widest">Tips & Trik</span>
+                        <i class="ri-lightbulb-line text-gray-600"></i>
+                    </a>
                 </div>
             </div>
-        </footer>
+            
+            <div class="mt-4 pt-4 flex flex-col gap-1 border-t border-white/5"
+                 x-show="open"
+                 x-transition:enter="transition ease-out duration-600 delay-[600ms]"
+                 x-transition:enter-start="opacity-0 translate-y-10"
+                 x-transition:enter-end="opacity-100 translate-y-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-1.5 bg-primary rounded-full animate-ping shadow-[0_0_8px_#1FAF5A]"></div>
+                    <span class="text-[8px] text-gray-400 font-black tracking-[0.3em] uppercase">Emergency Support Hub</span>
+                </div>
+                <div class="pl-4">
+                    <a href="tel:6281246668749" class="text-xl sm:text-2xl font-black text-white hover:text-primary transition-all duration-300 inline-block tracking-tighter">6281246668749</a>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
+</nav>
 
+<script>
+    function ghostSearch() {
+        return {
+            searchOpen: false,
+            query: '',
+            results: [],
+            loading: false,
+            async fetchSuggestions() {
+                if(this.query.length < 3) {
+                    this.results = [];
+                    return;
+                }
+                this.loading = true;
+                try {
+                    const response = await fetch(`/api/search/suggest?q=${this.query}`);
+                    this.results = await response.json();
+                } finally {
+                    this.loading = false;
+                }
+            }
+        }
+    }
+</script>
+
+        <main class="flex-grow">
+            <section class="relative bg-secondary min-h-[70vh] flex items-center overflow-hidden pt-36 sm:pt-44 pb-24 sm:pb-32 sm:pb-48">
+    <!-- 1. Background Visuals (Matched to Home Hero) -->
+    <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
+    <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div class="flex flex-col items-center text-center">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-3 px-5 py-2.1 rounded-full border border-primary/30 bg-primary/10 text-primary font-black text-[10px] uppercase tracking-[0.4em] mb-10 animate-fade-in-up">
+                <i class="ri-settings-5-fill animate-spin-slow"></i>
+                Service Excellence
+            </div>
+            
+            <!-- Massive Centered Heading -->
+            <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.9] tracking-tighter mb-6 sm:mb-10 max-w-5xl animate-fade-in-up">
+                Layanan <span class="text-primary italic">Plumbing</span> <br> Profesional & Bergaransi.
+            </h1>
+
+            <p class="text-gray-400 text-lg sm:text-xl max-w-2xl mb-16 leading-relaxed font-medium animate-fade-in-up delay-150">
+                Dari deteksi kebocoran hingga pembersihan pipa kerak lemak, kami menangani setiap masalah dengan standar teknis tertinggi.
+            </p>
+
+            <!-- Floating Tool Indicators (Unique to Service) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl animate-fade-in-up delay-300">
+                                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] flex flex-col items-center gap-4 hover:bg-primary/20 transition-all duration-500 group">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="ri-drop-fill text-2xl"></i>
+                        </div>
+                        <span class="text-white font-black text-[9px] uppercase tracking-[0.2em]">Leak Detection</span>
+                    </div>
+                                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] flex flex-col items-center gap-4 hover:bg-primary/20 transition-all duration-500 group">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="ri-water-flash-fill text-2xl"></i>
+                        </div>
+                        <span class="text-white font-black text-[9px] uppercase tracking-[0.2em]">Hydro Jetting</span>
+                    </div>
+                                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] flex flex-col items-center gap-4 hover:bg-primary/20 transition-all duration-500 group">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="ri-camera-lens-fill text-2xl"></i>
+                        </div>
+                        <span class="text-white font-black text-[9px] uppercase tracking-[0.2em]">Pipe Inspection</span>
+                    </div>
+                                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] flex flex-col items-center gap-4 hover:bg-primary/20 transition-all duration-500 group">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="ri-tools-fill text-2xl"></i>
+                        </div>
+                        <span class="text-white font-black text-[9px] uppercase tracking-[0.2em]">Rooter Auger</span>
+                    </div>
+                            </div>
+        </div>
+    </div>
+
+    <!-- Section Transition (Triple-Layered Fluid Wave - Premium Service Version) -->
+    <div class="absolute bottom-0 -left-[5%] w-[110%] overflow-hidden leading-[0] z-20">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[120px] sm:h-[180px]">
+            <!-- Layer 1: Deep Blue Shadow -->
+            <path fill="var(--color-primary)" opacity="0.05" d="M0,0 C200,80 400,0 600,40 C800,80 1000,0 1200,20 L1200,120 L0,120 Z" class="animate-wave-very-slow"></path>
+            
+            <!-- Layer 2: Primary Tint -->
+            <path fill="var(--color-primary)" opacity="0.15" d="M0,40 C300,100 600,20 900,80 C1100,110 1200,90 1200,90 L1200,120 L0,120 Z" class="animate-wave-mid"></path>
+            
+            <!-- Layer 3: Main Surface (Stone-50) -->
+            <path fill="currentColor" class="text-stone-50" d="M0,80 C150,120 350,40 550,80 C750,120 1000,80 1200,100 L1200,120 L0,120 Z"></path>
+        </svg>
+    </div>
+</section>
+
+<style>
+    @keyframes wave-flow {
+        0%, 100% { transform: translateX(0) skewY(0deg); }
+        50% { transform: translateX(-30px) skewY(0.5deg); }
+    }
+    .animate-wave-very-slow {
+        animation: wave-flow 15s ease-in-out infinite;
+    }
+    .animate-wave-mid {
+        animation: wave-flow 10s ease-in-out infinite;
+    }
+</style>
+
+    
+    <section x-data="{ 
+    activeCategory: null,
+    categories: [{&quot;id&quot;:&quot;A&quot;,&quot;title&quot;:&quot;Saluran Pembuangan Mampet&quot;,&quot;icon&quot;:&quot;ri-water-flash-fill&quot;,&quot;color&quot;:&quot;primary&quot;,&quot;items&quot;:[&quot;Sal. Kamar Mandi&quot;,&quot;Sal. Cuci Piring&quot;,&quot;Sal. Cuci Tangan&quot;,&quot;Sal. Talang Air Hujan&quot;,&quot;Sal. Urinoir&quot;,&quot;Sal. Kloset&quot;,&quot;Sal. Bak Kontrol&quot;,&quot;Lain-lain&quot;],&quot;pricing&quot;:[{&quot;note&quot;:&quot;Per-titik Masalah, Garansi 30 Hari&quot;,&quot;type&quot;:&quot;Rumah Hunian&quot;,&quot;price&quot;:&quot;Rp. 600.000,-&quot;},{&quot;note&quot;:&quot;Per-titik Masalah, Garansi 30 Hari&quot;,&quot;type&quot;:&quot;Komersial (Resto, Kantor, dll)&quot;,&quot;price&quot;:&quot;Rp. 800.000 - 1.800.000&quot;}]},{&quot;id&quot;:&quot;B&quot;,&quot;title&quot;:&quot;Air Bersih &amp; Cuci Toren&quot;,&quot;icon&quot;:&quot;ri-drop-fill&quot;,&quot;color&quot;:&quot;accent&quot;,&quot;items&quot;:[&quot;Kran Mampet&quot;,&quot;Cuci Toren \/ Tangki Air&quot;],&quot;pricing&quot;:[{&quot;note&quot;:&quot;Biaya ditentukan setelah survey lokasi&quot;,&quot;type&quot;:&quot;Survey Lokasi&quot;,&quot;price&quot;:&quot;Gratis&quot;}]},{&quot;id&quot;:&quot;C&quot;,&quot;title&quot;:&quot;Instalasi Sanitary &amp; Pipa&quot;,&quot;icon&quot;:&quot;ri-tools-fill&quot;,&quot;color&quot;:&quot;secondary&quot;,&quot;items&quot;:[&quot;Instalasi Pipa Air Bersih&quot;,&quot;Instalasi Pipa Air Kotor&quot;,&quot;Instalasi Kloset Jongkok\/Duduk&quot;,&quot;Instalasi Sanitary&quot;,&quot;Instalasi Kran Air&quot;,&quot;Lain-lain&quot;],&quot;pricing&quot;:[{&quot;note&quot;:&quot;Berdasarkan volume pengerjaan &amp; material&quot;,&quot;type&quot;:&quot;Project Based&quot;,&quot;price&quot;:&quot;Custom Quote&quot;}]}]
+}" class="py-32 bg-white relative overflow-hidden">
+    
+    <!-- Background Decor -->
+    <div class="absolute top-1/2 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl translate-x-1/3"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
+        <div class="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-4 mb-6">
+                    <span class="w-12 h-[2px] bg-primary"></span>
+                    <span class="text-primary font-black text-xs uppercase tracking-[0.4em]">Katalog Layanan</span>
+                </div>
+                <h2 class="text-4xl sm:text-6xl font-heading font-black text-secondary leading-tight tracking-tighter">
+                    Solusi Tuntas <br> <span class="text-primary italic">Masalah Saluran.</span>
+                </h2>
+            </div>
+            <div class="hidden md:block">
+                <p class="text-gray-400 font-bold uppercase text-[10px] tracking-widest text-right">Premium Standards • Modern Tools • Guaranteed Results</p>
+                <div class="flex gap-1 justify-end mt-4">
+                    <div class="w-8 h-1 bg-primary rounded-full"></div>
+                    <div class="w-2 h-1 bg-primary/20 rounded-full"></div>
+                    <div class="w-2 h-1 bg-primary/20 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <template x-for="cat in categories" :key="cat.id">
+                <div @click="activeCategory = (activeCategory === cat.id ? null : cat.id)"
+                     class="group relative bg-stone-50 rounded-[3rem] p-10 cursor-pointer overflow-hidden transition-all duration-700 hover:-translate-y-4 border border-transparent"
+                     :class="{
+                        'border-primary/20 bg-white shadow-2xl shadow-primary/10 ring-4 ring-primary/5': activeCategory === cat.id,
+                        'hover:border-gray-200': activeCategory !== cat.id
+                     }">
+                    
+                    <!-- Card Background Decor -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:scale-150 transition-transform duration-1000"></div>
+
+                    <div class="relative z-10">
+                        <!-- Icon & Badge -->
+                        <div class="flex items-center justify-between mb-12">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-xl transition-all duration-500"
+                                 :class="{
+                                    'bg-primary text-white scale-110 rotate-6': activeCategory === cat.id,
+                                    'bg-white text-gray-400 group-hover:text-primary group-hover:scale-110': activeCategory !== cat.id
+                                 }">
+                                <i :class="cat.icon"></i>
+                            </div>
+                            <span class="px-5 py-2 rounded-full bg-white text-[9px] font-black uppercase tracking-widest text-gray-400 border border-gray-100 shadow-sm" x-text="cat.pricing[0]?.price || 'Custom'"></span>
+                        </div>
+
+                        <!-- Content -->
+                        <h3 class="text-2xl font-heading font-black text-secondary tracking-tight mb-4 group-hover:text-primary transition-colors" x-text="cat.title"></h3>
+                        <p class="text-gray-500 text-sm font-medium leading-relaxed mb-8">Pengerjaan profesional menggunakan alat modern tanpa harus membongkar struktur bangunan.</p>
+                        
+                        <!-- List Snippet -->
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <template x-for="item in cat.items.slice(0, 3)" :key="item">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest" x-text="item + ' • '"></span>
+                            </template>
+                            <span class="text-[10px] font-bold text-primary uppercase tracking-widest">+ More</span>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full py-4 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-lg"
+                                :class="activeCategory === cat.id ? 'bg-secondary text-white' : 'bg-white text-secondary group-hover:bg-primary group-hover:text-white'">
+                            <span x-text="activeCategory === cat.id ? 'Tutup Detail' : 'Lihat Detail Layanan'"></span>
+                            <i class="ri-arrow-right-line" :class="activeCategory === cat.id ? 'rotate-90' : ''"></i>
+                        </button>
+                    </div>
+
+                    <!-- Scanline Effect -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent h-1 transition-all duration-1000 ease-linear pointer-events-none"
+                         :class="activeCategory === cat.id ? 'translate-y-[400px]' : '-translate-y-full'"></div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Detailed Drawer -->
+        <template x-for="cat in categories" :key="'drawer-' + cat.id">
+            <div x-show="activeCategory === cat.id"
+                 x-collapse
+                 class="mt-12">
+                <div class="bg-secondary rounded-[3.5rem] p-12 sm:p-20 text-white relative overflow-hidden shadow-2xl">
+                    <!-- Drawer Decor -->
+                    <div class="absolute top-0 right-0 w-[60%] h-full bg-white/5 skew-x-12 -translate-y-1/2"></div>
+                    
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        <!-- Left: Scope -->
+                        <div>
+                            <div class="inline-flex items-center gap-4 mb-8">
+                                <span class="w-10 h-[1px] bg-primary"></span>
+                                <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Cakupan Pengerjaan</span>
+                            </div>
+                            <h4 class="text-3xl font-heading font-black mb-12 tracking-tight">Detail Lingkup <br> <span class="text-white/60 italic">Pekerjaan Kami.</span></h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <template x-for="item in cat.items" :key="item">
+                                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-default">
+                                        <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
+                                        <span class="text-xs font-bold tracking-wide" x-text="item"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Right: Pricing & CTA -->
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="inline-flex items-center gap-4 mb-8">
+                                    <span class="w-10 h-[1px] bg-primary"></span>
+                                    <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Estimasi Biaya</span>
+                                </div>
+                                <div class="space-y-6">
+                                    <template x-for="price in cat.pricing" :key="price.type">
+                                        <div class="p-8 rounded-3xl bg-white text-secondary group">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400" x-text="price.type"></p>
+                                                <span class="px-3 py-1 bg-secondary text-white text-[8px] font-black uppercase tracking-widest rounded-full">Best Value</span>
+                                            </div>
+                                            <p class="text-3xl font-heading font-black text-secondary mb-2" x-text="price.price"></p>
+                                            <p class="text-[11px] font-bold text-gray-500 italic" x-text="price.note"></p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="mt-12 flex flex-col sm:flex-row items-center gap-6">
+                                <a href="https://wa.me/6281246668749" class="w-full flex-1 bg-primary py-6 rounded-2xl flex items-center justify-center gap-4 text-white font-black uppercase tracking-widest text-xs hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20">
+                                    <i class="ri-whatsapp-line text-xl"></i>
+                                    <span>Pesan Layanan Sekarang</span>
+                                </a>
+                                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest max-w-[150px] leading-relaxed">Pengerjaan Cepat Tanpa Bongkar & Bergaransi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</section>
+
+    
+    <section class="py-32 bg-secondary relative overflow-hidden">
+    <!-- 1. Cinematic Background Decor -->
+    <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
+    <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-accent/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header: Centered & High Impact -->
+        <div class="text-center mb-24">
+            <div class="inline-flex items-center gap-4 mb-6 px-6 py-2 rounded-full border border-primary/30 bg-primary/5">
+                <i class="ri-flask-fill text-primary"></i>
+                <span class="text-primary font-black text-xs uppercase tracking-[0.5em]">Metode & Teknologi</span>
+            </div>
+            <h2 class="text-5xl sm:text-7xl font-heading font-black text-white leading-tight tracking-tighter">
+                Sains Dibalik <span class="text-primary italic">Solusi Kami.</span>
+            </h2>
+            <p class="text-gray-400 mt-6 max-w-2xl mx-auto font-medium text-lg leading-relaxed">
+                Kami menggabungkan keahlian teknis bertahun-tahun dengan peralatan mutakhir untuk memastikan saluran Anda kembali normal tanpa merusak properti.
+            </p>
+        </div>
+
+        <!-- The "Process Lab" Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- A. Left Column: The 4 Core Techniques (Interactive Sidebar) -->
+            <div class="lg:col-span-5 space-y-6">
+                <h4 class="text-white/40 font-black text-xs uppercase tracking-[0.4em] mb-10 flex items-center gap-4">
+                    The Toolkit
+                    <span class="flex-grow h-[1px] bg-white/10"></span>
+                </h4>
+
+                                    <div class="group relative p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/30 transition-all duration-500 cursor-default">
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity"></div>
+                        
+                        <div class="relative z-10 flex items-start gap-4 sm:gap-6">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-secondary border border-white/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform shadow-2xl shrink-0">
+                                <i class="ri-cpu-fill text-2xl sm:text-3xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white font-black text-base sm:text-lg mb-1 group-hover:text-primary transition-colors leading-tight">Mesin Rooter / Auger</h5>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium leading-relaxed">Pembersihan pipa mekanik presisi tinggi tanpa perlu pembongkaran.</p>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="group relative p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/30 transition-all duration-500 cursor-default">
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity"></div>
+                        
+                        <div class="relative z-10 flex items-start gap-4 sm:gap-6">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-secondary border border-white/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-2xl shrink-0">
+                                <i class="ri-water-flash-fill text-2xl sm:text-3xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white font-black text-base sm:text-lg mb-1 group-hover:text-primary transition-colors leading-tight">Jetting High Pressure</h5>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium leading-relaxed">Sistem semprotan air 3000 PSI untuk menghancurkan kerak lemak.</p>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="group relative p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/30 transition-all duration-500 cursor-default">
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity"></div>
+                        
+                        <div class="relative z-10 flex items-start gap-4 sm:gap-6">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-secondary border border-white/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform shadow-2xl shrink-0">
+                                <i class="ri-tools-fill text-2xl sm:text-3xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white font-black text-base sm:text-lg mb-1 group-hover:text-primary transition-colors leading-tight">Spiral Manual Teknis</h5>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium leading-relaxed">Akurasi pembersihan maksimal untuk sudut pipa yang sulit dijangkau.</p>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="group relative p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/30 transition-all duration-500 cursor-default">
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity"></div>
+                        
+                        <div class="relative z-10 flex items-start gap-4 sm:gap-6">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-secondary border border-white/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-2xl shrink-0">
+                                <i class="ri-camera-lens-fill text-2xl sm:text-3xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white font-black text-base sm:text-lg mb-1 group-hover:text-primary transition-colors leading-tight">Kamera Inspeksi Pipa</h5>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium leading-relaxed">Visualisasi real-time dalam pipa untuk hasil kerja yang transparan.</p>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+
+            <!-- B. Right Column: The "Master View" (Large Image & Benefits) -->
+            <div class="lg:col-span-7 sticky top-32">
+                <div class="relative rounded-[3rem] sm:rounded-[4rem] overflow-hidden group shadow-2xl border-4 border-white/5 min-h-[750px] sm:min-h-0 sm:aspect-[4/5] lg:aspect-auto lg:h-[750px]">
+                    <!-- Main Immersive Image -->
+                    <img src="https://images.unsplash.com/photo-1542013936693-884638332954?q=80&w=1200" 
+                         class="w-full h-full object-cover grayscale opacity-50 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-80" 
+                         alt="Scientific Plumbing Methodology">
+                    
+                    <!-- Overlay: Trust Manifesto -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-transparent"></div>
+                    
+                    <!-- Floating Logic Cards -->
+                    <div class="absolute inset-x-4 sm:inset-x-8 bottom-4 sm:bottom-8 p-6 sm:p-10 bg-secondary/40 backdrop-blur-3xl rounded-[2.5rem] sm:rounded-[3rem] border border-white/10 shadow-2xl">
+                        <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-10 md:divide-x md:divide-white/10">
+                            <!-- Column 1: Eco Guarantee -->
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary text-white flex items-center justify-center mb-3 sm:mb-4 mx-auto md:mx-0 shadow-lg shadow-primary/20">
+                                    <i class="ri-leaf-fill text-xl sm:text-2xl"></i>
+                                </div>
+                                <h6 class="text-white font-black text-lg sm:text-xl mb-1 sm:mb-2 tracking-tight">100% Eco-Safe</h6>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium leading-relaxed">Tanpa bahan kimia keras yang merusak struktur pipa bangunan.</p>
+                            </div>
+
+                            <!-- Column 2: Health Focused -->
+                            <div class="flex-1 text-center md:text-left md:pl-10 w-full mt-6 md:mt-0 pt-6 md:pt-0 border-t md:border-t-0 border-white/10">
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent text-white flex items-center justify-center mb-3 sm:mb-4 mx-auto md:mx-0 shadow-lg shadow-accent/20">
+                                    <i class="ri-heart-pulse-fill text-xl sm:text-2xl"></i>
+                                </div>
+                                <h6 class="text-white font-black text-lg sm:text-xl mb-1 sm:mb-2 tracking-tight">Health First</h6>
+                                <p class="text-gray-400 text-[10px] sm:text-xs font-medium">Metode pengerjaan higienis untuk menjaga keamanan penghuni rumah.</p>
+                            </div>
+                        </div>
+
+                        <!-- Progress Line Indicator -->
+                        <div class="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 md:flex md:flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
+                                                             <div class="flex items-center justify-center px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-black text-[8px] sm:text-[9px] uppercase tracking-widest text-center">Aman &amp; Teruji</div>
+                                                             <div class="flex items-center justify-center px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-black text-[8px] sm:text-[9px] uppercase tracking-widest text-center">Tanpa Bongkar</div>
+                                                             <div class="flex items-center justify-center px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-black text-[8px] sm:text-[9px] uppercase tracking-widest text-center">Hasil Permanen</div>
+                                                             <div class="flex items-center justify-center px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-black text-[8px] sm:text-[9px] uppercase tracking-widest text-center">Garansi Kepuasan</div>
+                                                     </div>
+                    </div>
+
+                    <!-- Modern Badge -->
+                    <div class="absolute top-6 sm:top-10 left-6 sm:left-auto sm:right-10 flex flex-row sm:flex-col items-start sm:items-end gap-2 sm:gap-3">
+                        <div class="px-4 sm:px-6 py-2 bg-primary text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest rounded-full shadow-2xl shadow-primary/20 border border-white/10">Premium Quality</div>
+                        <div class="px-4 sm:px-6 py-2 bg-secondary text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur-md border border-white/10 shadow-xl">Trusted Method</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Final Trust Row: Competitive Advantages (Clean Minimal Icons) -->
+        <div class="mt-32 grid grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="flex flex-col items-center text-center p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:-translate-y-2 transition-transform shadow-xl">
+                    <div class="w-20 h-20 rounded-[2rem] bg-secondary flex items-center justify-center text-primary mb-6 shadow-2xl group-hover:rotate-6 transition-transform">
+                        <i class="ri-sparkling-fill text-4xl"></i>
+                    </div>
+                    <h5 class="text-white font-black text-lg mb-1">Kerja Bersih</h5>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Area pengerjaan rapi</p>
+                </div>
+                            <div class="flex flex-col items-center text-center p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:-translate-y-2 transition-transform shadow-xl">
+                    <div class="w-20 h-20 rounded-[2rem] bg-secondary flex items-center justify-center text-primary mb-6 shadow-2xl group-hover:rotate-6 transition-transform">
+                        <i class="ri-user-star-fill text-4xl"></i>
+                    </div>
+                    <h5 class="text-white font-black text-lg mb-1">Master Technician</h5>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Sertifikasi keahlian</p>
+                </div>
+                            <div class="flex flex-col items-center text-center p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:-translate-y-2 transition-transform shadow-xl">
+                    <div class="w-20 h-20 rounded-[2rem] bg-secondary flex items-center justify-center text-primary mb-6 shadow-2xl group-hover:rotate-6 transition-transform">
+                        <i class="ri-rocket-2-fill text-4xl"></i>
+                    </div>
+                    <h5 class="text-white font-black text-lg mb-1">Speed Service</h5>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Tiba dalam 45 menit</p>
+                </div>
+                            <div class="flex flex-col items-center text-center p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:-translate-y-2 transition-transform shadow-xl">
+                    <div class="w-20 h-20 rounded-[2rem] bg-secondary flex items-center justify-center text-primary mb-6 shadow-2xl group-hover:rotate-6 transition-transform">
+                        <i class="ri-verified-badge-fill text-4xl"></i>
+                    </div>
+                    <h5 class="text-white font-black text-lg mb-1">Verified Results</h5>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Laporan inspeksi akhir</p>
+                </div>
+                    </div>
+    </div>
+</section>
+
+    
+    <section class="py-12 sm:py-20 bg-stone-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- The High-Impact CTA Card (Named Group for Isolation) -->
+        <div class="relative w-full min-h-[500px] lg:min-h-0 lg:aspect-[21/9] xl:aspect-[21/8] rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] group/cta">
+            
+            <!-- Background Image from Internet -->
+            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2000&auto=format&fit=crop" 
+                 alt="RooterIn Professional" 
+                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover/cta:scale-110">
+            
+            <!-- Darker Gradient Overlay for Maximum Impact -->
+            <div class="absolute inset-0 bg-secondary/60 backdrop-blur-[2px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-secondary/40 via-secondary/80 to-secondary transition-colors duration-500"></div>
+            
+            <!-- Content Area: Centered & Powerful -->
+            <div class="absolute inset-0 p-6 sm:p-10 lg:p-16 flex flex-col justify-center items-center text-center">
+                
+                <!-- Centered Badges -->
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-10">
+                    <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-primary text-white text-[8px] sm:text-[10px] font-black uppercase tracking-[0.3em] rounded-full shadow-xl shadow-primary/30">
+                        EMERGENCY
+                    </div>
+                    <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full">
+                        <span class="text-white text-[8px] sm:text-[10px] font-black uppercase tracking-[0.25em]">SIAP MELAYANI 24/7</span>
+                    </div>
+                </div>
+
+                <!-- Massive Impact Heading -->
+                <h2 class="text-2xl sm:text-4xl lg:text-5xl xl:text-7xl font-heading font-black text-white leading-[1.1] sm:leading-[1] tracking-tight mb-8 sm:mb-12 max-w-5xl animate-fade-in-up">
+                    Langkah Nyata Menuju <br> 
+                    <span class="text-primary italic">Saluran Pipa Lancar.</span>
+                </h2>
+                
+                <!-- Large Prominent White Pill Button (Separate Named Group) -->
+                <a href="https://wa.me/6281234567890" 
+                   class="inline-flex items-center gap-4 sm:gap-6 bg-white px-8 sm:px-12 lg:px-16 py-4 sm:py-5 lg:py-7 rounded-full shadow-[0_30px_60px_rgba(0,0,0,0.4)] hover:bg-primary transition-all duration-500 group/btn active:scale-95">
+                    <span class="text-primary group-hover/btn:text-white font-black text-xs sm:text-base lg:text-xl uppercase tracking-widest transition-colors flex items-center gap-3 sm:gap-4">
+                        Hubungi Tim Kami
+                        <i class="ri-whatsapp-line text-lg lg:text-2xl transition-transform group-hover/btn:scale-125"></i>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</section>
+        </main>
+
+        <!-- Unique Organic Footer -->
+<footer class="bg-secondary text-white pt-24 pb-12 relative overflow-hidden">
+    <!-- Abstract Background Elements -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 relative z-10">
+        <div class="flex flex-col lg:flex-row justify-between gap-20 mb-20">
+            <!-- Brand & Big Statement -->
+            <div class="lg:w-1/3">
+                <div class="flex items-center gap-4 mb-8 group cursor-default">
+                    <div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 group-hover:rotate-12">
+                        <i class="ri-flashlight-fill text-white text-2xl"></i>
+                    </div>
+                    <span class="font-heading font-black text-3xl tracking-tighter uppercase">ROOTER<span class="text-primary italic">IN</span></span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-heading font-black text-white leading-tight mb-8">
+                    Solusi <span class="text-primary italic">Pipa Lancar</span> <br>Tanpa <span class="text-gray-400 italic">Bongkar!</span>
+                </h2>
+                <p class="text-gray-400 text-base leading-relaxed mb-10 max-w-sm font-medium">
+                    Layanan plumbing premium pertama di Indonesia yang menggabungkan teknologi modern dengan visi pelestarian alam.
+                </p>
+                <!-- Social Links with Animation -->
+                <div class="flex gap-4">
+                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                        <i class="ri-instagram-line text-xl text-gray-400 group-hover:text-white transition-colors"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                        <i class="ri-tiktok-fill text-xl text-gray-400 group-hover:text-white transition-colors"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                        <i class="ri-facebook-box-fill text-xl text-gray-400 group-hover:text-white transition-colors"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Grid -->
+            <div class="lg:w-3/5 grid grid-cols-2 md:grid-cols-3 gap-12 sm:gap-16">
+                <!-- Navigation -->
+                <div>
+                    <h4 class="text-white font-black text-xs uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                        <span class="w-2 h-2 bg-primary rounded-full"></span> Navigasi
+                    </h4>
+                    <ul class="space-y-5 text-gray-400 font-bold text-sm">
+                                                    <li><a href="index.html" class="hover:text-primary transition-colors hover:translate-x-1 inline-block transition-transform duration-300">Home</a></li>
+                                                    <li><a href="about.html" class="hover:text-primary transition-colors hover:translate-x-1 inline-block transition-transform duration-300">About Us</a></li>
+                                                    <li><a href="layanan.html" class="hover:text-primary transition-colors hover:translate-x-1 inline-block transition-transform duration-300">Service</a></li>
+                                                    <li><a href="galeri.html" class="hover:text-primary transition-colors hover:translate-x-1 inline-block transition-transform duration-300">Gallery</a></li>
+                                                    <li><a href="kontak.html" class="hover:text-primary transition-colors hover:translate-x-1 inline-block transition-transform duration-300">Contact</a></li>
+                                            </ul>
+                </div>
+                <!-- Support -->
+                <div>
+                    <h4 class="text-white font-black text-xs uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                        <span class="w-2 h-2 bg-accent rounded-full"></span> Jangkauan
+                    </h4>
+                    <ul class="space-y-4 text-gray-400 font-bold text-[11px] uppercase tracking-wider">
+                                                                        <li><a href="layanan.html" class="text-white/30 hover:text-accent italic">Lihat Semua Wilayah...</a></li>
+                    </ul>
+                </div>
+                <!-- Contact (Unique Icon Style) -->
+                <div class="col-span-2 md:col-span-1">
+                    <h4 class="text-white font-black text-xs uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                        <span class="w-2 h-2 bg-white rounded-full"></span> Hotline
+                    </h4>
+                    <div class="flex flex-col gap-4">
+                        <!-- WhatsApp Card -->
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
+                            <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
+                                <i class="ri-whatsapp-line text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Call & WA</div>
+                                <div class="text-white font-black text-sm tracking-wide leading-none">0812-4666-8749</div>
+                            </div>
+                        </div>
+                        <!-- Response Card -->
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-accent/30 transition-all duration-300 group cursor-pointer">
+                            <div class="w-11 h-11 bg-accent/10 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm">
+                                <i class="ri-timer-flash-fill text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-white font-black text-sm tracking-wide leading-none">Fast Respon</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em]">© 2026 RooterIn Indonesia • Developed by Ardy Albanna</p>
+                <div class="hidden md:block w-1.5 h-1.5 bg-white/10 rounded-full"></div>
+                <div class="flex gap-6 text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">Proudly Made In</span>
+                <span class="text-white font-black tracking-tighter text-sm flex items-center gap-1">
+                    INDONESIA 
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+        <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 animate-fade-in-up" x-data="{ showTop: false }" @scroll.window="showTop = (window.pageYOffset > 300)">
+    
+    <!-- Back to Top Button -->
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" 
+            x-show="showTop"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-10 scale-75"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 translate-y-10 scale-75"
+            class="w-12 h-12 bg-white text-secondary hover:bg-secondary hover:text-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center transition-all duration-300 group">
+        <i class="ri-arrow-up-line text-xl group-hover:-translate-y-1 transition-transform"></i>
+    </button>
+
+    <div class="flex items-center gap-3">
+        <div class="hidden md:block bg-white text-secondary py-2 px-4 rounded-full shadow-lg border border-gray-100 font-medium text-sm animate-bounce-soft">
+            Konsultasi Gratis, Kak 👋
+        </div>
+        <a href="https://wa.me/6281234567890?text=Halo%20Kak%2C%20mau%20tanya%20jasa%20pipa%20dong" 
+           onclick="trackWhatsAppClick('sticky')"
+           target="_blank"
+           class="flex items-center justify-center w-14 h-14 bg-[#25D366] hover:bg-[#20b85a] text-white rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] transition-all duration-300 transform hover:scale-110 group relative">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-30 animate-ping group-hover:opacity-50"></span>
+            <i class="ri-whatsapp-line text-3xl relative z-10"></i>
+        </a>
+    </div>
+</div>
+    </div>
+    
+    <div x-data="accessibilityMenu()" 
+     class="fixed bottom-6 left-6 z-[100] transition-all duration-500"
+     id="accessibility-container">
+    
+    <!-- Toggle Button -->
+    <button @click="open = !open" 
+            class="w-14 h-14 rounded-full bg-secondary text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group relative overflow-hidden">
+        <div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-20 transition-opacity"></div>
+        <i class="ri-accessibility-fill text-2xl transition-transform duration-500" :class="open ? 'rotate-180' : ''"></i>
+    </button>
+
+    <!-- Accessibility Panel -->
+    <div x-show="open" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-y-10 scale-90"
+         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+         x-transition:leave-end="opacity-0 translate-y-10 scale-90"
+         class="fixed sm:absolute bottom-24 sm:bottom-20 left-4 right-4 sm:left-0 sm:right-auto sm:w-[400px] max-h-[70vh] sm:max-h-[80vh] bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.2)] flex flex-col overflow-hidden border border-gray-100"
+         @click.away="open = false">
+        
+        <!-- Header -->
+        <div class="bg-secondary p-8 flex items-center justify-between">
+            <div class="flex items-center gap-4 text-white">
+                <i class="ri-accessibility-fill text-lg text-primary"></i>
+                <h3 class="font-black text-xs uppercase tracking-[0.3em]">Aksesibilitas Pro</h3>
+            </div>
+            <button @click="open = false" class="text-white/40 hover:text-white transition-colors">
+                <i class="ri-close-line text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-12">
+            
+            <!-- Panduan Pengguna Link -->
+            <a href="/panduan-aksesibilitas" class="relative overflow-hidden flex items-center justify-between p-5 bg-gradient-to-br from-secondary via-secondary to-[#1a2533] rounded-2xl shadow-lg group hover:scale-[1.02] transition-all duration-300 border border-white/10">
+                <!-- Decorative BG -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/5">
+                        <i class="ri-book-open-line text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-black text-[10px] uppercase tracking-widest mb-0.5">Panduan Pengguna</h4>
+                        <p class="text-white/50 text-[9px] font-medium">Cara menggunakan fitur ini</p>
+                    </div>
+                </div>
+                
+                <div class="relative z-10 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-secondary transition-colors">
+                    <i class="ri-arrow-right-line group-hover:translate-x-0.5 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- Profil Cerdas (Presets) -->
+            <div>
+                <h4 class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-6">Profil Cerdas (Presets)</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <template x-for="preset in presets" :key="preset.id">
+                        <button @click="togglePreset(preset.id)"
+                                :class="settings.preset === preset.id ? 'bg-secondary text-white shadow-xl rotate-1' : 'bg-white border-gray-100 text-gray-400 hover:border-gray-200'"
+                                class="flex flex-col items-center p-6 rounded-2xl border transition-all duration-300 group">
+                            <i :class="preset.icon" class="text-xl mb-3 transition-transform group-hover:scale-110"></i>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-center" x-text="preset.label"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Ukuran Teks (4 Levels) -->
+            <div>
+                <h4 class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-6">Ukuran Teks</h4>
+                <div class="grid grid-cols-4 gap-2 bg-stone-50 p-2 rounded-2xl border border-gray-100">
+                    <button @click="setTextSize(0)" 
+                            :class="settings.textSize === 0 ? 'bg-white text-secondary shadow-md font-bold' : 'text-gray-400 hover:bg-white/50'"
+                            class="py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all">
+                        Small
+                    </button>
+                    <button @click="setTextSize(1)" 
+                            :class="settings.textSize === 1 ? 'bg-white text-secondary shadow-md font-bold' : 'text-gray-400 hover:bg-white/50'"
+                            class="py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all">
+                        Med
+                    </button>
+                    <button @click="setTextSize(2)" 
+                            :class="settings.textSize === 2 ? 'bg-white text-secondary shadow-md font-bold' : 'text-gray-400 hover:bg-white/50'"
+                            class="py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all">
+                        Semi
+                    </button>
+                    <button @click="setTextSize(3)" 
+                            :class="settings.textSize === 3 ? 'bg-white text-secondary shadow-md font-bold' : 'text-gray-400 hover:bg-white/50'"
+                            class="py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all">
+                        Large
+                    </button>
+                </div>
+            </div>
+
+            <!-- Penyesuaian Konten -->
+            <div>
+                <h4 class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-6">Penyesuaian Konten</h4>
+                <div class="grid grid-cols-3 gap-3">
+                    <template x-for="opt in contentOpts" :key="opt.id">
+                        <button @click="toggleOption(opt.id)"
+                                :class="settings[opt.id] ? 'bg-secondary text-white border-secondary' : 'bg-white border-gray-100 text-gray-400'"
+                                class="flex flex-col items-center justify-center p-4 h-24 rounded-2xl border transition-all">
+                            <i x-show="opt.icon" :class="opt.icon" class="text-xl mb-2"></i>
+                            <span x-show="opt.text" class="text-lg font-black leading-none mb-1" x-text="opt.text"></span>
+                            <span class="text-[8px] font-black uppercase tracking-widest" x-text="opt.label"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Warna & Tampilan -->
+            <div>
+                <h4 class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-6">Warna & Tampilan</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <template x-for="opt in visualOpts" :key="opt.id">
+                        <button @click="toggleOption(opt.id)"
+                                :class="settings[opt.id] ? 'bg-secondary text-white border-secondary' : 'bg-white border-gray-100 text-gray-400'"
+                                class="flex flex-col items-center p-6 rounded-2xl border transition-all">
+                            <i :class="opt.icon" class="text-xl mb-3"></i>
+                            <span class="text-[9px] font-black uppercase tracking-widest" x-text="opt.label"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Alat Bantu -->
+            <div>
+                <h4 class="text-gray-400 font-black text-[9px] uppercase tracking-[0.3em] mb-6">Alat Bantu</h4>
+                <div class="space-y-3">
+                    <button @click="toggleOption('tts')"
+                            :class="settings.tts ? 'bg-secondary text-white' : 'bg-white border-gray-100 text-gray-400'"
+                            class="w-full flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all">
+                        <div class="flex items-center gap-3">
+                            <i class="ri-volume-up-fill text-lg"></i>
+                            <span class="text-[8px] font-black uppercase tracking-widest">Suara (TTS)</span>
+                        </div>
+                        <span x-show="settings.tts" class="text-[9px] text-white/80 font-medium animate-pulse">
+                            (Sorot / Blok teks untuk mendengarkan)
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <button @click="reset()" class="w-full py-5 bg-stone-100 rounded-2xl text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all flex items-center justify-center gap-3">
+                <i class="ri-restart-line text-lg animate-spin-slow"></i>
+                Reset Pengaturan
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function accessibilityMenu() {
+    return {
+        open: false,
+        mouseY: 0,
+        ttsHandler: null,
+        settings: {
+            preset: null,
+            textSize: 0,
+            spacing: false,
+            links: false,
+            dyslexia: false,
+            cursor: false,
+            grayscale: false,
+            highContrast: false,
+            neonMode: false,
+            hideImages: false,
+            stopAnim: false,
+            tts: false
+        },
+        presets: [
+            { id: 'epilepsy', label: 'Aman Epilepsi', icon: 'ri-skull-line' },
+            { id: 'visual', label: 'Gangguan Visual', icon: 'ri-eye-off-line' },
+            { id: 'adhd', label: 'Fokus ADHD', icon: 'ri-mind-map' },
+            { id: 'senior', label: 'Lansia Friendly', icon: 'ri-parent-line' }
+        ],
+        contentOpts: [
+            { id: 'spacing', label: 'Spasi', icon: 'ri-text-spacing' },
+            { id: 'links', label: 'Links', icon: 'ri-links-line' },
+            { id: 'dyslexia', label: 'Dyslexia', text: 'DF' },
+            { id: 'cursor', label: 'Kursor', icon: 'ri-cursor-fill' }
+        ],
+        visualOpts: [
+            { id: 'grayscale', label: 'Grayscale', icon: 'ri-contrast-drop-2-line' },
+            { id: 'highContrast', label: 'High Contrast', icon: 'ri-contrast-line' },
+            { id: 'neonMode', label: 'Neon Mode', icon: 'ri-flashlight-line' },
+            { id: 'hideImages', label: 'Sembunyi Gambar', icon: 'ri-image-off-line' },
+            { id: 'stopAnim', label: 'Stop Animasi', icon: 'ri-play-line' }
+        ],
+        init() {
+            // Load settings from localStorage
+            const saved = localStorage.getItem('rooter_accessibility');
+            if (saved) this.settings = JSON.parse(saved);
+            
+            this.applyAll();
+
+            window.addEventListener('mousemove', (e) => {
+                this.mouseY = e.clientY;
+            });
+
+            // Clean up TTS when leaving page
+            window.addEventListener('beforeunload', () => {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+            });
+        },
+        togglePreset(id) {
+            this.settings.preset = (this.settings.preset === id) ? null : id;
+            this.applyAll();
+        },
+        setTextSize(level) {
+            this.settings.textSize = level;
+            this.applyAll();
+        },
+        toggleOption(id) {
+            this.settings[id] = !this.settings[id];
+            
+            this.applyAll();
+
+            // Audio Feedback for TTS Activation
+            if (id === 'tts' && this.settings.tts) {
+                this.speak('Fitur Suara aktif. Silakan sorot teks untuk mendengarkan.');
+            }
+        },
+        applyAll() {
+            const body = document.body;
+            const content = document.getElementById('site-content');
+            
+            // Clean up previous classes
+            if (content) {
+                content.classList.remove('acc-grayscale', 'acc-contrast', 'acc-neon', 'acc-hide-img');
+            }
+            body.classList.remove('acc-epilepsy', 'acc-visual', 'acc-adhd', 'acc-senior', 
+                                'acc-text-1', 'acc-text-2', 'acc-text-3', 'acc-spacing', 'acc-links', 
+                                'acc-dyslexia', 'acc-cursor', 'acc-stop-anim');
+
+            // Apply global settings (Body)
+            if (this.settings.preset) body.classList.add('acc-' + this.settings.preset);
+            if (this.settings.textSize > 0) body.classList.add('acc-text-' + this.settings.textSize);
+            if (this.settings.spacing) body.classList.add('acc-spacing');
+            if (this.settings.links) body.classList.add('acc-links');
+            if (this.settings.dyslexia) body.classList.add('acc-dyslexia');
+            if (this.settings.cursor) body.classList.add('acc-cursor');
+            if (this.settings.stopAnim) body.classList.add('acc-stop-anim');
+
+            // Apply visual filters (Content Wrapper Only) to avoid breaking fixed positioning
+            if (content) {
+                if (this.settings.grayscale) content.classList.add('acc-grayscale');
+                if (this.settings.highContrast) content.classList.add('acc-contrast');
+                if (this.settings.neonMode) content.classList.add('acc-neon');
+                if (this.settings.hideImages) content.classList.add('acc-hide-img');
+            }
+
+            localStorage.setItem('rooter_accessibility', JSON.stringify(this.settings));
+            
+            // Setup TTS
+            this.setupTTS();
+        },
+        setupTTS() {
+            if (!this.settings.tts) {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                document.removeEventListener('mouseup', this.handleTTSSelection);
+                document.removeEventListener('touchend', this.handleTTSSelection); // Mobile support
+                return;
+            }
+            
+            // Define TTS Handler if not exists
+            if (!this.handleTTSSelection) {
+                this.handleTTSSelection = () => {
+                    if (!this.settings.tts) return;
+                    
+                    // Small delay to ensure selection is completed
+                    setTimeout(() => {
+                        const selection = window.getSelection();
+                        const text = selection.toString().trim();
+                        
+                        if (text.length > 0) {
+                            this.speak(text);
+                        }
+                    }, 200);
+                };
+            }
+
+            document.addEventListener('mouseup', this.handleTTSSelection);
+            document.addEventListener('touchend', this.handleTTSSelection);
+        },
+        speak(text) {
+            if (!window.speechSynthesis) return;
+            
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID'; // Bahasa Indonesia
+            utterance.rate = 0.9; // Slightly slower for clarity
+            window.speechSynthesis.speak(utterance);
+        },
+        reset() {
+            this.settings = {
+                preset: null,
+                textSize: 0,
+                spacing: false,
+                links: false,
+                dyslexia: false,
+                cursor: false,
+                grayscale: false,
+                highContrast: false,
+                neonMode: false,
+                hideImages: false,
+                stopAnim: false,
+                tts: false
+            };
+            this.applyAll();
+        }
+    }
+}
+</script>
+
+<style>
+/* --- 1. Text & Content Adjustments --- */
+body.acc-text-1 * { font-size: 102% !important; }
+body.acc-text-2 * { font-size: 104% !important; }
+body.acc-text-3 * { font-size: 106% !important; }
+.acc-spacing { letter-spacing: 0.1em !important; word-spacing: 0.2em !important; line-height: 2 !important; }
+.acc-links a { text-decoration: underline !important; color: #16a34a !important; font-weight: 800 !important; }
+.acc-dyslexia * { font-family: 'OpenDyslexic', 'Comic Sans MS', 'Chalkboard SE', sans-serif !important; }
+.acc-cursor { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="black" stroke="white" stroke-width="2"><path d="M7 2l12 11.2-5.8.8 3.3 5.4-2.5 1.6-3.3-5.4-3.7 3.4z"/></svg>'), auto !important; }
+
+/* --- 2. Visual Filters (Applied to #site-content) --- */
+#site-content.acc-grayscale { filter: grayscale(100%) !important; }
+#site-content.acc-neon { filter: contrast(150%) brightness(120%) hue-rotate(90deg) !important; }
+#site-content.acc-hide-img img, 
+#site-content.acc-hide-img canvas,
+#site-content.acc-hide-img video,
+#site-content.acc-hide-img [style*="background-image"] { opacity: 0 !important; visibility: hidden !important; }
+
+/* Robust High Contrast (Yellow on Black) */
+#site-content.acc-contrast { background-color: #000 !important; color: #ffeb3b !important; }
+#site-content.acc-contrast * { 
+    background-color: #000 !important; 
+    color: #ffeb3b !important; 
+    border-color: #ffeb3b !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+#site-content.acc-contrast img { filter: grayscale(100%) contrast(200%); }
+
+/* --- 3. Presets Logic --- */
+
+/* Aman Epilepsi: Desaturate & Stop Anim */
+body.acc-epilepsy #site-content { filter: saturate(30%) !important; }
+body.acc-epilepsy *, body.acc-stop-anim * { 
+    animation: none !important; 
+    transition: none !important; 
+    scroll-behavior: auto !important;
+}
+
+/* Gangguan Visual: Scale & Contrast */
+body.acc-visual { font-size: 1.25rem !important; }
+body.acc-visual #site-content { filter: contrast(125%) !important; }
+
+/* Fokus ADHD: Focus Highlight & Muted Colors */
+body.acc-adhd #site-content { filter: saturate(80%); }
+body.acc-adhd *:focus-visible, body.acc-adhd *:hover { 
+    outline: 3px solid #f59e0b !important; 
+    outline-offset: 2px !important;
+}
+
+/* Lansia Friendly: Larger Text & Readable Font */
+body.acc-senior { font-size: 1.2rem !important; }
+body.acc-senior * { font-family: 'Inter', sans-serif !important; letter-spacing: 0.05em; }
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+</style>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => {
+                        console.log('Service Worker Registered');
+                        // NOTE: Auto-reload disabled to prevent interrupting AI Diagnostic modal
+                        // reg.onupdatefound fires but we DON'T force reload anymore
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('New SW version available (manual refresh to apply).');
+                                    // DO NOT auto-reload — would disrupt AI modal result display
+                                }
+                            };
+                        };
+                    })
+                    .catch(err => console.log('Service Worker Failed', err));
+            });
+        }
+    </script>
+</body>
 </html>

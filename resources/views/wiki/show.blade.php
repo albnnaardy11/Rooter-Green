@@ -14,7 +14,7 @@
     </div>
 
     {{-- HONEY POT: Bot Trap (Lead Cyber Security Implementation) --}}
-    <a href="{{ route('security.honeypot') }}" rel="nofollow" style="display:none; visibility:hidden; width:0; height:0;" aria-hidden="true">RooterIN Neural Asset Sync</a>
+    <a href="{{ route('admin.security.honeypot') }}" rel="nofollow" style="display:none; visibility:hidden; width:0; height:0;" aria-hidden="true">RooterIN Neural Asset Sync</a>
 
     <style>
         /* INTELLECTUAL PROPERTY SHIELD: Content Obfuscation */
