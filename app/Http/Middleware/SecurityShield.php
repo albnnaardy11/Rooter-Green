@@ -28,8 +28,9 @@ class SecurityShield
             abort(403, 'Your IP has been flagged for security violations.');
         }
 
-        // 2. Continuous Environment Healing (STRICT PRODUCTION ONLY)
+        // 2. Continuous Environment Hardening (ABSOLUTE DEBUG SUPPRESSION)
         if (app()->environment('production')) {
+            config(['app.debug' => false]);
             $this->security->killDebugMode();
         }
 
@@ -51,13 +52,21 @@ class SecurityShield
         // 5. Hotlink Prevention (IP Shield)
         $this->preventHotlinking($request);
 
-        // 6. Lockdown Mode Check (BUNKER MODE)
+        // 6. Lockdown Mode Check (IRON-CLAD BUNKER MODE)
         if (Cache::get('system_lockdown_active')) {
-            // If in Lockdown, restrict EVERYTHING including Admin area, EXCEPT Vault & Emergency Release
-            $isVaultAccess = $request->is('admin/vault*');
+            // Priority 1: Full Access to Security Critical Paths
+            $isSecurityRoute = $request->is('admin/vault*') || $request->is('admin/sentinel*');
             
-            if (!$isVaultAccess) {
-                return response()->view('errors.503', [], 503);
+            if (!$isSecurityRoute) {
+                // Priority 2: Read-Only (GET) only for other Admin modules
+                if ($request->is('admin/*')) {
+                    if (!$request->isMethod('GET')) {
+                        return response()->json(['error' => 'IRON-CLAD POLICY: System is in Write-Protected Lockdown Mode.'], 503);
+                    }
+                } else {
+                    // Priority 3: Stealth/Bunker 503 for all non-admin public traffic
+                    return response()->view('errors.503', [], 503);
+                }
             }
         }
 
@@ -114,9 +123,16 @@ class SecurityShield
             return;
         }
 
-        $payload = strtolower($request->fullUrl() . json_encode($request->all()));
+        // Phase 3: Anti-Obfuscation (Multi-Stage Decoding)
+        $rawPayload = $request->fullUrl() . json_encode($request->all());
+        $payload = strtolower(urldecode($rawPayload));
         
-        // Phase 3: Anti-Obfuscation Patterns (Regex Hardening)
+        // Handle potential nested URL encoding or Hex masks
+        $payload = preg_replace_callback('/%[0-9a-f]{2}/i', function($m) {
+            return urldecode($m[0]);
+        }, $payload);
+
+        // Phase 3: Anti-Obfuscation Patterns (Deep Packet Inspection)
         $patterns = [
             '/(union\s+.*select)/i',
             '/(group\s+by\s+.*)/i',
@@ -126,13 +142,14 @@ class SecurityShield
             '/(<script|javascript:|on\w+\s*=)/i', // XSS Basic
             '/(%27|%22|%3C|%3E|%20or%20|%20and%20)/i', // Hex/URL Encoded attacks
             '/(\'|"|;)\s*(or|and)\s+.*=.* /i', // Logic bypass
+            '/base64_decode|exec\(|shell_exec\(|system\(/i', // RCE patterns
         ];
 
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $payload)) {
-                $this->security->blockIp($request->ip(), "WAF Detection: Aggressive Payload Signature matched ($pattern)");
-                $this->security->auditLog('Malicious Payload Blocked', ['pattern' => $pattern]);
-                abort(406, 'Not Acceptable: Deep Packet Inspection failed. Security Threat Detected.');
+                $this->security->blockIp($request->ip(), "Sentinel Shield: Deep Packet Inspection matched ($pattern)");
+                $this->security->auditLog('Iron-Clad WAF Blocked', ['pattern' => $pattern]);
+                abort(406, 'Not Acceptable: Deep Packet Inspection failed. Iron-Clad Shield Active.');
             }
         }
     }
