@@ -93,66 +93,94 @@
             </template>
         </div>
 
-        <!-- Detailed Drawer -->
-        <template x-for="cat in categories" :key="'drawer-' + cat.id">
-            <div x-show="activeCategory === cat.id"
-                 x-collapse
-                 class="mt-12">
-                <div class="bg-secondary rounded-[3.5rem] p-12 sm:p-20 text-white relative overflow-hidden shadow-2xl">
-                    <!-- Drawer Decor -->
-                    <div class="absolute top-0 right-0 w-[60%] h-full bg-white/5 skew-x-12 -translate-y-1/2"></div>
+        <!-- Immersive Service Modal -->
+        <template x-teleport="body">
+            <template x-for="cat in categories" :key="'modal-' + cat.id">
+                <div x-show="activeCategory === cat.id"
+                     class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-10"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-300"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-95"
+                     x-cloak>
                     
-                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
-                        <!-- Left: Scope -->
-                        <div>
-                            <div class="inline-flex items-center gap-4 mb-8">
-                                <span class="w-10 h-[1px] bg-primary"></span>
-                                <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Cakupan Pengerjaan</span>
-                            </div>
-                            <h4 class="text-3xl font-heading font-black mb-12 tracking-tight">Detail Lingkup <br> <span class="text-white/60 italic">Pekerjaan Kami.</span></h4>
+                    <!-- Backdrop -->
+                    <div @click="activeCategory = null" class="absolute inset-0 bg-secondary/90 backdrop-blur-2xl"></div>
+                    
+                    <!-- Modal Container -->
+                    <div class="w-full max-w-5xl bg-secondary rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden shadow-2xl relative z-10 flex flex-col h-fit max-h-[92vh]">
+                        
+                        <!-- Close Button -->
+                        <button @click="activeCategory = null" 
+                                class="absolute top-4 sm:top-8 right-4 sm:right-8 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all duration-300 shadow-xl group">
+                            <i class="ri-close-line text-xl sm:text-2xl group-hover:rotate-90 transition-transform duration-500"></i>
+                        </button>
+
+                        <div class="p-8 sm:p-16 lg:p-20 text-white relative overflow-y-auto no-scrollbar">
+                            <!-- Drawer Decor -->
+                            <div class="absolute top-0 right-0 w-[60%] h-full bg-white/5 skew-x-12 -translate-y-1/2 pointer-events-none"></div>
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <template x-for="item in cat.items" :key="item">
-                                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-default">
-                                        <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
-                                        <span class="text-xs font-bold tracking-wide" x-text="item"></span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <!-- Right: Pricing & CTA -->
-                        <div class="flex flex-col justify-between">
-                            <div>
-                                <div class="inline-flex items-center gap-4 mb-8">
-                                    <span class="w-10 h-[1px] bg-primary"></span>
-                                    <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Estimasi Biaya</span>
-                                </div>
-                                <div class="space-y-6">
-                                    <template x-for="price in cat.pricing" :key="price.type">
-                                        <div class="p-8 rounded-3xl bg-white text-secondary group">
-                                            <div class="flex justify-between items-center mb-2">
-                                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400" x-text="price.type"></p>
-                                                <span class="px-3 py-1 bg-secondary text-white text-[8px] font-black uppercase tracking-widest rounded-full">Best Value</span>
-                                            </div>
-                                            <p class="text-3xl font-heading font-black text-secondary mb-2" x-text="price.price"></p>
-                                            <p class="text-[11px] font-bold text-gray-500 italic" x-text="price.note"></p>
+                            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+                                <!-- Left: Scope -->
+                                <div>
+                                    <div class="inline-flex items-center gap-4 mb-6 sm:mb-8">
+                                        <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary text-2xl">
+                                            <i :class="cat.icon"></i>
                                         </div>
-                                    </template>
+                                        <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Service Standards</span>
+                                    </div>
+                                    <h4 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-black mb-8 sm:mb-12 tracking-tight leading-none" x-text="cat.title"></h4>
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                        <template x-for="item in cat.items" :key="item">
+                                            <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-default">
+                                                <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_var(--color-primary)]"></div>
+                                                <span class="text-[11px] sm:text-xs font-bold tracking-wide" x-text="item"></span>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="mt-12 flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number', '6281246668749') }}" class="w-full flex-1 bg-primary py-6 rounded-2xl flex items-center justify-center gap-4 text-white font-black uppercase tracking-widest text-xs hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20">
-                                    <i class="ri-whatsapp-line text-xl"></i>
-                                    <span>Pesan Layanan Sekarang</span>
-                                </a>
-                                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest max-w-[150px] leading-relaxed">Pengerjaan Cepat Tanpa Bongkar & Bergaransi</p>
+                                <!-- Right: Pricing & CTA -->
+                                <div class="flex flex-col justify-between">
+                                    <div>
+                                        <div class="inline-flex items-center gap-4 mb-8">
+                                            <span class="w-10 h-[1px] bg-primary"></span>
+                                            <span class="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Investment Info</span>
+                                        </div>
+                                        <div class="space-y-6">
+                                            <template x-for="price in cat.pricing" :key="price.type">
+                                                <div class="p-8 rounded-[2.5rem] bg-white text-secondary group shadow-2xl">
+                                                    <div class="flex justify-between items-center mb-4">
+                                                        <p class="text-[9px] font-black uppercase tracking-widest text-primary/60" x-text="price.type"></p>
+                                                        <div class="flex items-center gap-1">
+                                                            <div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+                                                            <span class="text-[8px] font-black uppercase tracking-widest text-gray-400">Guaranteed</span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-4xl sm:text-5xl font-heading font-black text-secondary mb-4 tracking-tighter" x-text="price.price"></p>
+                                                    <p class="text-[11px] font-bold text-gray-400 italic leading-relaxed" x-text="price.note"></p>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center gap-6">
+                                        <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number', '6281246668749') }}" class="w-full flex-1 bg-primary py-5 sm:py-6 rounded-2xl flex items-center justify-center gap-4 text-white font-black uppercase tracking-widest text-xs hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20">
+                                            <i class="ri-whatsapp-line text-xl"></i>
+                                            <span>Start Solution Now</span>
+                                        </a>
+                                        <div class="hidden sm:block w-px h-12 bg-white/10"></div>
+                                        <p class="text-[9px] font-bold text-white/40 uppercase tracking-[0.2em] max-w-[150px] leading-relaxed">Modern Tech • No Digging • Full Warranty</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
         </template>
     </div>
 </section>

@@ -69,48 +69,48 @@
             </a>
         </div>
 
-        <!-- Ghostwriting Search Component -->
-        <div x-data="ghostSearch()" class="hidden md:flex items-center gap-4 relative">
-            <div x-show="searchOpen" class="absolute right-0 top-full mt-4 w-[400px] bg-secondary/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-3xl z-[100]" x-cloak @click.away="searchOpen = false">
-                <input type="text" x-model="query" @input.debounce.300ms="fetchSuggestions" placeholder="Cari masalah pipa anda..." class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-primary transition-all">
-                
-                <div class="mt-6 space-y-4 max-h-[300px] overflow-y-auto no-scrollbar">
-                    <div x-show="loading" class="flex items-center justify-center py-10">
-                        <div class="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                    </div>
+        <!-- Action Area -->
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- Ghostwriting Search Component -->
+            <div x-data="ghostSearch()" class="flex items-center relative">
+                <div x-show="searchOpen" class="absolute right-0 top-full mt-4 w-[280px] sm:w-[400px] bg-secondary/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-3xl z-[100]" x-cloak @click.away="searchOpen = false">
+                    <input type="text" x-model="query" @input.debounce.300ms="fetchSuggestions" placeholder="Cari masalah pipa anda..." class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-primary transition-all">
                     
-                    <template x-if="!loading">
-                        <div class="space-y-4">
-                            <template x-for="item in results" :key="item.title">
-                                <a :href="item.url" class="block p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <span class="text-[8px] font-black text-primary uppercase tracking-widest" x-text="item.type"></span>
-                                    </div>
-                                    <h4 class="text-white font-bold text-sm" x-text="item.title"></h4>
-                                    <p class="text-slate-500 text-[10px] italic mt-1" x-text="item.snippet"></p>
-                                </a>
-                            </template>
-                            <div x-show="results.length === 0 && query.length > 2" class="text-slate-500 text-xs italic text-center py-4">Tidak ada saran cepat...</div>
+                    <div class="mt-6 space-y-4 max-h-[300px] overflow-y-auto no-scrollbar">
+                        <div x-show="loading" class="flex items-center justify-center py-10">
+                            <div class="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
                         </div>
-                    </template>
+                        
+                        <template x-if="!loading">
+                            <div class="space-y-4">
+                                <template x-for="item in results" :key="item.title">
+                                    <a :href="item.url" class="block p-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-[8px] font-black text-primary uppercase tracking-widest" x-text="item.type"></span>
+                                        </div>
+                                        <h4 class="text-white font-bold text-sm" x-text="item.title"></h4>
+                                        <p class="text-slate-500 text-[10px] italic mt-1" x-text="item.snippet"></p>
+                                    </a>
+                                </template>
+                                <div x-show="results.length === 0 && query.length > 2" class="text-slate-500 text-xs italic text-center py-4">Tidak ada saran cepat...</div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
+
+                <button @click="searchOpen = !searchOpen" class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all">
+                    <i :class="searchOpen ? 'ri-close-line' : 'ri-search-line'" class="text-lg sm:text-xl"></i>
+                </button>
             </div>
 
-            <button @click="searchOpen = !searchOpen" class="w-11 h-11 flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all">
-                <i :class="searchOpen ? 'ri-close-line' : 'ri-search-line'" class="text-xl"></i>
-            </button>
-        </div>
-
-        <!-- Action Area -->
-        <div class="flex items-center gap-3 sm:gap-5">
             <a href="https://wa.me/6281234567890" 
-               class="hidden md:flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-4 xl:px-6 py-2.5 xl:py-3 rounded-2xl transition-all duration-300 group">
+               class="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-3 sm:px-4 xl:px-6 py-2 sm:py-2.5 xl:py-3 rounded-2xl transition-all duration-300 group">
                 <div class="hidden xl:block text-right">
                     <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1.5">Butuh Bantuan?</div>
                     <div class="text-white font-black text-[11px] uppercase tracking-widest leading-none">WhatsApp SOS</div>
                 </div>
-                <div class="w-8 h-8 xl:w-9 xl:h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all duration-300">
-                    <i class="ri-whatsapp-line text-base xl:text-lg text-primary group-hover:text-white transition-colors"></i>
+                <div class="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 bg-primary/20 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all duration-300">
+                    <i class="ri-whatsapp-line text-sm sm:text-base xl:text-lg text-primary group-hover:text-white transition-colors"></i>
                 </div>
             </a>
 
