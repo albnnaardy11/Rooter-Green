@@ -25,6 +25,18 @@
             </div>
             
             <div class="flex items-center gap-4">
+                @if($stats['lockdown_active'])
+                <form action="{{ route('admin.vault.emergency-release') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="group relative px-8 py-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl transition-all hover:bg-emerald-500 hover:text-white">
+                        <div class="flex items-center gap-3">
+                            <i class="ri-heart-pulse-line text-xl"></i>
+                            <span class="font-bold uppercase text-xs tracking-widest">Emergency Release</span>
+                        </div>
+                    </button>
+                </form>
+                @endif
+                
                 <form action="{{ route('admin.vault.lockdown') }}" method="POST">
                     @csrf
                     <button type="submit" class="group relative px-8 py-4 bg-red-500/10 border border-red-500/20 rounded-2xl transition-all hover:bg-red-500 hover:text-white">

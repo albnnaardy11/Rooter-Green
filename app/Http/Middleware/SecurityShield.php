@@ -52,8 +52,8 @@ class SecurityShield
         $this->preventHotlinking($request);
 
         // 6. Lockdown Mode Check
-        if (Cache::get('system_lockdown') && !$request->is('admin/*')) {
-            return response()->view('errors.lockdown', [], 503);
+        if (Cache::get('system_lockdown_active') && !$request->is('admin/*')) {
+            return response()->view('errors.503', [], 503);
         }
 
         // 7. Intelligent Threat Detection (WAF Mockup)
