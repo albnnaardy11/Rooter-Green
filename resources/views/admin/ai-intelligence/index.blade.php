@@ -8,7 +8,7 @@
             <div class="flex items-center gap-3">
                 <span class="w-2 h-2 bg-primary rounded-full animate-ping"></span>
                 <h1 class="text-3xl font-heading font-black text-white tracking-tighter italic uppercase">
-                    Neural <span class="text-primary">Command</span> Center.
+                    AI <span class="text-primary">Business</span> Analytics.
                 </h1>
             </div>
             <p class="text-slate-500 text-[9px] font-black uppercase tracking-[0.4em] mt-1">Global Logistics Optimization — v2.2-stable</p>

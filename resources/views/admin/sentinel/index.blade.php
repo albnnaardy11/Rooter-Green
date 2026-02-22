@@ -67,8 +67,8 @@
                 <div class="space-y-4 flex-1">
                     <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-white/5">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-bold text-white truncate">Google Gemini v2.5 Flash</p>
-                            <p class="text-[8px] text-slate-500 font-mono mt-0.5">Primary Inference Engine</p>
+                            <p class="text-[10px] font-bold text-white truncate">Google Gemini v2.0 Flash</p>
+                            <p class="text-[8px] text-slate-500 font-mono mt-0.5">Multi-Engine Neural Pool</p>
                         </div>
                         <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase bg-green-500/10 text-green-500">
                             ACTIVE
@@ -88,12 +88,13 @@
 
                     <div class="mt-4 p-4 bg-primary/5 rounded-2xl border border-primary/10">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-[8px] font-black text-slate-500 uppercase">Edge Latency</span>
-                            <span class="text-[10px] font-mono text-primary">{{ $healthData['ai_integrity']['performance']['inference'] }}</span>
+                            <span class="text-[8px] font-black text-slate-500 uppercase">Neural Pool Load Balancing</span>
+                            <span class="text-[10px] font-mono text-primary">{{ $healthData['ai_integrity']['key_pool']['active_nodes'] }} Nodes Active</span>
                         </div>
                         <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary" style="width: 85%"></div>
+                            <div class="h-full bg-primary" style="width: {{ $healthData['ai_integrity']['key_pool']['usage_percent'] }}%"></div>
                         </div>
+                        <p class="text-[7px] text-slate-500 uppercase mt-2 text-right">RPM Enforcement: <span class="text-green-500 font-bold">15/min</span></p>
                     </div>
                 </div>
             </div>

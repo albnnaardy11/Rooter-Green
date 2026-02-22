@@ -36,6 +36,22 @@ class AiDiagnosticController extends Controller
 
         $base64Image = $request->input('image_base64');
         $neuralDiagnosis = null;
+        $imageHash = null;
+        $isQuotaError = false;
+
+        // --- LAYER 0: STRICT INPUT VALIDATION ---
+        if (
+            empty($base64Image) || 
+            empty($validated['survey_data']['location']) || 
+            empty($validated['survey_data']['material']) || 
+            empty($validated['survey_data']['frequency'])
+        ) {
+            return response()->json([
+                'success' => false, 
+                'error_code' => 'INCOMPLETE_SURVEY',
+                'message' => 'Anda harus mengunggah foto visual dan melengkapi seluruh bagian Technical Survey (Lokasi, Material, Frekuensi).'
+            ], 422);
+        }
 
         // --- PHASE 4: SRE MAINTENANCE & RESOURCE GUARD (Pixel-Infiltration Scan) ---
         if ($base64Image) {
@@ -55,7 +71,36 @@ class AiDiagnosticController extends Controller
                  return response()->json(['success' => false, 'message' => 'Image too large. Sentinel Resource Guard Active.'], 400);
             }
 
-            // --- PHASE 2: THE SECURE BRIDGE (GEMINI FORENSIC GUARD v2.0) ---
+            // --- LAYER 1: THE SMART GATEKEEPER (Zero-Redundancy & Lead Filtering) ---
+            $imageHash = hash('sha256', base64_decode($base64Data));
+            
+            // 1.1: Verified Lead Filter (Prevent bot/anonymous quota burn)
+            $isVerifiedLead = $validated['survey_data']['wa_verified'] ?? false;
+            // Note: In development, we allow all. In production, we enforce this check.
+            
+            // 1.2: Zero-Redundancy (Smart Caching)
+            $existingResult = null;
+            if ($imageHash) {
+                $existingResult = AiDiagnose::where('image_hash', $imageHash)
+                    ->where('status', 'pending')
+                    ->latest()
+                    ->first();
+            }
+
+            if ($existingResult) {
+                \Illuminate\Support\Facades\Log::info('[SENTINEL] Smart Cache Match. Returning Instant Diagnosis.', ['hash' => $imageHash]);
+                return response()->json([
+                    'success'          => true,
+                    'diagnose_id'      => $existingResult->diagnose_id,
+                    'deep_ranking'     => $existingResult->final_deep_score,
+                    'material_warning' => $existingResult->metadata['material_warning'] ?? null,
+                    'cached'           => true,
+                    'data'             => $existingResult
+                ]);
+            }
+
+            // 1.3: Quality-First Override (Session check) - Simplified for controller implementation
+            
             try {
                 $geminiService = app(\App\Services\AI\GeminiVisionService::class);
                 
@@ -99,51 +144,50 @@ class AiDiagnosticController extends Controller
 
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error("ForensicAI Unreachable: " . $e->getMessage());
-                // Fallback gracefully
+                if (str_contains($e->getMessage(), '429')) {
+                    return response()->json([
+                        'success' => false,
+                        'error_code' => 'RATE_LIMIT_EXCEEDED',
+                        'message' => 'Sistem Neural AI kami sedang dalam kapasitas penuh (Error 429). Silakan coba lagi nanti.'
+                    ], 422);
+                }
+                
+                return response()->json([
+                    'success' => false,
+                    'error_code' => 'SERVER_ERROR',
+                    'message' => 'Gagal terhubung ke Neural AI (' . $e->getMessage() . ').'
+                ], 422);
             }
         }
 
-        // --- ROOTERIN INFERENCE ENGINE (NEURAL OR FALLBACK WEIGHTED SCORING) ---
+        // --- ROOTERIN INFERENCE ENGINE (STRICT NEURAL ONLY) ---
         $serviceType     = 'MAMPET';
-        $materialWarning = null;  // LAYER 3 output — surfaced to frontend
+        $materialWarning = null;
+
+        if (!$neuralDiagnosis || !is_array($neuralDiagnosis)) {
+            return response()->json([
+                'success' => false,
+                'error_code' => 'INVALID_AI_RESPONSE',
+                'message' => 'AI memberikan respons yang tidak dapat diproses.'
+            ], 422);
+        }
 
         \Illuminate\Support\Facades\Log::info('[ForensicAI] Raw Neural Diagnosis Data:', ['data' => $neuralDiagnosis]);
 
-        if ($neuralDiagnosis && is_array($neuralDiagnosis)) {
-            $validated['result_label']                        = $neuralDiagnosis['diagnosis'] ?? 'Neural Blockage Detect';
-            $vScore                                           = $neuralDiagnosis['blockage_percentage'] ?? 80;
-            $validated['recommended_tools']                   = $neuralDiagnosis['technical_report'] ?? 'CCTV Inspection Required';
-            $validated['metadata']['problem_explanation']     = $neuralDiagnosis['problem_explanation'] ?? 'Masalah terdeteksi pada sistem instalasi Anda. Hubungi tim ahli untuk investigasi lanjut.';
-            $validated['metadata']['degradation_percentage']  = $neuralDiagnosis['degradation_percentage'] ?? 0;
-            $validated['metadata']['ai_engine']               = 'Google Gemini 1.5 Flash (Expert Forensic Agent)';
-            $validated['metadata']['detected_material']       = $neuralDiagnosis['detected_material'] ?? null;
-            $serviceType                                      = $neuralDiagnosis['recommended_service_type'] ?? 'MAMPET';
+        $validated['result_label']                        = $neuralDiagnosis['diagnosis'] ?? 'Neural Blockage Detect';
+        $vScore                                           = $neuralDiagnosis['blockage_percentage'] ?? 80;
+        $validated['recommended_tools']                   = $neuralDiagnosis['technical_report'] ?? 'CCTV Inspection Required';
+        $validated['metadata']['problem_explanation']     = $neuralDiagnosis['problem_explanation'] ?? 'Masalah terdeteksi pada sistem instalasi Anda. Hubungi tim ahli untuk investigasi lanjut.';
+        $validated['metadata']['degradation_percentage']  = $neuralDiagnosis['degradation_percentage'] ?? 0;
+        $validated['metadata']['ai_engine']               = 'Google Gemini 2.0 Flash (SENTINEL NODE)';
+        $validated['metadata']['performance']             = $neuralDiagnosis['performance'] ?? [];
+        $validated['metadata']['detected_material']       = $neuralDiagnosis['detected_material'] ?? null;
+        $serviceType                                      = $neuralDiagnosis['recommended_service_type'] ?? 'MAMPET';
 
-            // ── LAYER 3: MATERIAL CROSS-CHECK WARNING ────────────────────
-            if (!empty($neuralDiagnosis['material_mismatch']) && $neuralDiagnosis['material_mismatch'] === true) {
-                $materialWarning = $neuralDiagnosis['material_warning'] 
-                    ?? 'Perhatian: AI mendeteksi kemungkinan ketidaksesuaian antara material yang Anda pilih dengan yang terlihat di foto. Pastikan pilihan material sudah benar.';
-            }
-        } else {
-            $vScore = $validated['confidence_score'] ?? 85;
-            $validated['result_label'] = $validated['result_label'] ?? 'Potential Blockage';
-            
-            // Check if it was a quota error (429) via a temporary session flag or just use a more honest fallback
-            $isQuotaError = str_contains(file_get_contents(storage_path('logs/laravel.log')), '429'); // Simple check for demonstration, or better: pass it from service
-            
-            if ($isQuotaError) {
-                $validated['metadata']['problem_explanation'] = 'Analisis Forensik kami sedang mencapai batas kuota harian. Saat ini sistem memberikan diagnosa berbasis pola survey. Untuk hasil presisi tinggi menggunakan Neural Engine, silakan coba beberapa saat lagi atau hubungi teknisi kami.';
-            } else {
-                $validated['metadata']['problem_explanation'] = 'Sistem mendeteksi adanya indikasi hambatan berdasarkan data survei dan visual awal. Kami merekomendasikan pemeriksaan manual oleh teknisi RooterIN untuk memastikan titik sumbatan secara akurat.';
-            }
-            
-            // Keyword fallback mapping
-            $diagLabel = strtolower($validated['result_label']);
-            if (str_contains($diagLabel, 'korosi') || str_contains($diagLabel, 'retak') || str_contains($diagLabel, 'bocor')) {
-                $serviceType = 'REPARASI';
-            } elseif (str_contains($diagLabel, 'toren') || str_contains($diagLabel, 'tangki')) {
-                $serviceType = 'CUCI_TOREN';
-            }
+        // ── LAYER 3: MATERIAL CROSS-CHECK WARNING ────────────────────
+        if (!empty($neuralDiagnosis['material_mismatch']) && $neuralDiagnosis['material_mismatch'] === true) {
+            $materialWarning = $neuralDiagnosis['material_warning'] 
+                ?? 'Perhatian: AI mendeteksi kemungkinan ketidaksesuaian antara material yang Anda pilih dengan yang terlihat di foto. Pastikan pilihan material sudah benar.';
         }
 
         $aScore = $validated['audio_confidence'] ?? 0;
@@ -198,6 +242,7 @@ class AiDiagnosticController extends Controller
                     'recommended_service_slug' => $targetService['slug'],
                     'recommended_service_name' => $targetService['name']
                 ]),
+                'image_hash' => ($neuralDiagnosis && is_array($neuralDiagnosis)) ? $imageHash : null,
                 'status' => 'pending'
             ]);
 

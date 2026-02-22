@@ -74,7 +74,7 @@
                 </a>
                 <a href="{{ route('admin.ai.intelligence.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.ai.intelligence.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-radar-box-line text-xl"></i>
-                    <span class="text-sm font-bold font-heading">AI Intelligence</span>
+                    <span class="text-sm font-bold font-heading">AI Business Analytics</span>
                 </a>
                 <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.messages.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-mail-line text-xl"></i>
@@ -91,6 +91,10 @@
                 <a href="{{ route('admin.vault.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.vault.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-shield-keyhole-line text-xl"></i>
                     <span class="text-sm font-bold font-heading text-primary">Security Vault</span>
+                </a>
+                <a href="{{ route('admin.ai.central.ops.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.ai.central.ops.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-brain-line text-xl"></i>
+                    <span class="text-sm font-bold font-heading text-primary">AI Central Ops</span>
                 </a>
                 <a href="{{ route('admin.sentinel.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.sentinel.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
                     <i class="ri-shield-flash-line text-xl"></i>

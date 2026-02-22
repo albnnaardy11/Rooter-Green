@@ -118,15 +118,11 @@ async function rtVision() {
             ctx.drawImage(v, 0, 0, c.width, c.height);
             _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85); // Capture Real Base64 Image
         } else {
-            // Fallback base64 transparent
-            c.width = 640; c.height = 480;
-            var ctx = c.getContext('2d');
-            ctx.fillStyle = "#A9A9A9";
-            ctx.fillRect(0, 0, 640, 480);
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "30px Arial";
-            ctx.fillText("Simulated Degradation Frame", 100, 240);
-            _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85);
+            // STOP! Do not generate a fake image. Force user to upload.
+            _toast('⚠️ Anda harus mengambil foto atau mengunggah gambar terlebih dahulu!', true);
+            _diag.busy = false;
+            _btnState('btn-v', false, '▶ Analyze Visual');
+            return;
         }
 
         _diag.vScore = 85; 
@@ -247,9 +243,23 @@ function rtGenerate(){
         return;
     }
 
+    // ── LAYER 1: LEAD FILTERING (Verified Leads Only) ──
+    var isVerified = _el('wa-verify').checked;
+    if (!isVerified) {
+        _toast('\u26a0\ufe0f Centang verifikasi WhatsApp untuk melanjutkan diagnosa mendalam.', true);
+        return;
+    }
+
     // Collect symptoms
     _diag.survey.symptoms = [];
+    _diag.survey.wa_verified = true;
     document.querySelectorAll('.rt-sym:checked').forEach(function(cb){ _diag.survey.symptoms.push(cb.value); });
+
+    // ── STRICT SURVEY GUARD ──
+    if (!_diag.survey.location || !_diag.survey.material || !_diag.survey.frequency) {
+        _toast('\u26a0\ufe0f Analisis ditolak! Anda wajib melengkapi bagian Lokasi, Material, dan Frekuensi pada Technical Survey.', true);
+        return;
+    }
 
     _diag.busy = true;
     _el('proc-ov').style.display = 'flex';
@@ -439,9 +449,8 @@ function rtShowResult(res, materialWarning){
         _el('m-tools').innerHTML   = report.replace(/\n/g, '<br>').replace(/\. /g, '.<br><br>');
         
         // Integrated Service Link
-        const serviceSlug = (modelData.metadata && modelData.metadata.recommended_service_slug) || meta.recommended_service_slug || 'saluran-pembuangan-mampet';
         const serviceName = (modelData.metadata && modelData.metadata.recommended_service_name) || meta.recommended_service_name || 'Saluran Pembuangan Mampet';
-        _diag.targetServiceUrl = '/layanan/' + serviceSlug;
+        _diag.targetServiceUrl = '/layanan';
         
         if (_el('m-service')) _el('m-service').textContent = serviceName;
 
@@ -498,10 +507,11 @@ function rtCloseModal(e){
 }
 
 function rtPesanLayanan(){
-    window.location.href = _diag.targetServiceUrl || '/services';
+    window.location.href = '/layanan';
 }
 
-function rtWA(){
+function rtWA(e){
+    if (e) e.preventDefault();
     const url = '/admin/api/track-whatsapp';
     const data = new URLSearchParams();
     data.append('url', window.location.href);
@@ -636,7 +646,7 @@ document.addEventListener('keydown', function(e){
         {{-- Actions --}}
         <div style="display:grid;gap:.75rem">
             <button type="button" onclick="rtPesanLayanan()" style="width:100%;padding:1.2rem;background:#fff;color:#0f172a;border:none;border-radius:1.2rem;font-weight:900;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;box-shadow:0 10px 20px rgba(255,255,255,0.05)">PESAN LAYANAN SEKARANG</button>
-            <a id="m-wa" href="#" target="_blank" style="width:100%;padding:1.1rem;background:#22c55e;color:#fff;text-decoration:none;border-radius:1.2rem;font-weight:900;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .3s">Konsultasi WhatsApp</a>
+            <button type="button" onclick="rtWA(event)" style="width:100%;padding:1.1rem;background:#22c55e;color:#fff;border:none;border-radius:1.2rem;font-weight:900;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;display:flex;align-items:center;justify-content:center;gap:.6rem;cursor:pointer;transition:all .3s"><i class="ri-whatsapp-line" style="font-size:1.1rem"></i> Konsultasi WhatsApp</button>
         </div>
         </div>
     </div>
@@ -784,6 +794,14 @@ document.addEventListener('keydown', function(e){
                             <label style="display:flex;align-items:center;gap:.75rem;padding:1rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:1rem;cursor:pointer;transition:all .3s">
                                 <input type="checkbox" value="berisik" class="rt-sym" style="accent-color:#22c55e;width:1.1rem;height:1.1rem;flex-shrink:0">
                                 <span style="font-size:.63rem;font-weight:700;color:#64748b;text-transform:uppercase">Pipa Berbunyi (Gurgling)</span>
+                            </label>
+                        </div>
+                        
+                        {{-- Verified Lead Gatekeeper --}}
+                        <div style="margin-top:1.25rem;padding:1.1rem;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.1);border-radius:1rem">
+                            <label style="display:flex;align-items:flex-start;gap:.6rem;cursor:pointer">
+                                <input type="checkbox" id="wa-verify" style="accent-color:#22c55e;width:1.1rem;height:1.1rem;margin-top:.1rem;flex-shrink:0">
+                                <span style="font-size:.62rem;font-weight:700;color:#22c55e;line-height:1.4;text-transform:uppercase;letter-spacing:0.01em">Saya bersedia dihubungi teknisi via WhatsApp untuk verifikasi hasil diagnosa.</span>
                             </label>
                         </div>
                     </div>

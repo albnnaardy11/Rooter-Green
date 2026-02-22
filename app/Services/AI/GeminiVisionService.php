@@ -7,12 +7,48 @@ use Illuminate\Support\Facades\Log;
 
 class GeminiVisionService
 {
-    protected $apiKey;
-    protected $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+    protected $apiKeys = [];
+    protected $endpointTemplate = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
     public function __construct()
     {
-        $this->apiKey = env('GEMINI_API_KEY');
+        // ROTATION ENGINE: Collect all available keys from .env (GEMINI_API_KEY, GEMINI_API_KEY_2, etc.)
+        for ($i = 1; $i <= 10; $i++) {
+            $keyName = $i === 1 ? 'GEMINI_API_KEY' : "GEMINI_API_KEY_{$i}";
+            $key = env($keyName);
+            if ($key) $this->apiKeys[] = $key;
+        }
+        
+        if (empty($this->apiKeys)) {
+            Log::error('[SENTINEL] No API keys found in Neural Pool!');
+        }
+    }
+
+    /**
+     * Round-Robin Key Selector (With Rate-Limit Evasion)
+     */
+    private function getKey()
+    {
+        if (empty($this->apiKeys)) return null;
+        
+        $maxAttempts = count($this->apiKeys);
+        $attempts = 0;
+
+        while ($attempts < $maxAttempts) {
+            $index = cache()->increment('sentinel_key_index') % count($this->apiKeys);
+            $nodeId = $index + 1;
+
+            if (!cache()->has("gemini_limit_{$nodeId}")) {
+                return [
+                    'key' => $this->apiKeys[$index],
+                    'index' => $nodeId
+                ];
+            }
+            $attempts++;
+        }
+
+        // All keys are exhausted
+        return null;
     }
 
     /**
@@ -26,7 +62,7 @@ class GeminiVisionService
      */
     public function analyzePipeImage(string $base64Image, string $mimeType, string $material, string $location): ?array
     {
-        if (empty($this->apiKey)) {
+        if (empty($this->apiKeys)) {
             Log::error('Gemini API Key is missing.');
             return null;
         }
@@ -82,10 +118,19 @@ PENTING: Hanya berikan JSON valid berikut, TANPA teks di luar JSON:
 }
 PROMPT;
 
+        $keyData = $this->getKey();
+        if (!$keyData) {
+            Log::error('[SENTINEL] Fatal: Neural Pool Exhausted.');
+            throw new \Exception('Neural Pool Exhausted (429)');
+        }
+
+        $startTime = microtime(true);
+        $apiKey = $keyData['key'];
+
         try {
             $response = Http::timeout(45)->withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post("{$this->endpoint}?key={$this->apiKey}", [
+            ])->post("{$this->endpointTemplate}?key={$apiKey}", [
                 'contents' => [
                     [
                         'parts' => [
@@ -106,6 +151,8 @@ PROMPT;
                 ]
             ]);
 
+            $latency = (int)((microtime(true) - $startTime) * 1000);
+            
             if ($response->successful()) {
                 $result = $response->json();
 
@@ -115,12 +162,15 @@ PROMPT;
                     if (preg_match('/\{.*\}/s', $rawText, $matches)) {
                         $data = json_decode($matches[0], true);
                         if (json_last_error() === JSON_ERROR_NONE) {
-                            Log::info('[ForensicAI] Analysis complete.', [
-                                'is_plumbing' => $data['is_plumbing_subject'] ?? null,
-                                'quality'     => $data['image_quality'] ?? null,
-                                'material'    => $data['detected_material'] ?? null,
-                                'mismatch'    => $data['material_mismatch'] ?? null,
-                            ]);
+                            // Add Performance Audit Metadata
+                            $data['performance'] = [
+                                'latency_ms' => $latency,
+                                'key_used'   => "NODE-{$keyData['index']}",
+                                'timestamp'  => now()->toIso8601String(),
+                                'status'     => 'STABLE'
+                            ];
+
+                            Log::info('[SENTINEL] Neural Inference Success', $data['performance']);
                             return $data;
                         }
                     }
@@ -128,10 +178,19 @@ PROMPT;
                     Log::error('[ForensicAI] JSON parsing failed. Raw: ' . $rawText);
                 }
             } else {
+                $status = $response->status();
                 Log::error('[ForensicAI] API Error: ' . $response->body());
+                
+                if ($status === 429) {
+                    $resetTime = now()->addHours(24); // Flag for a full day recovery
+                    cache()->put("gemini_limit_{$keyData['index']}", $resetTime->toIso8601String(), $resetTime);
+                    Log::error("[SENTINEL] NODE-{$keyData['index']} hit rate limit. Put into cooldown.");
+                }
+
+                throw new \Exception("API Error: " . ($response->json('error.code') ?? $status) . " - " . ($response->json('error.message') ?? 'Unknown Error'));
             }
-        } catch (\Exception $e) {
-            Log::error('[ForensicAI] Exception: ' . $e->getMessage());
+        } finally {
+            // Cleanup or final logging if needed
         }
 
         return null;

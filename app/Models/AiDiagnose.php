@@ -22,6 +22,7 @@ class AiDiagnose extends Model
         'location_context',
         'city_location',
         'image_path',
+        'image_hash',
         'status',
         'metadata'
     ];

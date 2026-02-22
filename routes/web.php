@@ -131,10 +131,12 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
     Route::delete('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'delete'])->name('wiki.destroy');
     Route::post('/wiki/auto-generate', [\App\Http\Controllers\Admin\WikiManagementController::class, 'autoGenerate'])->middleware('phantom')->name('wiki.generate');
 
-    // AI Intelligence Center (Super Admin Only)
+    // AI Intelligence Center & Central Ops (Super Admin Only)
     Route::middleware(['super_admin'])->group(function() {
         Route::get('/ai-intelligence', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'index'])->name('ai.intelligence.index');
         Route::get('/ai-intelligence/export', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'export'])->name('ai.intelligence.export');
+        
+        Route::get('/ai-central-ops', [\App\Http\Controllers\Admin\AiCentralOpsController::class, 'index'])->name('ai.central.ops.index');
     });
 
     // Audit & Activity

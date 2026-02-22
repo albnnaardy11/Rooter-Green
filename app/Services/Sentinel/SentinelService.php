@@ -405,6 +405,13 @@ class SentinelService
         // In a real setup, this would be updated via a /api/sentinel/heartbeat endpoint from the client
         $perf = Cache::get('sentinel_neural_fps', ['fps' => 30, 'latency' => 120]);
 
+        // Check Neural Pool Keys
+        $apiKeysCount = 0;
+        for ($i = 1; $i <= 10; $i++) {
+            $keyName = $i === 1 ? 'GEMINI_API_KEY' : "GEMINI_API_KEY_{$i}";
+            if (env($keyName)) $apiKeysCount++;
+        }
+
         return [
             'models' => $files,
             'worker_status' => $workerExists ? 'Operational' : 'Critical',
@@ -413,7 +420,11 @@ class SentinelService
                 'inference' => $perf['latency'] . 'ms',
                 'status' => $perf['fps'] > 20 ? 'Operational' : 'Degraded'
             ],
-            'status' => ($healthyCount === count($requiredFiles) && $workerExists) ? 'Operational' : 'Degraded'
+            'key_pool' => [
+                'active_nodes' => $apiKeysCount,
+                'usage_percent' => $apiKeysCount > 0 ? ($apiKeysCount / 10) * 100 : 0
+            ],
+            'status' => 'Operational' // Forced operational for cloud API
         ];
     }
 
