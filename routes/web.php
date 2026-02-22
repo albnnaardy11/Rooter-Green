@@ -137,6 +137,7 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
         Route::get('/ai-intelligence/export', [\App\Http\Controllers\Admin\AiIntelligenceController::class, 'export'])->name('ai.intelligence.export');
         
         Route::get('/ai-central-ops', [\App\Http\Controllers\Admin\AiCentralOpsController::class, 'index'])->name('ai.central.ops.index');
+        Route::post('/ai-central-ops/flush', [\App\Http\Controllers\Admin\AiCentralOpsController::class, 'flushNodes'])->name('ai.central.ops.flush');
     });
 
     // Audit & Activity

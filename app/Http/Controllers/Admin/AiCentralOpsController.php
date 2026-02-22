@@ -8,6 +8,7 @@ use App\Models\AiDiagnose;
 use App\Models\SentinelAudit;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class AiCentralOpsController extends Controller
 {
@@ -19,31 +20,36 @@ class AiCentralOpsController extends Controller
         // 1. Neural Pool Status (Layer 2)
         $apiKeysCount = 0;
         $keysStatus = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $keyName = $i === 1 ? 'GEMINI_API_KEY' : "GEMINI_API_KEY_{$i}";
-            if (env($keyName)) {
-                $apiKeysCount++;
-                
-                $isLimit = Cache::has("gemini_limit_{$i}");
-                $statusFlag = 'ACTIVE';
-                $rpmText = '15/min';
-                $latency = rand(800, 1500) . 'ms';
+        try {
+            for ($i = 1; $i <= 10; $i++) {
+                $keyName = $i === 1 ? 'GEMINI_API_KEY' : "GEMINI_API_KEY_{$i}";
+                if (env($keyName)) {
+                    $apiKeysCount++;
+                    
+                    $isLimit = Cache::has("gemini_limit_{$i}");
+                    $statusFlag = 'ACTIVE';
+                    $rpmText = '15/min';
+                    $latency = rand(800, 1500) . 'ms';
 
-                if ($isLimit) {
-                    $statusFlag = 'LIMIT 429';
-                    $limitTime = Cache::get("gemini_limit_{$i}"); // ISO8601 String
-                    $diff = Carbon::parse($limitTime)->diffAsCarbonInterval(now());
-                    $rpmText = 'RESET: ' . $diff->h . 'h ' . $diff->i . 'm';
-                    $latency = '0ms';
+                    if ($isLimit) {
+                        $statusFlag = 'LIMIT 429';
+                        $limitTime = Cache::get("gemini_limit_{$i}"); // ISO8601 String
+                        $diff = now()->diff(\Carbon\Carbon::parse($limitTime));
+                        $totalHours = ($diff->d * 24) + $diff->h;
+                        $rpmText = 'RESET: ' . $totalHours . 'h ' . $diff->i . 'm';
+                        $latency = '0ms';
+                    }
+
+                    $keysStatus[] = [
+                        'node' => "NODE-{$i}",
+                        'status' => $statusFlag,
+                        'rpm_limit' => $rpmText,
+                        'latency' => $latency
+                    ];
                 }
-
-                $keysStatus[] = [
-                    'node' => "NODE-{$i}",
-                    'status' => $statusFlag,
-                    'rpm_limit' => $rpmText,
-                    'latency' => $latency
-                ];
             }
+        } catch (\Exception $e) {
+            Log::error('Neural Pool Loop Error: ' . $e->getMessage());
         }
 
         // 2. Smart Cache & Zero-Redundancy Metrics (Layer 1)
@@ -63,15 +69,21 @@ class AiCentralOpsController extends Controller
         $recentOps = AiDiagnose::latest()->take(8)->get();
 
         // Check fallback/quota error occurrences — metadata is cast to array by model
-        $allDiagnoses = AiDiagnose::whereNotNull('metadata')->get();
-        $quotaErrors = $allDiagnoses->filter(function($d) {
-            $explanation = $d->metadata['problem_explanation'] ?? '';
-            return str_contains((string)$explanation, 'kuota harian') || str_contains((string)$explanation, 'resource exhausted');
-        })->count();
-        $qualityErrors = $allDiagnoses->filter(function($d) {
-            $q = $d->metadata['image_quality'] ?? '';
-            return $q !== '' && $q !== 'CLEAR';
-        })->count();
+        try {
+            $allDiagnoses = AiDiagnose::whereNotNull('metadata')->get();
+            $quotaErrors = $allDiagnoses->filter(function($d) {
+                $explanation = $d->metadata['problem_explanation'] ?? '';
+                return str_contains((string)$explanation, 'kuota harian') || str_contains((string)$explanation, 'resource exhausted');
+            })->count();
+            $qualityErrors = $allDiagnoses->filter(function($d) {
+                $q = $d->metadata['image_quality'] ?? '';
+                return $q !== '' && $q !== 'CLEAR';
+            })->count();
+        } catch (\Exception $e) {
+            Log::error('Error in filtering diagnoses: ' . $e->getMessage());
+            $quotaErrors = 0;
+            $qualityErrors = 0;
+        }
 
         // Advanced Metrics Array
         $aiMetrics = [
@@ -87,5 +99,18 @@ class AiCentralOpsController extends Controller
         ];
 
         return view('admin.ai-central-ops.index', compact('aiMetrics'));
+    }
+
+    /**
+     * Clear all Neural Pool blocks and index manually 
+     */
+    public function flushNodes()
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            Cache::forget("gemini_limit_{$i}");
+        }
+        Cache::forget('sentinel_key_index');
+
+        return redirect()->back()->with('success', 'Neural Pool Memory Flushed. All nodes returned to ACTIVE state.');
     }
 }
