@@ -182,10 +182,59 @@ PROMPT;
                 Log::error('[ForensicAI] API Error: ' . $response->body());
                 
                 if ($status === 429) {
-                    // Cooldown selama 60 menit (Gemini free tier quota reset per menit/jam, bukan per hari)
-                    $cooldownMinutes = 60;
-                    cache()->put("gemini_limit_{$keyData['index']}", now()->toIso8601String(), now()->addMinutes($cooldownMinutes));
-                    Log::error("[SENTINEL] NODE-{$keyData['index']} hit rate limit. Cooldown {$cooldownMinutes} minutes.");
+                    $errMsg = strtolower($response->json('error.message') ?? '');
+
+                    // Smart cooldown: RPM limit (rate/minute) = short 90s, Daily quota = 60min
+                    if (str_contains($errMsg, 'retry') || str_contains($errMsg, 'resource_exhausted') && str_contains($errMsg, 'second')) {
+                        // RPM limit — resets in under 2 minutes
+                        cache()->put("gemini_limit_{$keyData['index']}", 'rpm', now()->addSeconds(90));
+                        Log::warning("[SENTINEL] NODE-{$keyData['index']} RPM limit hit. Cooldown 90s.");
+                    } else {
+                        // Daily quota exhausted
+                        cache()->put("gemini_limit_{$keyData['index']}", 'daily', now()->addMinutes(60));
+                        Log::error("[SENTINEL] NODE-{$keyData['index']} daily quota hit. Cooldown 60min.");
+                    }
+
+                    // AUTO-FAILOVER: immediately try next available key
+                    $fallbackKey = $this->getKey();
+                    if ($fallbackKey && $fallbackKey['index'] !== $keyData['index']) {
+                        Log::info("[SENTINEL] Auto-failover to NODE-{$fallbackKey['index']}");
+                        $retryResp = Http::timeout(45)->withHeaders(['Content-Type' => 'application/json'])
+                            ->post("{$this->endpointTemplate}?key={$fallbackKey['key']}", [
+                                'contents' => [[
+                                    'parts' => [
+                                        ['text' => $prompt . "\n\nKRITIS: Analisis setiap detail secara spesifik."],
+                                        ['inline_data' => ['mime_type' => $mimeType, 'data' => $base64Image]]
+                                    ]
+                                ]],
+                                'generationConfig' => ['temperature' => 0.2, 'topK' => 32, 'topP' => 1]
+                            ]);
+
+                        if ($retryResp->successful()) {
+                            $rResult = $retryResp->json();
+                            if (isset($rResult['candidates'][0]['content']['parts'][0]['text'])) {
+                                if (preg_match('/\{.*\}/s', $rResult['candidates'][0]['content']['parts'][0]['text'], $m)) {
+                                    $rData = json_decode($m[0], true);
+                                    if (json_last_error() === JSON_ERROR_NONE) {
+                                        $rData['performance'] = [
+                                            'latency_ms' => (int)((microtime(true) - $startTime) * 1000),
+                                            'key_used'   => "NODE-{$fallbackKey['index']} (failover)",
+                                            'timestamp'  => now()->toIso8601String(),
+                                            'status'     => 'FAILOVER'
+                                        ];
+                                        Log::info('[SENTINEL] Failover via NODE-' . $fallbackKey['index']);
+                                        return $rData;
+                                    }
+                                }
+                            }
+                        } elseif ($retryResp->status() === 429) {
+                            cache()->put("gemini_limit_{$fallbackKey['index']}", 'rpm', now()->addSeconds(90));
+                            Log::error("[SENTINEL] Failover NODE-{$fallbackKey['index']} also rate-limited.");
+                        }
+                    }
+
+                    // Both keys exhausted — tell user to retry in a moment
+                    throw new \Exception('429');
                 }
 
                 throw new \Exception("API Error: " . ($response->json('error.code') ?? $status) . " - " . ($response->json('error.message') ?? 'Unknown Error'));

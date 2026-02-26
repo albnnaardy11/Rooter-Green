@@ -34,7 +34,7 @@ class AiCentralOpsController extends Controller
                     if ($isLimit) {
                         $statusFlag = 'LIMIT 429';
                         $limitTime = Cache::get("gemini_limit_{$i}"); // ISO8601 String
-                        $diff = now()->diff(\Carbon\Carbon::parse($limitTime));
+                        $diff = now()->diff(Carbon::parse($limitTime));
                         $totalHours = ($diff->d * 24) + $diff->h;
                         $rpmText = 'RESET: ' . $totalHours . 'h ' . $diff->i . 'm';
                         $latency = '0ms';

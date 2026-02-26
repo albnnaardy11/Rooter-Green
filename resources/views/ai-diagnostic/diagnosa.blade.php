@@ -105,7 +105,7 @@ async function rtVision() {
         _el('scan-ln').style.display = 'block';
     }
 
-    setTimeout(function() {
+        setTimeout(function() {
         var v = _el('rt-vid');
         var c = _el('rt-cvs');
         if (_diag.uploadedBase64) {
@@ -116,9 +116,8 @@ async function rtVision() {
             c.height = v.videoHeight;
             var ctx = c.getContext('2d');
             ctx.drawImage(v, 0, 0, c.width, c.height);
-            _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85); // Capture Real Base64 Image
+            _diag.imageBase64 = c.toDataURL('image/jpeg', 0.85); 
         } else {
-            // STOP! Do not generate a fake image. Force user to upload.
             _toast('⚠️ Anda harus mengambil foto atau mengunggah gambar terlebih dahulu!', true);
             _diag.busy = false;
             _btnState('btn-v', false, '▶ Analyze Visual');
@@ -141,6 +140,7 @@ function rtUploadFile(e) {
         var reader = new FileReader();
         reader.onload = function(evt) {
             _diag.uploadedBase64 = evt.target.result;
+            _diag.imageBase64 = evt.target.result; 
             _diag.camOn = false;
             
             var v = _el('rt-vid');
@@ -715,7 +715,7 @@ document.addEventListener('keydown', function(e){
                         </div>
                     </div>
                     <div style="padding:1.5rem;display:flex;flex-direction:column;gap:.75rem">
-                        <button type="button" id="btn-v" onclick="rtVision()"
+                        <button type="button" id="btn-v" onclick="if(!_diag.camOn && !_diag.uploadedBase64){startCamera()}else{rtVision()}"
                                 style="width:100%;padding:1.1rem;background:#fff;color:#0f172a;border:none;border-radius:1.2rem;font-weight:900;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;cursor:pointer;box-shadow:0 10px 30px rgba(255,255,255,.1)">
                             Mulai Analisis Visual
                         </button>
@@ -858,9 +858,8 @@ document.addEventListener('keydown', function(e){
 }
 </style>
 
-{{-- Camera startup — deferred so DOM is ready --}}
 <script>
-(function(){
+function startCamera() {
     var v = document.getElementById('rt-vid');
     if (!v || !navigator.mediaDevices) return;
     navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:'environment' } } })
@@ -870,9 +869,13 @@ document.addEventListener('keydown', function(e){
             document.getElementById('no-cam').style.display = 'none';
             document.getElementById('cam-hud').style.display = 'block';
             _diag.camOn = true;
+            _toast('Kamera Aktif: Siap mengambil visual');
         })
-        .catch(function(e){ console.warn('Cam:', e.message); });
-})();
+        .catch(function(e){ 
+            console.warn('Cam:', e.message); 
+            _toast('Gagal akses kamera. Silakan upload foto secara manual.', true);
+        });
+}
 </script>
 
 </x-app-layout>
