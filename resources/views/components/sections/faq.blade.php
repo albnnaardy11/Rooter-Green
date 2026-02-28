@@ -1,32 +1,7 @@
 @props([
     'title' => 'Pertanyaan Yang <span class="text-primary italic">Sering Diajukan.</span>',
     'subtitle' => 'FAQ - BUTUH JAWABAN?',
-    'faqs' => [
-        [
-            'q' => 'Apakah ada biaya untuk konsultasi awal?',
-            'a' => 'Tidak ada biaya sama sekali. Kami memberikan layanan konsultasi dan estimasi biaya secara GRATIS melalui WhatsApp atau survey lokasi sebelum pengerjaan dimulai.'
-        ],
-        [
-            'q' => 'Berapa lama waktu pengerjaan saluran mampet?',
-            'a' => 'Rata-rata pengerjaan berkisar antara 1 hingga 3 jam saja, tergantung tingkat kesulitan dan panjang saluran, berkat penggunaan mesin Rooter modern berstandar internasional.'
-        ],
-        [
-            'q' => 'Apakah metode pembersihan ini merusak pipa atau lantai?',
-            'a' => 'Sama sekali tidak. Kami menggunakan teknologi Spiral Cable Flexible yang hanya menarik kotoran/lemak tanpa melukai dinding pipa. Kami bekerja "Tanpa Bongkar" lantai atau dinding Anda.'
-        ],
-        [
-            'q' => 'Apa saja wilayah cakupan layanan RooterIn?',
-            'a' => 'Saat ini tim kami siap melayani area Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi), Bandung, Serang, hingga area Lampung dan Metro.'
-        ],
-        [
-            'q' => 'Bagaimana jika saluran mampet lagi setelah diperbaiki?',
-            'a' => 'RooterIn memberikan Garansi Kepuasan selama 7 hari. Jika dalam masa garansi saluran mampet kembali, tim kami akan datang dan memperbaikinya GRATIS tanpa biaya tambahan.'
-        ],
-        [
-            'q' => 'Apakah bisa melayani restoran, pabrik, atau gedung kantor?',
-            'a' => 'Sangat bisa. Kami memiliki paket layanan khusus untuk residensial (rumah tinggal) maupun komersial/korporat dengan peralatan yang disesuaikan untuk skala pipa besar dan limbah berat.'
-        ]
-    ]
+    'faqs' => []
 ])
 
 <section id="faq" {{ $attributes->merge(['class' => 'py-24 sm:py-32 bg-white relative overflow-hidden']) }}>

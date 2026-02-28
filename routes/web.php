@@ -31,9 +31,7 @@ Route::get('/models/{file}', function($file) {
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->middleware('throttle:public-web')->name('home');
 
-Route::get('/tentang', function () {
-    return view('tentang');
-})->name('about');
+Route::get('/tentang', [\App\Http\Controllers\TentangController::class, 'index'])->name('about');
 
 Route::get('/layanan', [\App\Http\Controllers\ServiceLandingController::class, 'index'])->name('services');
 
@@ -138,6 +136,9 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
         
         Route::get('/ai-central-ops', [\App\Http\Controllers\Admin\AiCentralOpsController::class, 'index'])->name('ai.central.ops.index');
         Route::post('/ai-central-ops/flush', [\App\Http\Controllers\Admin\AiCentralOpsController::class, 'flushNodes'])->name('ai.central.ops.flush');
+
+        Route::resource('faq-categories', \App\Http\Controllers\Admin\FaqCategoryController::class);
+        Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class);
     });
 
     // Audit & Activity

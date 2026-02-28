@@ -38,6 +38,13 @@ class HomeController extends Controller
         
         $testimonials = Testimonial::all();
 
-        return view('welcome', compact('services', 'projects', 'testimonials'));
+        $faqs = \App\Models\Faq::landing()->orderBy('order')->get()->map(function($f) {
+            return [
+                'q' => $f->question,
+                'a' => $f->answer
+            ];
+        });
+
+        return view('welcome', compact('services', 'projects', 'testimonials', 'faqs'));
     }
 }

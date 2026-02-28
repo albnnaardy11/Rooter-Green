@@ -61,6 +61,10 @@
                     <i class="ri-book-open-line text-xl"></i>
                     <span class="text-sm font-bold">WikiPipa Automator</span>
                 </a>
+                <a href="{{ route('admin.faqs.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.faqs.*') || request()->routeIs('admin.faq-categories.*') ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-white/5' }}">
+                    <i class="ri-question-answer-line text-xl"></i>
+                    <span class="text-sm font-bold">Pusat FAQ</span>
+                </a>
 
                 <div class="pt-4 pb-2 px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Konfigurasi</div>
                 

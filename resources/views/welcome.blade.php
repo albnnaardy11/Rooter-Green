@@ -19,7 +19,7 @@
     <x-sections.gallery :items="$projects" />
 
     {{-- 7. FAQ Section - Addressing Common Concerns --}}
-    <x-sections.faq />
+    <x-sections.faq :faqs="$faqs" />
 
     {{-- 8. Coverage Section - Location Presence --}}
     <x-sections.coverage />

@@ -12,7 +12,10 @@
     {{-- 4. Working Methodology - Techniques & Advantages --}}
     <x-sections.tentang.methodology />
 
-    {{-- 5. Final CTA --}}
+    {{-- 5. FAQ Section - Detailed Information --}}
+    <x-sections.tentang.faq-complex :categories="$categories" />
+
+    {{-- 6. Final CTA --}}
     <x-sections.tentang.cta />
 
 </x-app-layout>
