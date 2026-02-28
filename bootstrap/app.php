@@ -126,5 +126,11 @@ return Application::configure(basePath: dirname(__DIR__))
                  ->dailyAt('04:00')
                  ->timezone('Asia/Jakarta')
                  ->withoutOverlapping();
+
+        // 8. Database Hygiene: Prune old logs (Daily at 04:30)
+        $schedule->command('seo:prune-logs')
+                 ->dailyAt('04:30')
+                 ->timezone('Asia/Jakarta')
+                 ->withoutOverlapping();
     })
     ->create();
