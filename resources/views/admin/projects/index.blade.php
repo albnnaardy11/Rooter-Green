@@ -1,81 +1,108 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="space-y-12">
-    <div class="flex items-center justify-between">
+<div class="space-y-12 pb-20" x-data="{ activeTab: 'residential' }">
+    <!-- Header Area -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
         <div>
-            <h1 class="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">Project <span class="text-primary italic">Gallery.</span></h1>
-            <p class="text-slate-500 font-medium mt-2 uppercase text-[10px] tracking-[0.3em]">Portfolio Showcase Management</p>
+            <h1 class="text-4xl sm:text-5xl font-heading font-black text-white tracking-tighter">
+                Project <span class="text-primary italic">Vault.</span>
+            </h1>
+            <p class="text-slate-500 font-medium mt-2 uppercase text-[11px] tracking-[0.4em] flex items-center gap-2">
+                <span class="w-8 h-[1px] bg-primary/30"></span>
+                Portfolio Intelligence Management
+            </p>
         </div>
-        <a href="{{ route('admin.projects.create') }}" class="px-8 py-3 bg-primary text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20">
-            <i class="ri-add-line mr-2"></i> New Project
-        </a>
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.projects.create') }}" class="group relative px-8 py-4 bg-primary text-white rounded-2xl font-black uppercase text-[11px] tracking-widest overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-primary/20">
+                <span class="relative z-10 flex items-center gap-2">
+                    <i class="ri-add-fill text-lg"></i>
+                    Register New Project
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+            </a>
+        </div>
     </div>
 
-    <!-- Table -->
-    <div class="bg-slate-900/50 rounded-[2rem] border border-white/5 overflow-hidden backdrop-blur-xl">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-white/5 border-b border-white/5">
-                    <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Project</th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Location</th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Featured</th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-white/5">
-                @foreach($projects as $project)
-                <tr class="hover:bg-white/[0.02] transition-colors group">
-                    <td class="px-8 py-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-white/5">
-                                <i class="ri-image-line text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-white">{{ $project->title }}</p>
-                                <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">{{ $project->category }}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-8 py-6">
-                        <p class="text-xs text-slate-400">{{ $project->location ?? 'N/A' }}</p>
-                    </td>
-                    <td class="px-8 py-6">
-                        <div class="flex items-center gap-2">
-                            <i class="{{ $project->is_featured ? 'ri-star-fill text-yellow-500' : 'ri-star-line text-slate-700' }} text-lg"></i>
-                            <span class="text-[9px] font-black uppercase tracking-widest {{ $project->is_featured ? 'text-white' : 'text-slate-600' }}">
-                                {{ $project->is_featured ? 'Featured' : 'Standard' }}
-                            </span>
-                        </div>
-                    </td>
-                    <td class="px-8 py-6 text-right">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('admin.projects.edit', $project->id) }}" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 transition-all">
-                                <i class="ri-edit-line text-lg"></i>
-                            </a>
-                            <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-red-500 hover:text-white transition-all" onclick="return confirm('Delete this project?')">
-                                    <i class="ri-delete-bin-line text-lg"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @if($projects->isEmpty())
-        <div class="py-24 text-center">
-            <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6">
-                <i class="ri-gallery-line text-4xl text-slate-700"></i>
+    <!-- Stats Intelligence Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-8 rounded-[2.5rem] bg-slate-900/40 border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                <i class="ri-gallery-fill text-6xl text-white"></i>
             </div>
-            <p class="text-sm text-slate-500 font-black uppercase tracking-widest">No projects found</p>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Total Workforce</p>
+            <h3 class="text-4xl font-heading font-black text-white tabular-nums">{{ $stats['total'] }}</h3>
+            <div class="mt-4 flex items-center gap-2 text-[10px] text-primary font-bold">
+                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                Live Database
+            </div>
         </div>
-        @endif
-        <div class="p-8 border-t border-white/5">
-            {{ $projects->links() }}
+
+        <div class="p-8 rounded-[2.5rem] bg-slate-900/40 border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                <i class="ri-home-4-fill text-6xl text-white"></i>
+            </div>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Residential</p>
+            <h3 class="text-4xl font-heading font-black text-white tabular-nums">{{ $stats['residential'] }}</h3>
+            <div class="mt-4 flex items-center gap-2 text-[10px] text-blue-400 font-bold">
+                <span class="flex h-2 w-2 rounded-full bg-blue-400"></span>
+                Sektor Perumahan
+            </div>
+        </div>
+
+        <div class="p-8 rounded-[2.5rem] bg-slate-900/40 border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                <i class="ri-building-2-fill text-6xl text-white"></i>
+            </div>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Commercial</p>
+            <h3 class="text-4xl font-heading font-black text-white tabular-nums">{{ $stats['commercial'] }}</h3>
+            <div class="mt-4 flex items-center gap-2 text-[10px] text-accent font-bold">
+                <span class="flex h-2 w-2 rounded-full bg-accent"></span>
+                Sektor Industri
+            </div>
+        </div>
+
+        <div class="p-8 rounded-[2.5rem] bg-slate-900/40 border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                <i class="ri-star-fill text-6xl text-white"></i>
+            </div>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">High Performance</p>
+            <h3 class="text-4xl font-heading font-black text-white tabular-nums">{{ $stats['featured'] }}</h3>
+            <div class="mt-4 flex items-center gap-2 text-[10px] text-yellow-500 font-bold">
+                <span class="flex h-2 w-2 rounded-full bg-yellow-500"></span>
+                Featured Masterpieces
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Tabbed Interface -->
+    <div class="space-y-8">
+        <div class="flex items-center justify-center sm:justify-start gap-2 p-1.5 bg-slate-900/60 rounded-3xl border border-white/5 w-fit">
+            <button @click="activeTab = 'residential'" 
+                    :class="activeTab === 'residential' ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'text-slate-500 hover:text-white'"
+                    class="px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 flex items-center gap-3">
+                <i class="ri-home-smile-fill text-lg"></i>
+                Residential Segment
+            </button>
+            <button @click="activeTab = 'commercial'" 
+                    :class="activeTab === 'commercial' ? 'bg-accent text-white shadow-xl shadow-accent/20' : 'text-slate-500 hover:text-white'"
+                    class="px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 flex items-center gap-3">
+                <i class="ri-building-4-fill text-lg"></i>
+                Commercial Segment
+            </button>
+        </div>
+
+        <!-- Tables Container -->
+        <div class="relative min-h-[500px]">
+            <!-- Residential Table -->
+            <div x-show="activeTab === 'residential'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+                @include('admin.projects.partials.table', ['projects' => $residential, 'type' => 'Residential'])
+            </div>
+
+            <!-- Commercial Table -->
+            <div x-show="activeTab === 'commercial'" x-cloak x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+                @include('admin.projects.partials.table', ['projects' => $commercial, 'type' => 'Commercial'])
+            </div>
         </div>
     </div>
 </div>

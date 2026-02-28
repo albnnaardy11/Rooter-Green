@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,8 +23,17 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = $this->projectRepo->paginate(10);
-        return view('admin.projects.index', compact('projects'));
+        $residential = Project::where('category', 'Residential')->latest()->paginate(10, ['*'], 'residential_page');
+        $commercial = Project::where('category', 'Commercial')->latest()->paginate(10, ['*'], 'commercial_page');
+        
+        $stats = [
+            'total' => Project::count(),
+            'residential' => Project::where('category', 'Residential')->count(),
+            'commercial' => Project::where('category', 'Commercial')->count(),
+            'featured' => Project::where('is_featured', true)->count()
+        ];
+
+        return view('admin.projects.index', compact('residential', 'commercial', 'stats'));
     }
 
     public function create()

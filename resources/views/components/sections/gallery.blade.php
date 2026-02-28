@@ -68,17 +68,11 @@
             </div>
         </div>
 
-        <!-- Gallery Grid - Bento Grid Style -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 auto-rows-[200px] sm:auto-rows-[300px]">
+        <!-- Gallery Grid - Proportional High-End Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             <template x-for="(item, index) in filteredItems" :key="index">
                 <div @click="openModal(index)"
-                     class="group relative overflow-hidden rounded-[1.5rem] sm:rounded-[2.5rem] shadow-xl shadow-gray-200/50 hover:shadow-primary/30 transition-all duration-700 cursor-pointer bg-gray-100"
-                     :class="{
-                        'col-span-2 row-span-2': index === 0,
-                        'col-span-1 row-span-1': index === 1 || index === 2 || index === 4 || index === 6 || index === 7 || index === 8 || index === 9,
-                        'col-span-1 row-span-2': index === 3,
-                        'col-span-2 row-span-1': index === 5
-                     }">
+                     class="group relative overflow-hidden rounded-[2rem] sm:rounded-[3rem] shadow-xl shadow-gray-200/50 hover:shadow-primary/30 transition-all duration-700 cursor-pointer bg-gray-100 aspect-square">
                     
                     <img :src="item.img" :alt="item.title" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy">
                     
