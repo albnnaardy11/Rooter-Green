@@ -91,4 +91,8 @@
     .animate-shimmer {
         animation: shimmer 2s infinite;
     }
+
+    [x-cloak] {
+        display: none !important;
+    }
 }

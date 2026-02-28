@@ -243,7 +243,7 @@ class AiDiagnosticController extends Controller
                     'recommended_service_name' => $targetService['name']
                 ]),
                 'image_hash' => ($neuralDiagnosis && is_array($neuralDiagnosis)) ? $imageHash : null,
-                'status' => 'pending'
+                'status' => 'success'
             ]);
 
             // Optional cache eviction - disabled to avoid triggering Vite reload

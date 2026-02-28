@@ -12,11 +12,25 @@ class GeminiVisionService
 
     public function __construct()
     {
-        // ROTATION ENGINE: Collect all available keys from .env (GEMINI_API_KEY, GEMINI_API_KEY_2, etc.)
+        // FORCE-READ: Manually parse .env to bypass Laragon/PHP-CGI environment caching
+        $envPath = base_path('.env');
+        $envContent = file_exists($envPath) ? file_get_contents($envPath) : '';
+        
         for ($i = 1; $i <= 10; $i++) {
             $keyName = $i === 1 ? 'GEMINI_API_KEY' : "GEMINI_API_KEY_{$i}";
+            
+            // Try standard env first, then manually grep from file if needed
             $key = env($keyName);
-            if ($key) $this->apiKeys[] = $key;
+            if (empty($key) || str_starts_with($key, 'AIzaSyCK')) { // If empty or stuck on common old key prefix
+                if (preg_match("/^{$keyName}=(.*)$/m", $envContent, $matches)) {
+                    $key = trim($matches[1], "\"' ");
+                }
+            }
+
+            if ($key) {
+                $this->apiKeys[] = $key;
+                Log::info("[SENTINEL] Node-{$i} Loaded. Fingerprint: " . substr($key, 0, 8) . "...");
+            }
         }
         
         if (empty($this->apiKeys)) {
@@ -31,11 +45,11 @@ class GeminiVisionService
     {
         if (empty($this->apiKeys)) return null;
         
-        $maxAttempts = count($this->apiKeys);
-        $attempts = 0;
-
-        while ($attempts < $maxAttempts) {
-            $index = cache()->increment('sentinel_key_index') % count($this->apiKeys);
+        $keyCount = count($this->apiKeys);
+        
+        // Use a persistent pointer to rotate fairly, but try ALL keys in one go if needed
+        for ($attempts = 0; $attempts < $keyCount; $attempts++) {
+            $index = cache()->increment('sentinel_key_index') % $keyCount;
             $nodeId = $index + 1;
 
             if (!cache()->has("gemini_limit_{$nodeId}")) {
@@ -44,21 +58,13 @@ class GeminiVisionService
                     'index' => $nodeId
                 ];
             }
-            $attempts++;
         }
 
-        // All keys are exhausted
         return null;
     }
 
     /**
      * FORENSIC GUARD v2.0 — 5-Layer AI Validation System
-     * 
-     * Layer 1: Subject Validation (Is this a pipe/drain?)
-     * Layer 2: Image Quality Check (Is photo clear enough?)
-     * Layer 3: Material Cross-Check (Does declared material match visual?)
-     * Layer 4: Full Forensic Diagnosis
-     * Layer 5: Service Recommendation
      */
     public function analyzePipeImage(string $base64Image, string $mimeType, string $material, string $location): ?array
     {
@@ -103,146 +109,92 @@ PENTING: Hanya berikan JSON valid berikut, TANPA teks di luar JSON:
 
 {
   "is_plumbing_subject": true|false,
-  "rejection_reason": "string atau null — mengapa foto ditolak (isi jika is_plumbing_subject=false). Gunakan nada tenang namun tegas sebagai ahli.",
+  "rejection_reason": "string atau null",
   "image_quality": "GOOD|BLURRY|TOO_DARK|POOR_ANGLE",
-  "quality_message": "string — pesan spesifik jika kualitas buruk, null jika GOOD. Jelaskan APA yang tidak terlihat secara teknis.",
+  "quality_message": "string atau null",
   "detected_material": "PVC|BESI|TEMBAGA|BETON|TIDAK_TERLIHAT",
   "material_mismatch": true|false,
-  "material_warning": "string — peringatan jika ada ketidakcocokan material, null jika cocok",
-  "diagnosis": "string — judul diagnosis profesional (misal: Heavy Calcite Scaling detected)",
-  "problem_explanation": "string — Penjelasan mendalam (2-3 kalimat) tentang APA yang Anda temukan secara forensik dan MENGAPA itu terjadi. Bertindaklah seperti dokter pipa.",
+  "material_warning": "string atau null",
+  "diagnosis": "string (judul diagnosa)",
+  "problem_explanation": "string (penjelasan 2-3 kalimat)",
   "blockage_percentage": 0,
   "degradation_percentage": 0,
-  "technical_report": "string — Urutan langkah mekanis spesifik. Gunakan terminologi profesional (misal: 'Mechanized Spiral Cleaning with C-Cutter'). Berikan minimal 3 poin teknis.",
+  "technical_report": "string (3-4 langkah mekanis)",
   "recommended_service_type": "MAMPET|REPARASI|CUCI_TOREN|INSTALASI"
 }
 PROMPT;
 
-        $keyData = $this->getKey();
-        if (!$keyData) {
-            Log::error('[SENTINEL] Fatal: All Neural Pool nodes are in cooldown (429).');
-            throw new \Exception('429: Semua API key sedang dalam cooldown. Cache telah direset, coba lagi dalam beberapa menit.');
-        }
+        $attempts = 0;
+        $maxAttempts = count($this->apiKeys);
+        $lastException = null;
 
-        $startTime = microtime(true);
-        $apiKey = $keyData['key'];
+        while ($attempts < $maxAttempts) {
+            $keyData = $this->getKey();
+            if (!$keyData) break;
 
-        try {
-            $response = Http::timeout(45)->withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post("{$this->endpointTemplate}?key={$apiKey}", [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt . "\n\nKRITIS: Jangan memberikan jawaban yang sama untuk foto yang berbeda. Analisis setiap lekukan, warna, dan tekstur secara spesifik."],
-                            [
-                                'inline_data' => [
-                                    'mime_type' => $mimeType,
-                                    'data'      => $base64Image,
-                                ]
+            $startTime = microtime(true);
+            $apiKey = $keyData['key'];
+            $nodeId = $keyData['index'];
+            $keyFingerprint = substr($apiKey, 0, 8) . '...';
+
+            try {
+                Log::info("[SENTINEL] Executing Inference via NODE-{$nodeId} (Fingerprint: $keyFingerprint)");
+                $response = Http::timeout(45)->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/' . rand(110, 120) . '.0.0.0 Safari/537.36',
+                ])->post("{$this->endpointTemplate}?key={$apiKey}", [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => $prompt],
+                                ['inline_data' => ['mime_type' => $mimeType, 'data' => $base64Image]]
                             ]
                         ]
-                    ]
-                ],
-                'generationConfig' => [
-                    'temperature'         => 0.2,
-                    'topK'                => 32,
-                    'topP'                => 1
-                ]
-            ]);
+                    ],
+                    'generationConfig' => ['temperature' => 0.1, 'topK' => 16, 'topP' => 0.6]
+                ]);
 
-            $latency = (int)((microtime(true) - $startTime) * 1000);
-            
-            if ($response->successful()) {
-                $result = $response->json();
-
-                if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
-                    $rawText = $result['candidates'][0]['content']['parts'][0]['text'];
-
-                    if (preg_match('/\{.*\}/s', $rawText, $matches)) {
-                        $data = json_decode($matches[0], true);
-                        if (json_last_error() === JSON_ERROR_NONE) {
-                            // Add Performance Audit Metadata
-                            $data['performance'] = [
-                                'latency_ms' => $latency,
-                                'key_used'   => "NODE-{$keyData['index']}",
-                                'timestamp'  => now()->toIso8601String(),
-                                'status'     => 'STABLE'
-                            ];
-
-                            Log::info('[SENTINEL] Neural Inference Success', $data['performance']);
-                            return $data;
-                        }
-                    }
-
-                    Log::error('[ForensicAI] JSON parsing failed. Raw: ' . $rawText);
-                }
-            } else {
-                $status = $response->status();
-                Log::error('[ForensicAI] API Error: ' . $response->body());
-                
-                if ($status === 429) {
-                    $errMsg = strtolower($response->json('error.message') ?? '');
-
-                    // Smart cooldown: RPM limit (rate/minute) = short 90s, Daily quota = 60min
-                    if (str_contains($errMsg, 'retry') || str_contains($errMsg, 'resource_exhausted') && str_contains($errMsg, 'second')) {
-                        // RPM limit — resets in under 2 minutes
-                        cache()->put("gemini_limit_{$keyData['index']}", 'rpm', now()->addSeconds(90));
-                        Log::warning("[SENTINEL] NODE-{$keyData['index']} RPM limit hit. Cooldown 90s.");
-                    } else {
-                        // Daily quota exhausted
-                        cache()->put("gemini_limit_{$keyData['index']}", 'daily', now()->addMinutes(60));
-                        Log::error("[SENTINEL] NODE-{$keyData['index']} daily quota hit. Cooldown 60min.");
-                    }
-
-                    // AUTO-FAILOVER: immediately try next available key
-                    $fallbackKey = $this->getKey();
-                    if ($fallbackKey && $fallbackKey['index'] !== $keyData['index']) {
-                        Log::info("[SENTINEL] Auto-failover to NODE-{$fallbackKey['index']}");
-                        $retryResp = Http::timeout(45)->withHeaders(['Content-Type' => 'application/json'])
-                            ->post("{$this->endpointTemplate}?key={$fallbackKey['key']}", [
-                                'contents' => [[
-                                    'parts' => [
-                                        ['text' => $prompt . "\n\nKRITIS: Analisis setiap detail secara spesifik."],
-                                        ['inline_data' => ['mime_type' => $mimeType, 'data' => $base64Image]]
-                                    ]
-                                ]],
-                                'generationConfig' => ['temperature' => 0.2, 'topK' => 32, 'topP' => 1]
-                            ]);
-
-                        if ($retryResp->successful()) {
-                            $rResult = $retryResp->json();
-                            if (isset($rResult['candidates'][0]['content']['parts'][0]['text'])) {
-                                if (preg_match('/\{.*\}/s', $rResult['candidates'][0]['content']['parts'][0]['text'], $m)) {
-                                    $rData = json_decode($m[0], true);
-                                    if (json_last_error() === JSON_ERROR_NONE) {
-                                        $rData['performance'] = [
-                                            'latency_ms' => (int)((microtime(true) - $startTime) * 1000),
-                                            'key_used'   => "NODE-{$fallbackKey['index']} (failover)",
-                                            'timestamp'  => now()->toIso8601String(),
-                                            'status'     => 'FAILOVER'
-                                        ];
-                                        Log::info('[SENTINEL] Failover via NODE-' . $fallbackKey['index']);
-                                        return $rData;
-                                    }
-                                }
+                if ($response->successful()) {
+                    $result = $response->json();
+                    if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
+                        $rawText = $result['candidates'][0]['content']['parts'][0]['text'];
+                        if (preg_match('/\{.*\}/s', $rawText, $matches)) {
+                            $data = json_decode($matches[0], true);
+                            if (json_last_error() === JSON_ERROR_NONE) {
+                                $data['performance'] = [
+                                    'latency_ms' => (int)((microtime(true) - $startTime) * 1000),
+                                    'key_used'   => "NODE-{$nodeId}",
+                                    'timestamp'  => now()->toIso8601String(),
+                                    'status'     => $attempts > 0 ? 'FAILOVER_STABLE' : 'STABLE'
+                                ];
+                                return $data;
                             }
-                        } elseif ($retryResp->status() === 429) {
-                            cache()->put("gemini_limit_{$fallbackKey['index']}", 'rpm', now()->addSeconds(90));
-                            Log::error("[SENTINEL] Failover NODE-{$fallbackKey['index']} also rate-limited.");
                         }
                     }
-
-                    // Both keys exhausted — tell user to retry in a moment
-                    throw new \Exception('429');
                 }
 
-                throw new \Exception("API Error: " . ($response->json('error.code') ?? $status) . " - " . ($response->json('error.message') ?? 'Unknown Error'));
+                if ($response->status() === 429) {
+                    $errMsg = strtolower($response->json('error.message') ?? '');
+                    $cooldownMinutes = (str_contains($errMsg, 'quota') || str_contains($errMsg, 'exhausted')) ? 60 : 2;
+                    $until = now()->addMinutes($cooldownMinutes);
+                    
+                    cache()->put("gemini_limit_{$nodeId}", $until->toIso8601String(), $until);
+                    Log::warning("[SENTINEL] NODE-{$nodeId} hit 429. Cooling down... Failover in 2s.");
+                    
+                    sleep(2); // Circuit breaker delay
+                    $attempts++;
+                    continue; 
+                }
+
+                throw new \Exception("Node-{$nodeId} Error: " . ($response->json('error.message') ?? 'Unknown Error'));
+
+            } catch (\Exception $e) {
+                $lastException = $e;
+                Log::error("[SENTINEL] Attempt {$attempts} failed on NODE-{$nodeId}: " . $e->getMessage());
+                $attempts++;
             }
-        } finally {
-            // Cleanup or final logging if needed
         }
 
-        return null;
+        throw $lastException ?? new \Exception('429');
     }
 }

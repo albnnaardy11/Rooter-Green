@@ -32,12 +32,24 @@ class AiCentralOpsController extends Controller
                     $latency = rand(800, 1500) . 'ms';
 
                     if ($isLimit) {
-                        $statusFlag = 'LIMIT 429';
-                        $limitTime = Cache::get("gemini_limit_{$i}"); // ISO8601 String
-                        $diff = now()->diff(Carbon::parse($limitTime));
-                        $totalHours = ($diff->d * 24) + $diff->h;
-                        $rpmText = 'RESET: ' . $totalHours . 'h ' . $diff->i . 'm';
-                        $latency = '0ms';
+                        try {
+                            $statusFlag = 'LIMIT 429';
+                            $limitTime = Cache::get("gemini_limit_{$i}"); // ISO8601 String
+                            $target = Carbon::parse($limitTime);
+                            
+                            if ($target->isPast()) {
+                                Cache::forget("gemini_limit_{$i}");
+                                $statusFlag = 'ACTIVE';
+                            } else {
+                                $diff = now()->diff($target);
+                                $totalHours = ($diff->d * 24) + $diff->h;
+                                $rpmText = 'RESET: ' . ($totalHours > 0 ? "{$totalHours}h " : "") . $diff->i . 'm';
+                                $latency = '0ms';
+                            }
+                        } catch (\Exception $e) {
+                            $statusFlag = 'ACTIVE'; // Fallback if parse fails
+                            Cache::forget("gemini_limit_{$i}");
+                        }
                     }
 
                     $keysStatus[] = [

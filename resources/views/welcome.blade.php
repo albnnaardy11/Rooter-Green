@@ -18,7 +18,10 @@
     {{-- 6. Gallery Section - Visual Proof of Completion --}}
     <x-sections.gallery :items="$projects" />
 
-    {{-- 7. Coverage Section - Location Presence --}}
+    {{-- 7. FAQ Section - Addressing Common Concerns --}}
+    <x-sections.faq />
+
+    {{-- 8. Coverage Section - Location Presence --}}
     <x-sections.coverage />
 
     {{-- Floating/Sticky Components --}}
