@@ -120,5 +120,11 @@ return Application::configure(basePath: dirname(__DIR__))
                  ->at('01:00')
                  ->timezone('Asia/Jakarta')
                  ->withoutOverlapping();
+
+        // 7. Autonomous Growth: Interlink + CTR + Pulse (Daily 04:00)
+        $schedule->command('seo:autonomous-growth')
+                 ->dailyAt('04:00')
+                 ->timezone('Asia/Jakarta')
+                 ->withoutOverlapping();
     })
     ->create();

@@ -60,10 +60,31 @@ class SemanticSchemaBuilder
             $serviceModel = $extraData['service'];
             $serviceEntity = SchemaOrg::service()
                 ->name($serviceModel->name)
-                ->description($serviceModel->description_short)
-                ->provider($organization);
+                ->description($serviceModel->description_short ?: $serviceModel->description)
+                ->provider($organization)
+                ->areaServed(SchemaOrg::city()->name('Jakarta'))
+                ->hasOfferCatalog(
+                    SchemaOrg::offerCatalog()
+                        ->name($serviceModel->name . ' Packages')
+                        ->itemListElement([
+                            SchemaOrg::offer()->itemOffered(SchemaOrg::service()->name('Urgent Response'))
+                        ])
+                );
             
             return [$website, $organization, $serviceEntity];
+        }
+
+        // 5. FAQ Injection logic for Blog/Wiki
+        if (isset($extraData['faqs'])) {
+            $faqPage = SchemaOrg::fAQPage();
+            $questions = [];
+            foreach ($extraData['faqs'] as $q => $a) {
+                $questions[] = SchemaOrg::question()
+                    ->name($q)
+                    ->acceptedAnswer(SchemaOrg::answer()->text($a));
+            }
+            $faqPage->mainEntity($questions);
+            return [$website, $organization, $faqPage];
         }
 
         return [$website, $organization];
