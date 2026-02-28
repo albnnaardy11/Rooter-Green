@@ -93,17 +93,24 @@ class WikiManagementController extends Controller
     /**
      * AJAX Endpoint: Auto-generate content via AI.
      */
-    public function autoGenerate(Request $request, WikiAiService $aiService)
+    public function autoGenerate(Request $request, \App\Services\Seo\WikiAiService $aiService)
     {
         $name = $request->get('name');
+        $context = $request->get('context', '');
+        
         if (!$name) return response()->json(['error' => 'Nama diperlukan'], 400);
 
-        $generated = $aiService->generate($name);
-
-        return response()->json([
-            'description' => $generated['desc'],
-            'attributes' => $generated['attrs'],
-            'wikidata_id' => $generated['wikidata'] ?? ''
-        ]);
+        try {
+            $generated = $aiService->generate($name, $context);
+            
+            return response()->json([
+                'description' => $generated['desc'],
+                'attributes' => $generated['attrs'],
+                'wikidata_id' => $generated['wikidata'] ?? ''
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Wiki AI Error: ' . $e->getMessage());
+            return response()->json(['error' => 'Neural Network Disruption: ' . $e->getMessage()], 500);
+        }
     }
 }

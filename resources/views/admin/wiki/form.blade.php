@@ -48,9 +48,10 @@
                 <div class="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 space-y-8">
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Entity Master Title</label>
-                        <div class="relative group">
+                        <div class="relative group space-y-4">
                             <input type="text" x-model="name" name="title" value="{{ old('title', $entity->title) }}" placeholder="e.g. Ultrasonic Flow Meter" class="w-full bg-slate-800/50 border border-white/10 rounded-2xl px-6 py-5 text-white focus:border-primary outline-none text-sm transition-all shadow-inner">
-                            <button type="button" @click="autoInference" class="mt-4 w-full py-4 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50" :disabled="loading">
+                            <textarea x-model="context" placeholder="Konteks AI Spesifik (Opsional) e.g. Fokus pada deteksi kebocoran..." class="w-full bg-slate-800/30 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-primary outline-none text-xs transition-all shadow-inner h-24 resize-none"></textarea>
+                            <button type="button" @click="autoInference" class="w-full py-4 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50" :disabled="loading">
                                 <span x-show="!loading" class="flex items-center justify-center gap-2"><i class="ri-magic-line text-lg"></i> AI Automate Authority</span>
                                 <span x-show="loading" class="flex items-center justify-center gap-2"><i class="ri-refresh-line animate-spin text-lg"></i> Neural Processing...</span>
                             </button>
@@ -123,6 +124,7 @@
 function wikiForm() {
     return {
         name: '{{ old('title', $entity->title) }}',
+        context: '',
         wikidata_id: '{{ old('wikidata_id', $entity->wikidata_id) }}',
         @php
             $attrs = old('attributes_json', json_encode($entity->attributes, JSON_PRETTY_PRINT));
@@ -143,7 +145,10 @@ function wikiForm() {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'X-Phantom-Token': '{{ $phantomToken }}'
                     },
-                    body: JSON.stringify({ name: this.name })
+                    body: JSON.stringify({ 
+                        name: this.name,
+                        context: this.context
+                    })
                 });
                 
                 const data = await response.json();
