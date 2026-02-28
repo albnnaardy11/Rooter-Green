@@ -113,5 +113,12 @@ return Application::configure(basePath: dirname(__DIR__))
                  ->sundays()
                  ->at('23:00')
                  ->timezone('Asia/Jakarta');
+
+        // 6. Cannibal Radar: Full-Auto Resolution Engine (Mon & Thu 01:00)
+        $schedule->command('seo:auto-resolve-cannibal')
+                 ->days([1, 4]) // Monday & Thursday
+                 ->at('01:00')
+                 ->timezone('Asia/Jakarta')
+                 ->withoutOverlapping();
     })
     ->create();

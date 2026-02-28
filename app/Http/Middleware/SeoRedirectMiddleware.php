@@ -19,12 +19,19 @@ class SeoRedirectMiddleware
             $path = '/' . $path;
         }
 
-        $redirect = SeoRedirect::where('source_url', $path)
+        $rule = SeoRedirect::where('source_url', $path)
             ->where('is_active', true)
             ->first();
-
-        if ($redirect) {
-            return redirect($redirect->destination_url, $redirect->status_code);
+        
+        if ($rule) {
+            if ($rule->type === 'CANONICAL') {
+                $response = $next($request);
+                if (method_exists($response, 'header')) {
+                    $response->header('Link', '<' . $rule->destination_url . '>; rel="canonical"');
+                }
+                return $response;
+            }
+            return redirect($rule->destination_url, $rule->status_code);
         }
 
         return $next($request);
