@@ -18,10 +18,10 @@
 
                 <div class="grid grid-cols-1 gap-4 sm:gap-6">
                     @foreach([
-                        ['icon' => 'ri-whatsapp-fill', 'title' => 'WhatsApp Desktop', 'value' => '0812-4666-8749', 'sub' => 'Fast Response 24/7', 'link' => 'https://wa.me/6281246668749'],
-                        ['icon' => 'ri-phone-fill', 'title' => 'Emergency Call', 'value' => '0812-4666-8749', 'sub' => 'Siap Berangkat Sekarang', 'link' => 'tel:081246668749'],
-                        ['icon' => 'ri-mail-send-fill', 'title' => 'Email Inquiry', 'value' => 'rooterin@gmail.com', 'sub' => 'Penawaran & Kerjasama Gedung', 'link' => 'mailto:rooterin@gmail.com'],
-                        ['icon' => 'ri-map-pin-2-fill', 'title' => 'Wilayah Operasional', 'value' => 'Seluruh Jabodetabek', 'sub' => 'Jakarta, Bogor, Depok, Tangerang, Bekasi', 'link' => '#']
+                        ['icon' => 'ri-whatsapp-fill', 'title' => 'WhatsApp Desktop', 'value' => \App\Models\Setting::get('whatsapp_number', '0812-4666-8749'), 'sub' => 'Fast Response 24/7', 'link' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_number', '6281246668749'))],
+                        ['icon' => 'ri-phone-fill', 'title' => 'Emergency Call', 'value' => \App\Models\Setting::get('whatsapp_number', '0812-4666-8749'), 'sub' => 'Siap Berangkat Sekarang', 'link' => 'tel:' . preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_number', '6281246668749'))],
+                        ['icon' => 'ri-mail-send-fill', 'title' => 'Email Inquiry', 'value' => \App\Models\Setting::get('email', 'rooterin@gmail.com'), 'sub' => 'Penawaran & Kerjasama Gedung', 'link' => 'mailto:' . \App\Models\Setting::get('email', 'rooterin@gmail.com')],
+                        ['icon' => 'ri-map-pin-2-fill', 'title' => 'Wilayah Operasional', 'value' => \App\Models\Setting::get('address', 'Seluruh Jabodetabek'), 'sub' => 'Jakarta, Bogor, Depok, Tangerang, Bekasi', 'link' => '#']
                     ] as $contact)
                         <a href="{{ $contact['link'] }}" class="group flex items-center gap-4 sm:gap-6 p-5 sm:p-8 bg-white rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/20 hover:shadow-2xl hover:border-primary/20 transition-all duration-500">
                             <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-stone-50 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner flex-shrink-0">

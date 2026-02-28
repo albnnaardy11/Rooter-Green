@@ -77,6 +77,7 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
     
     // Config
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings/bulk', [\App\Http\Controllers\Admin\SettingController::class, 'updateBulk'])->name('settings.bulk');
     Route::put('/settings/{id}', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     
     // Messages

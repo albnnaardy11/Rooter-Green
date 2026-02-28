@@ -1,10 +1,10 @@
 @props([
     'title' => 'Solusi Pintar <br> <span class="text-primary italic">Pipa Lancar</span> <br> Tanpa Bongkar!',
     'subtitle' => 'Trusted Eco-Plumbing Service',
-    'locationTag' => 'Jawa & Sumatera',
+    'locationTag' => \App\Models\Setting::get('address', 'Jawa & Sumatera'),
     'description' => 'Melayani dengan sepenuh hati di wilayah <span class="text-white font-bold">Jabodetabek, Bandung, Serang, Lampung, dan Metro.</span> Teknisi ahli, pengerjaan cepat, dan hasil maksimal.',
     'ctaText' => 'Pesan Sekarang - Plong!',
-    'ctaLink' => 'https://wa.me/6281234567890?text=Halo%20Kak%2C%20mau%20order%20jasa%20dong',
+    'ctaLink' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_number', '6281246668749')) . '?text=Halo%20Kak%2C%20mau%20order%20jasa%20dong',
     'featureImage' => 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=1200',
     'guaranteeTitle' => 'Garansi Kepuasan',
     'guaranteeDesc' => 'Pipa mampet mampet lagi dalam 7 hari? Kami perbaiki GRATIS tanpa biaya tambahan apapun.'

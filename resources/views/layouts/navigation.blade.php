@@ -12,7 +12,12 @@
                 <i class="ri-flashlight-fill text-white text-2xl sm:text-2xl"></i>
             </div>
             <div class="relative flex flex-col">
-                <span class="font-heading font-black text-xl sm:text-2xl text-white tracking-widest leading-none">ROOTER<span class="text-primary">IN</span></span>
+                @php
+                    $siteName = \App\Models\Setting::get('site_name', 'RooterIn');
+                    $firstPart = substr($siteName, 0, -2);
+                    $lastPart = substr($siteName, -2);
+                @endphp
+                <span class="font-heading font-black text-xl sm:text-2xl text-white tracking-widest leading-none">{{ strtoupper($firstPart) }}<span class="text-primary">{{ strtoupper($lastPart) }}</span></span>
                 <span class="hidden sm:block text-[9px] text-gray-500 font-black tracking-[0.4em] uppercase mt-1.5">Organic Plumbing Hub</span>
             </div>
         </div>
@@ -103,7 +108,7 @@
                 </button>
             </div>
 
-            <a href="https://wa.me/6281234567890" 
+            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_number', '6281246668749')) }}" 
                class="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-3 sm:px-4 xl:px-6 py-2 sm:py-2.5 xl:py-3 rounded-2xl transition-all duration-300 group">
                 <div class="hidden xl:block text-right">
                     <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1.5">Butuh Bantuan?</div>

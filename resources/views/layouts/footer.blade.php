@@ -12,7 +12,12 @@
                     <div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transition-transform duration-500 group-hover:rotate-12">
                         <i class="ri-flashlight-fill text-white text-2xl"></i>
                     </div>
-                    <span class="font-heading font-black text-3xl tracking-tighter uppercase">ROOTER<span class="text-primary italic">IN</span></span>
+                    @php
+                        $siteName = \App\Models\Setting::get('site_name', 'RooterIn');
+                        $firstPart = substr($siteName, 0, -2);
+                        $lastPart = substr($siteName, -2);
+                    @endphp
+                    <span class="font-heading font-black text-3xl tracking-tighter uppercase">{{ strtoupper($firstPart) }}<span class="text-primary italic">{{ strtoupper($lastPart) }}</span></span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-black text-white leading-tight mb-8">
                     Solusi <span class="text-primary italic">Pipa Lancar</span> <br>Tanpa <span class="text-gray-400 italic">Bongkar!</span>
@@ -22,13 +27,13 @@
                 </p>
                 <!-- Social Links with Animation -->
                 <div class="flex gap-4">
-                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                    <a href="{{ \App\Models\Setting::get('instagram', '#') }}" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
                         <i class="ri-instagram-line text-xl text-gray-400 group-hover:text-white transition-colors"></i>
                     </a>
-                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                    <a href="{{ \App\Models\Setting::get('tiktok', '#') }}" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
                         <i class="ri-tiktok-fill text-xl text-gray-400 group-hover:text-white transition-colors"></i>
                     </a>
-                    <a href="#" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
+                    <a href="{{ \App\Models\Setting::get('facebook', '#') }}" class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group">
                         <i class="ri-facebook-box-fill text-xl text-gray-400 group-hover:text-white transition-colors"></i>
                     </a>
                 </div>
@@ -69,15 +74,15 @@
                     </h4>
                     <div class="flex flex-col gap-4">
                         <!-- WhatsApp Card -->
-                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_number', '6281246668749')) }}" class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
                             <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
                                 <i class="ri-whatsapp-line text-xl"></i>
                             </div>
                             <div>
                                 <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Call & WA</div>
-                                <div class="text-white font-black text-sm tracking-wide leading-none">0812-4666-8749</div>
+                                <div class="text-white font-black text-sm tracking-wide leading-none">{{ \App\Models\Setting::get('whatsapp_number', '0812-4666-8749') }}</div>
                             </div>
-                        </div>
+                        </a>
                         <!-- Response Card -->
                         <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-accent/30 transition-all duration-300 group cursor-pointer">
                             <div class="w-11 h-11 bg-accent/10 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm">

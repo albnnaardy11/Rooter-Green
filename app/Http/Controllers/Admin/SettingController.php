@@ -14,6 +14,20 @@ class SettingController extends Controller
         return view('admin.settings.index', compact('settings'));
     }
 
+    public function updateBulk(Request $request)
+    {
+        $settings = $request->input('settings', []);
+        
+        foreach ($settings as $id => $value) {
+            $setting = Setting::find($id);
+            if ($setting) {
+                $setting->update(['value' => $value]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'System configurations synchronized successfully.');
+    }
+
     public function update(Request $request, $id)
     {
         $setting = Setting::findOrFail($id);
@@ -21,6 +35,6 @@ class SettingController extends Controller
             'value' => $request->value
         ]);
 
-        return redirect()->back()->with('success', 'Setting updated successfully.');
+        return redirect()->back()->with('success', 'Intelligence parameter updated.');
     }
 }
