@@ -5,7 +5,6 @@ namespace App\Services\Seo;
 use App\Models\Seo404Log;
 use App\Models\SeoRedirectSuggestion;
 use Illuminate\Support\Facades\Log;
-use Gemini;
 use Illuminate\Support\Facades\Cache;
 
 class SeoRepairService
@@ -62,24 +61,36 @@ class SeoRepairService
         Return ONLY valid JSON like: {\"suggested_url\": \"...\", \"confidence\": 0.95, \"reason\": \"...\"}";
 
         try {
-            $client = Gemini::client(env('GEMINI_API_KEY'));
-            $result = $client->geminiPro()->generateContent($prompt);
-            $response = json_decode($result->text(), true);
+            $guard = app(\App\Services\Ai\AiQuotaGuardService::class);
+            $apiKey = $guard->getActiveKey();
+            if (!$apiKey) return;
 
-            if ($response && isset($response['suggested_url'])) {
-                $suggestion = SeoRedirectSuggestion::updateOrCreate(
-                    ['source_url' => $link->url],
-                    [
-                        'suggested_url' => $response['suggested_url'],
-                        'confidence' => $response['confidence'] * 100,
-                        'reason' => $response['reason'],
-                        'is_applied' => false
-                    ]
-                );
+            $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . $apiKey;
 
-                // AUTO-HEALING: If confidence > 90%, apply immediately
-                if ($suggestion->confidence >= 90) {
-                    $this->applyRedirect($suggestion, $link);
+            $response = \Illuminate\Support\Facades\Http::timeout(30)->post($endpoint, [
+                'contents' => [['parts' => [['text' => $prompt]]]]
+            ]);
+
+            if ($response->successful()) {
+                $rawText = $response->json('candidates.0.content.parts.0.text');
+                if ($rawText && preg_match('/\{.*\}/s', $rawText, $matches)) {
+                    $data = json_decode($matches[0], true);
+                    
+                    if ($data && isset($data['suggested_url'])) {
+                        $suggestion = SeoRedirectSuggestion::updateOrCreate(
+                            ['source_url' => $link->url],
+                            [
+                                'suggested_url' => $data['suggested_url'],
+                                'confidence' => ($data['confidence'] ?? 0) * 100,
+                                'reason' => $data['reason'] ?? '',
+                                'is_applied' => false
+                            ]
+                        );
+
+                        if ($suggestion->confidence >= 90) {
+                            $this->applyRedirect($suggestion, $link);
+                        }
+                    }
                 }
             }
         } catch (\Exception $e) {

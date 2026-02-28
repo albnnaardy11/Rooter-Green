@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\PreRenderMiddleware::class);
         $middleware->append(\App\Http\Middleware\TrackVisitors::class);
         $middleware->append(\App\Http\Middleware\SeoRedirectMiddleware::class);
+        $middleware->append(\App\Http\Middleware\DetectGooglebotTraffic::class);
         
         $middleware->validateCsrfTokens(except: [
             'admin/api/track-whatsapp',
@@ -105,6 +106,12 @@ return Application::configure(basePath: dirname(__DIR__))
         // 4. Admin Intelligence: WhatsApp Daily Summary (08:00 AM)
         $schedule->command('sentinel:report-daily')
                  ->dailyAt('08:00')
+                 ->timezone('Asia/Jakarta');
+
+        // 5. Ghost-Crawl Optimization: Audit Crawl Budget (Weekly on Sundays)
+        $schedule->command('seo:analyze-crawl-budget')
+                 ->sundays()
+                 ->at('23:00')
                  ->timezone('Asia/Jakarta');
     })
     ->create();
