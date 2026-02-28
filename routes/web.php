@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/area/{city}', [\App\Http\Controllers\LocalSeoController::class, 'cityLanding'])->name('local.city');
 Route::get('/area/{city}/{service}', [\App\Http\Controllers\LocalSeoController::class, 'show'])->name('local.service');
@@ -50,7 +55,7 @@ Route::get('/panduan-aksesibilitas', function () {
 })->name('accessibility-guide');
 
 // Admin Routes
-Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'audit', 'verified'])->group(function() {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     // Content

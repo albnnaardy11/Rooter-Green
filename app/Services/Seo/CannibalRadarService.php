@@ -7,6 +7,7 @@ use App\Models\SeoAuditLog;
 use App\Models\SeoRedirect;
 use App\Models\SeoRedirectSuggestion;
 use App\Models\SeoSetting;
+use App\Services\Ai\AiMultiModelService;
 use App\Services\Ai\AiQuotaGuardService;
 use App\Services\Sentinel\SentinelService;
 use Illuminate\Support\Facades\DB;
@@ -193,49 +194,37 @@ class CannibalRadarService
         return str_starts_with($path, '/') ? $path : '/' . $path;
     }
 
+    protected $ai;
+
+    public function __construct(AiMultiModelService $ai)
+    {
+        $this->ai = $ai;
+    }
+
     /**
      * UNICORP-GRADE: AI Strategic Intelligence
      */
     public function analyzeConflict(string $query, array $urls)
     {
-        $guard = app(AiQuotaGuardService::class);
-        $apiKey = $guard->getActiveKey();
-        if (!$apiKey) return null;
-
-        $prompt = "You are a Senior SEO Data Scientist at Unicorp. Analyze this 'Content Cannibalism' conflict:
+        $systemInstruction = "You are a Senior SEO Data Scientist. Analyze Content Cannibalism conflicts and provide JSON resolutions.";
+        $prompt = "Conflict:
         Query: $query
         Competing URLs: " . implode(', ', $urls) . "
         
-        Analyze Search Intent and provide a strategic resolution:
-        1. Action: MERGE (301 Redirect to Master), LINK (Reference from secondary to master), or DE_OPTIMIZE (Change focus of one URL).
-        2. Master URL: Which URL should be the primary.
-        3. Reason: Explain why based on perceived intent.
-        4. Confidence: Score from 0-100 on how certain this resolution is correct.
+        Provide JSON with following keys:
+        1. action: MERGE, CANONICAL, or CONTENT-MERGE.
+        2. master_url: URL to prioritize.
+        3. reason: Short explanation.
+        4. confidence: 0-100 score.
         
-        Return ONLY JSON: {\"action\": \"...\", \"master_url\": \"...\", \"reason\": \"...\", \"confidence\": 98}";
+        Return ONLY valid JSON.";
 
-        try {
-            $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey", [
-                'contents' => [['parts' => [['text' => $prompt]]]]
-            ]);
+        $result = $this->ai->generateWithFailover($prompt, $systemInstruction, 'json');
 
-            if ($response->successful()) {
-                $rawText = $response->json('candidates.0.content.parts.0.text');
-                Log::info("[CANNIBAL-RADAR] AI Raw Response: " . substr($rawText, 0, 100));
-                
-                if ($rawText && preg_match('/\{.*\}/s', $rawText, $matches)) {
-                    return json_decode($matches[0], true);
-                } else {
-                    Log::error("[CANNIBAL-RADAR] No JSON found in response.");
-                }
-            } else {
-                Log::error("[CANNIBAL-RADAR] Gemini API Failed: " . $response->body());
-                if ($response->status() === 429) {
-                    $guard->reportFailure();
-                }
-            }
-        } catch (\Exception $e) {
-            Log::error("[CANNIBAL-RADAR] AI Analysis Error: " . $e->getMessage());
+        if ($result && preg_match('/\{.*\}/s', $result, $matches)) {
+            $data = json_decode($matches[0], true);
+            Log::info("[CANNIBAL-RADAR] Resolution analyzed for $query", ['confidence' => $data['confidence'] ?? 0]);
+            return $data;
         }
 
         return null;

@@ -7,6 +7,8 @@ use App\Models\SeoRedirectSuggestion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
+use App\Services\Ai\AiMultiModelService;
+
 class SeoRepairService
 {
     /**
@@ -28,7 +30,7 @@ class SeoRepairService
         $validUrls = $this->getValidUrls();
 
         foreach ($deadLinks as $link) {
-            $this->repairWithAi($link, $validUrls);
+            $this->getAiSuggestion($link, $validUrls);
         }
     }
 
@@ -46,59 +48,42 @@ class SeoRepairService
         return array_unique($urls);
     }
 
-    protected function repairWithAi($link, $validUrls)
+    protected $ai;
+
+    public function __construct(AiMultiModelService $ai)
     {
-        $prompt = "You are an SEO Expert for 'RooterIN', a plumbing and drain cleaning service. 
-        A user tried to access a dead link: '{$link->url}'.
-        Below is a list of our valid URLs:
-        " . implode("\n", array_slice($validUrls, 0, 100)) . "
+        $this->ai = $ai;
+    }
+
+    protected function getAiSuggestion($link, $validUrls)
+    {
+        $systemInstruction = "You are an SEO Expert for RooterIN. Suggest the best redirect for a 404 URL.";
+        $prompt = "Dead link: '{$link->url}'.
+        Valid URLs:
+        " . implode("\n", array_slice($validUrls, 0, 50)) . "
         
-        Tasks:
-        1. Find the best matching URL from the valid list.
-        2. Calculate a confidence score (0-1).
-        3. Provide a brief reason.
-        
-        Return ONLY valid JSON like: {\"suggested_url\": \"...\", \"confidence\": 0.95, \"reason\": \"...\"}";
+        Return JSON: {\"suggested_url\": \"...\", \"confidence\": 0.95, \"reason\": \"...\"}";
 
-        try {
-            $guard = app(\App\Services\Ai\AiQuotaGuardService::class);
-            $apiKey = $guard->getActiveKey();
-            if (!$apiKey) return;
+        $result = $this->ai->generateWithFailover($prompt, $systemInstruction, 'json');
 
-            $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" . $apiKey;
+        if ($result && preg_match('/\{.*\}/s', $result, $matches)) {
+            $data = json_decode($matches[0], true);
+            
+            if ($data && isset($data['suggested_url'])) {
+                $suggestion = SeoRedirectSuggestion::updateOrCreate(
+                    ['source_url' => $link->url],
+                    [
+                        'suggested_url' => $data['suggested_url'],
+                        'confidence' => ($data['confidence'] ?? 0) * 100,
+                        'reason' => $data['reason'] ?? '',
+                        'is_applied' => false
+                    ]
+                );
 
-            $response = \Illuminate\Support\Facades\Http::timeout(30)->post($endpoint, [
-                'contents' => [['parts' => [['text' => $prompt]]]]
-            ]);
-
-            if ($response->successful()) {
-                $rawText = $response->json('candidates.0.content.parts.0.text');
-                if ($rawText && preg_match('/\{.*\}/s', $rawText, $matches)) {
-                    $data = json_decode($matches[0], true);
-                    
-                    if ($data && isset($data['suggested_url'])) {
-                        $suggestion = SeoRedirectSuggestion::updateOrCreate(
-                            ['source_url' => $link->url],
-                            [
-                                'suggested_url' => $data['suggested_url'],
-                                'confidence' => ($data['confidence'] ?? 0) * 100,
-                                'reason' => $data['reason'] ?? '',
-                                'is_applied' => false
-                            ]
-                        );
-
-                        if ($suggestion->confidence >= 90) {
-                            $this->applyRedirect($suggestion, $link);
-                        }
-                    }
-                }
-            } else {
-                if ($response->status() === 429) {
-                    $guard->reportFailure();
+                if ($suggestion->confidence >= 90) {
+                    $this->applyRedirect($suggestion, $link);
                 }
             }
-        } catch (\Exception $e) {
-            Log::error("[SENTINEL-SEO] AI Repair Failure: " . $e->getMessage());
         }
     }
 

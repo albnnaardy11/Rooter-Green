@@ -11,30 +11,52 @@ use Illuminate\Support\Facades\Cache;
 class PerformanceGuardService
 {
     /**
-     * UNICORP-GRADE: Core Web Vitals Monitoring (Lighthouse Sentry)
-     * Audits page performance and alerts on UX degradation.
+     * UNICORP-GRADE: Real-User Metrics (RUM) Audit
+     * Audits page performance via Google PageSpeed Insights.
      */
     public function auditPulse($url = null)
     {
         $url = $url ?: config('app.url');
-        
-        // In a real Unicorp setup, we use Google PageSpeed Insights API
-        // Here we simulate the sensor reading or use a mock logic for now
-        $score = rand(85, 98); // Real logic would be a CURL to PSI API
-        
-        Cache::put('sentinel_lighthouse_score', $score, now()->addHours(6));
+        $apiKey = config('services.google.psi_key');
 
-        if ($score < 90) {
-            app(SentinelService::class)->sendWhatsAppAlert("UX DEGRADATION DETECTED\nURL: {$url}\nPerformance Score: {$score}/100\nStatus: Needs urgent hardening.");
-            
-            SeoAuditLog::create([
-                'event_type' => '[SENTINEL-WARNING] PERFORMANCE_DROP',
-                'description' => "Lighthouse performance score dropped to $score for main landing.",
-                'winner_url' => $url,
-                'confidence' => 100
-            ]);
+        if (!$apiKey) {
+            Log::warning("[GUARD-PULSE] Missing PSI API Key. Fallback to cache.");
+            return Cache::get('sentinel_lighthouse_score', 0);
         }
-        
-        return $score;
+
+        try {
+            $response = Http::timeout(60)->get("https://www.googleapis.com/pagespeedonline/v5/runPagespeed", [
+                'url' => $url,
+                'key' => $apiKey,
+                'category' => 'performance',
+                'strategy' => 'mobile'
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $score = ($data['lighthouseResult']['categories']['performance']['score'] ?? 0) * 100;
+                $lcp = $data['lighthouseResult']['audits']['largest-contentful-paint']['displayValue'] ?? 'Unknown';
+                $cls = $data['lighthouseResult']['audits']['cumulative-layout-shift']['displayValue'] ?? 'Unknown';
+
+                Cache::put('sentinel_lighthouse_score', $score, now()->addHours(6));
+
+                if ($score < 80) {
+                    app(SentinelService::class)->sendWhatsAppAlert(
+                        "PERFORMANCE DEGRADATION\n" .
+                        "URL: {$url}\n" .
+                        "Score: {$score}/100\n" .
+                        "LCP: {$lcp}\n" .
+                        "CLS: {$cls}\n" .
+                        "Action: Needs urgent optimization."
+                    );
+                }
+
+                return $score;
+            }
+        } catch (\Exception $e) {
+            Log::error("[GUARD-PULSE] PSI API Error: " . $e->getMessage());
+        }
+
+        return Cache::get('sentinel_lighthouse_score', 0);
     }
 }

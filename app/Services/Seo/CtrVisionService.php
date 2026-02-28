@@ -5,7 +5,7 @@ namespace App\Services\Seo;
 use App\Models\SeoPerformanceStat;
 use App\Models\SeoAuditLog;
 use App\Models\SeoSetting;
-use App\Services\Ai\AiQuotaGuardService;
+use App\Services\Ai\AiMultiModelService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -38,32 +38,25 @@ class CtrVisionService
         return $executed;
     }
 
+    protected $ai;
+
+    public function __construct(AiMultiModelService $ai)
+    {
+        $this->ai = $ai;
+    }
+
     protected function generateCtaBoost($query, $url)
     {
-        $guard = app(AiQuotaGuardService::class);
-        $apiKey = $guard->getActiveKey();
-        if (!$apiKey) return null;
-
-        $prompt = "You are a Conversion Rate Optimization (CRO) expert. 
-        A page ranking for '$query' at URL '$url' has high impressions but low click-through rate.
-        Write a high-converting SEO Title and Meta Description in Indonesian.
-        Rule: Title < 60 chars, Meta < 160 chars. Stay professional but enticing.
+        $systemInstruction = "You are a Conversion Rate Optimization (CRO) expert. Write high-converting SEO metadata.";
+        $prompt = "Query: '$query'\nURL: '$url'
         
-        Return JSON: {\"title\": \"...\", \"meta_description\": \"...\"}";
+        Write enticing Title (<60 chars) and Meta Description (<160 chars) in Indonesian.
+        Return ONLY valid JSON: {\"title\": \"...\", \"meta_description\": \"...\"}";
 
-        try {
-            $response = Http::timeout(30)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey", [
-                'contents' => [['parts' => [['text' => $prompt]]]]
-            ]);
+        $result = $this->ai->generateWithFailover($prompt, $systemInstruction, 'json');
 
-            if ($response->successful()) {
-                $text = $response->json('candidates.0.content.parts.0.text');
-                if (preg_match('/\{.*\}/s', $text, $matches)) {
-                    return json_decode($matches[0], true);
-                }
-            }
-        } catch (\Exception $e) {
-            Log::error("[CTR-VISION] AI Analysis Error: " . $e->getMessage());
+        if ($result && preg_match('/\{.*\}/s', $result, $matches)) {
+            return json_decode($matches[0], true);
         }
 
         return null;

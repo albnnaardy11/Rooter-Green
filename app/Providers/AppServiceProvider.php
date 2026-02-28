@@ -25,13 +25,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\AiDiagnose::observe(\App\Observers\AiDiagnoseObserver::class);
         \App\Models\WikiEntity::observe(\App\Observers\WikiEntityObserver::class);
 
-        // Auto-login for development and CMS testing
-        if (!app()->runningInConsole() && !\Illuminate\Support\Facades\Auth::check()) {
-            $admin = \App\Models\User::first();
-            if ($admin) {
-                \Illuminate\Support\Facades\Auth::login($admin);
-            }
-        }
+        // UNICORP-GRADE: Enforced Authentication (Removed insecure auto-login)
 
         // 1. Phantom Security Rate Limiter (High-Performance/Strict)
         RateLimiter::for('phantom-api', function (Request $request) {

@@ -29,23 +29,22 @@ class SecurityShield
             abort(403, 'Global Cluster Quarantine: Your IP has been flagged by Sentinel Intercom.');
         }
 
-        // 0.5 Administrator Bypass (Sentinel White-Path)
-        // Ensure that administrators are not hindered by aggressive bot detection or WAF payloads
-        if ($request->is('admin/*') || $request->is('admin')) {
-             return $next($request);
-        }
+        // 0.5 Administrator Context Sensitivity (High-Integrity Mode)
+        $isSuperAdmin = auth()->check() && auth()->user()->role === 'super_admin';
 
         // 1. Neural Risk Scoring (Phase 1: Proactive Prediction)
-        $profile = $this->inference->introspectBehavior();
-        
-        // PHASE 2: Proof-of-Work Challenge (Adaptive Throttling)
-        if ($this->inference->needsPoW($profile) && !$request->is('admin/sentinel/challenge*')) {
-            return redirect()->route('sentinel.challenge');
-        }
+        if (!$isSuperAdmin && !$request->is('admin*')) {
+            $profile = $this->inference->introspectBehavior();
+            
+            // PHASE 2: Proof-of-Work Challenge (Adaptive Throttling)
+            if ($this->inference->needsPoW($profile) && !$request->is('admin/sentinel/challenge*')) {
+                return redirect()->route('sentinel.challenge');
+            }
 
-        if ($profile->trust_score < 10 || $profile->is_bot_probability > 0.95) {
-            $this->security->blockIp($request->ip(), "Neural Risk Failure (Score: {$profile->trust_score}, BotProb: {$profile->is_bot_probability})");
-            abort(403, 'Akses ditolak: Perilaku navigasi tidak wajar (Neural Sentinel Alert).');
+            if ($profile->trust_score < 10 || $profile->is_bot_probability > 0.95) {
+                $this->security->blockIp($request->ip(), "Neural Risk Failure (Score: {$profile->trust_score}, BotProb: {$profile->is_bot_probability})");
+                abort(403, 'Akses ditolak: Perilaku navigasi tidak wajar (Neural Sentinel Alert).');
+            }
         }
 
         // 2. Check IP Blocks
@@ -145,8 +144,10 @@ class SecurityShield
 
     protected function detectThreats(Request $request)
     {
+        $isSuperAdmin = auth()->check() && auth()->user()->role === 'super_admin';
+        
         // Zero False Positive: Internal Wiki Automator is exempt from payload inspection
-        if ($request->header('X-Internal-Automator') === 'WikiPipa-Safe' || $request->is('admin/*')) {
+        if ($request->header('X-Internal-Automator') === 'WikiPipa-Safe') {
             return;
         }
 
@@ -159,24 +160,39 @@ class SecurityShield
             return urldecode($m[0]);
         }, $payload);
 
-        // Phase 3: Anti-Obfuscation Patterns (Deep Packet Inspection)
-        $patterns = [
+        // UNICORP-GRADE: Multi-Stage Threat Pattern Library
+        $criticalPatterns = [
             '/(union\s+.*select)/i',
             '/(group\s+by\s+.*)/i',
             '/(order\s+by\s+.*)/i',
             '/(information_schema|benchmark|waitfor\s+delay|sleep\()/i',
             '/(\-\-|\#|\/\*)/i', // SQL Comments
-            '/(<script|javascript:|on\w+\s*=)/i', // XSS Basic
-            '/(%27|%22|%3C|%3E|%20or%20|%20and%20)/i', // Hex/URL Encoded attacks
             '/(\'|"|;)\s*(or|and)\s+.*=.* /i', // Logic bypass
             '/base64_decode|exec\(|shell_exec\(|system\(/i', // RCE patterns
         ];
 
-        foreach ($patterns as $pattern) {
+        $secondaryPatterns = [
+            '/(<script|javascript:|on\w+\s*=)/i', // XSS Basic
+            '/(%27|%22|%3C|%3E|%20or%20|%20and%20)/i', // Hex/URL Encoded attacks
+        ];
+
+        // 1. Mandatory Critical Check (SQLi/RCE) - No Bypass
+        foreach ($criticalPatterns as $pattern) {
             if (preg_match($pattern, $payload)) {
-                $this->security->blockIp($request->ip(), "Sentinel Shield: Deep Packet Inspection matched ($pattern)");
-                $this->security->auditLog('Iron-Clad WAF Blocked', ['pattern' => $pattern]);
-                abort(406, 'Not Acceptable: Deep Packet Inspection failed. Iron-Clad Shield Active.');
+                $this->security->blockIp($request->ip(), "Sentinel Shield CRITICAL: matched ($pattern)");
+                $this->security->auditLog('Iron-Clad WAF Critical Blocked', ['pattern' => $pattern]);
+                abort(406, 'Security Violation: Critical Injection Pattern Detected.');
+            }
+        }
+
+        // 2. Secondary Check (XSS/Encodings) - Bypassable by SuperAdmin
+        if (!$isSuperAdmin) {
+            foreach ($secondaryPatterns as $pattern) {
+                if (preg_match($pattern, $payload)) {
+                    $this->security->blockIp($request->ip(), "Sentinel Shield SECONDARY: matched ($pattern)");
+                    $this->security->auditLog('Iron-Clad WAF Secondary Blocked', ['pattern' => $pattern]);
+                    abort(406, 'Security Violation: Payload matches restricted pattern.');
+                }
             }
         }
     }
