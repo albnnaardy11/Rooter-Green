@@ -29,6 +29,12 @@ class SecurityShield
             abort(403, 'Global Cluster Quarantine: Your IP has been flagged by Sentinel Intercom.');
         }
 
+        // 0.5 Administrator Bypass (Sentinel White-Path)
+        // Ensure that administrators are not hindered by aggressive bot detection or WAF payloads
+        if ($request->is('admin/*') || $request->is('admin')) {
+             return $next($request);
+        }
+
         // 1. Neural Risk Scoring (Phase 1: Proactive Prediction)
         $profile = $this->inference->introspectBehavior();
         
@@ -140,7 +146,7 @@ class SecurityShield
     protected function detectThreats(Request $request)
     {
         // Zero False Positive: Internal Wiki Automator is exempt from payload inspection
-        if ($request->header('X-Internal-Automator') === 'WikiPipa-Safe') {
+        if ($request->header('X-Internal-Automator') === 'WikiPipa-Safe' || $request->is('admin/*')) {
             return;
         }
 

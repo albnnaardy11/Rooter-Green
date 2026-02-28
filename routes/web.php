@@ -128,7 +128,10 @@ Route::prefix('admin')->name('admin.')->middleware(['audit'])->group(function() 
 
     // Wiki Management (Authority Builder)
     Route::get('/wiki', [\App\Http\Controllers\Admin\WikiManagementController::class, 'index'])->name('wiki.index');
+    Route::get('/wiki/create', [\App\Http\Controllers\Admin\WikiManagementController::class, 'create'])->name('wiki.create');
     Route::post('/wiki', [\App\Http\Controllers\Admin\WikiManagementController::class, 'store'])->name('wiki.store');
+    Route::get('/wiki/{entity}/edit', [\App\Http\Controllers\Admin\WikiManagementController::class, 'edit'])->name('wiki.edit');
+    Route::put('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'update'])->name('wiki.update');
     Route::delete('/wiki/{entity}', [\App\Http\Controllers\Admin\WikiManagementController::class, 'delete'])->name('wiki.destroy');
     Route::post('/wiki/auto-generate', [\App\Http\Controllers\Admin\WikiManagementController::class, 'autoGenerate'])->middleware('phantom')->name('wiki.generate');
 
