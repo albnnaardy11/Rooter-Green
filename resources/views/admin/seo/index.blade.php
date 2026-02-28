@@ -135,9 +135,14 @@
                 <span class="text-sm">GSC Sync</span>
             </button>
             <button @click="tab = 'orphan'" :class="tab === 'orphan' ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/20' : 'bg-white/5 text-slate-400 hover:bg-white/10'" 
-                    class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold text-left border border-yellow-500/20 mb-4">
+                    class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold text-left border border-yellow-500/20">
                 <i class="ri-links-line text-xl"></i>
                 <span class="text-sm">Orphan Radar</span>
+            </button>
+            <button @click="tab = 'ghost'" :class="tab === 'ghost' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-white/5 text-slate-400 hover:bg-white/10'" 
+                    class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold text-left border border-emerald-500/20 mb-4">
+                <i class="ri-radar-fill text-xl"></i>
+                <span class="text-sm">Ghost-Crawl Monitor</span>
             </button>
             <button @click="tab = 'tools'" :class="tab === 'tools' ? 'bg-primary text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'" 
                     class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold text-left">
@@ -549,6 +554,74 @@
                             <p class="text-xs">All {{ \App\Models\WikiEntity::count() + \App\Models\Service::count() }} entities are perfectly interlinked.</p>
                         </div>
                         @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ghost-Crawl Monitor Panel -->
+            <div x-show="tab === 'ghost'" class="space-y-8" x-cloak>
+                <div class="bg-slate-900/50 p-8 rounded-[3rem] border border-white/5 backdrop-blur-xl">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 class="text-white font-black text-xl flex items-center gap-3">
+                                <i class="ri-radar-fill text-emerald-500"></i>
+                                Ghost-Crawl Monitor
+                            </h3>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-2">Real-time detection of Googlebot on non-indexed URLs.</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-right">
+                            <div>
+                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Budget Waste</p>
+                                <p class="text-xl font-black text-rose-500 italic">{{ $orphanCrawlCount }} Crawls</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-hidden rounded-3xl border border-white/5 bg-slate-950/50">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-white/5">
+                                <tr>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Crawled URL (Internal/Ghost)</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-center text-slate-500">Status</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-500">Sitemap</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-right text-slate-500">Sentinel Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                @forelse($crawlLogs as $log)
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-4 font-mono text-emerald-400 truncate max-w-sm" title="{{ $log->url }}">{{ $log->url }}</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="px-2 py-1 rounded text-[10px] font-black {{ $log->status_code >= 400 ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500' }}">
+                                            {{ $log->status_code }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 uppercase">
+                                        @if($log->is_in_sitemap)
+                                            <span class="text-emerald-500 font-black text-[10px] tracking-widest">Valid</span>
+                                        @else
+                                            <span class="text-rose-500 font-black text-[10px] tracking-widest italic animate-pulse">Ghost-Page</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex flex-col items-end">
+                                            <span class="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">{{ $log->action_taken ?: 'Monitoring Only' }}</span>
+                                            @if($log->metadata && isset($log->metadata['ai_analysis']))
+                                              <span class="text-[7px] text-emerald-500 font-medium">Quality Score: {{ $log->metadata['ai_analysis']['quality'] }}%</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center text-slate-500 text-sm font-bold">
+                                        <i class="ri-ghost-smile-line text-3xl mb-2 block text-indigo-500"></i>
+                                        No Ghost-Crawl detected in the last 24h cycle.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

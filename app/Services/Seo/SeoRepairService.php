@@ -92,6 +92,10 @@ class SeoRepairService
                         }
                     }
                 }
+            } else {
+                if ($response->status() === 429) {
+                    $guard->reportFailure();
+                }
             }
         } catch (\Exception $e) {
             Log::error("[SENTINEL-SEO] AI Repair Failure: " . $e->getMessage());

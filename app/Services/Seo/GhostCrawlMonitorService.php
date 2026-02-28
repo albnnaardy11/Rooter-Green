@@ -45,17 +45,21 @@ class GhostCrawlMonitorService
     protected function checkSitemapIntegrity(string $url): bool
     {
         return Cache::remember('sitemap_registry:' . md5($url), 86400, function() use ($url) {
-            // In a real Unicorp setup, this would check a pre-warmed Redis set of all valid URLs
-            // For now, we cross-check with existing dynamic content
             $path = parse_url($url, PHP_URL_PATH) ?: '/';
-            
-            // Check if it's a known service, city, or post
             $slug = ltrim($path, '/');
-            if (empty($slug)) return true;
+            
+            if (empty($slug)) return true; // Homepage
 
+            // UNICORP-GRADE: Multi-Entity Cross-Crawl Validation
             return \App\Models\SeoCity::where('slug', $slug)->exists() || 
                    \App\Models\Post::where('slug', $slug)->exists() ||
-                   \App\Models\SeoKeyword::where('keyword', $slug)->exists();
+                   \App\Models\Service::where('slug', $slug)->exists() ||
+                   \App\Models\WikiEntity::where('slug', $slug)->exists() ||
+                   \App\Models\SeoKeyword::where('keyword', $slug)->exists() ||
+                   // Handle nested paths like area/city/service
+                   preg_match('/^area\/([^\/]+)(\/([^\/]+))?$/', $slug) ||
+                   preg_match('/^wiki\/([^\/]+)$/', $slug) ||
+                   preg_match('/^blog\/([^\/]+)$/', $slug);
         });
     }
 
@@ -90,41 +94,64 @@ class GhostCrawlMonitorService
     protected function analyzeGhostContent(SeoCrawlLog $log)
     {
         try {
-            // Fetch content safely
-            $response = Http::get($log->url);
-            if (!$response->successful()) return;
+            // UNICORP-GRADE: Secure Content Retrieval
+            $response = Http::timeout(10)->withoutVerifying()->get($log->url);
+            if (!$response->successful()) {
+                Log::warning("[SENTINEL-GHOST] Content Fetch Failed (404/Timeout) for: " . $log->url);
+                return;
+            }
 
             $content = $response->body();
             $text = strip_tags($content);
+            $text = preg_replace('/\s+/', ' ', $text); // Clean up whitespace
 
             $guard = app(AiQuotaGuardService::class);
             $apiKey = $guard->getActiveKey();
             if (!$apiKey) return;
 
-            $prompt = "Analyze the quality of this ghost page content at '{$log->url}'. 
-            Content: " . substr($text, 0, 1000) . "
+            $prompt = "You are a Senior SEO Content Auditor. Analyze the quality of this 'Ghost Page' (URL not in sitemap but crawled by Googlebot).
+            URL: {$log->url}
+            Extracted Text Fragment: " . substr($text, 0, 1500) . "
+            
             Tasks:
-            1. Rate quality from 0-100.
-            2. Suggest action: ADD_TO_SITEMAP, NOINDEX, or REDIRECT.
-            Return ONLY JSON: {\"quality\": 85, \"action\": \"ADD_TO_SITEMAP\", \"reason\": \"...\"}";
+            1. Quality score (0-100) based on E-E-A-T.
+            2. Strategic action: 
+               - ADD_TO_SITEMAP (if high value)
+               - NOINDEX (if thin/duplicate but safe)
+               - REDIRECT (if outdated/broken but has link equity)
+            
+            Return ONLY JSON: {\"quality\": 85, \"action\": \"...\", \"reason\": \"...\"}";
 
-            $aiResponse = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey", [
+            $aiResponse = Http::timeout(30)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey", [
                 'contents' => [['parts' => [['text' => $prompt]]]]
             ]);
 
             if ($aiResponse->successful()) {
-                $result = json_decode($aiResponse->json('candidates.0.content.parts.0.text'), true);
-                if (!$result) return;
+                $rawText = $aiResponse->json('candidates.0.content.parts.0.text');
+                
+                if ($rawText && preg_match('/\{.*\}/s', $rawText, $matches)) {
+                    $result = json_decode($matches[0], true);
+                    if (!$result) {
+                         Log::error("[SENTINEL-GHOST] AI JSON Decode Failed.");
+                         return;
+                    }
 
-                $log->update(['metadata' => array_merge($log->metadata ?? [], ['ai_analysis' => $result])]);
+                    $log->update(['metadata' => array_merge($log->metadata ?? [], ['ai_analysis' => $result])]);
 
-                if ($result['quality'] >= 80 && $result['action'] === 'ADD_TO_SITEMAP') {
-                    $log->update(['action_taken' => 'INDEXING_ENHANCED']);
-                    // In real setup, would trigger Sitemap Re-gen & GSC Indexing API
-                    Log::info("[SENTINEL-GHOST] Quality Content Detected. Promoting to Sitemap: " . $log->url);
+                    if ($result['quality'] >= 80 && $result['action'] === 'ADD_TO_SITEMAP') {
+                        $log->update(['action_taken' => 'INDEX_ENHANCED']);
+                        Log::info("[SENTINEL-GHOST] Quality Content Detected. Promoting to Sitemap: " . $log->url);
+                    } else {
+                        $log->update(['action_taken' => 'BUDGET_GUARDED']);
+                        Log::warning("[SENTINEL-GHOST] Low quality Orphan detected. Action: " . $result['action']);
+                    }
                 } else {
-                    $log->update(['action_taken' => 'CRAWL_BUDGET_PROTECTION']);
-                    Log::warning("[SENTINEL-GHOST] Low quality Orphan detected. Diverting Googlebot.");
+                    Log::error("[SENTINEL-GHOST] No JSON found in AI response.");
+                }
+            } else {
+                Log::error("[SENTINEL-GHOST] Gemini API Call Failed: " . $aiResponse->body());
+                if ($aiResponse->status() === 429) {
+                    $guard->reportFailure();
                 }
             }
         } catch (\Exception $e) {

@@ -86,7 +86,16 @@ class SeoController extends Controller
 
         $orphanPages = $orphanScanner->scan();
 
-        return view('admin.seo.index', compact('settings', 'redirects', 'robotsContent', 'topPages', 'deviceStats', 'keywords', 'cities', 'reviews', 'healthData', 'errorLogs', 'gscData', 'orphanPages', 'autoHeals', 'gscService'));
+        $crawlLogs = \App\Models\SeoCrawlLog::where('is_googlebot', true)
+            ->orderByDesc('crawled_at')
+            ->limit(30)
+            ->get();
+
+        $orphanCrawlCount = \App\Models\SeoCrawlLog::where('is_googlebot', true)
+            ->where('is_in_sitemap', false)
+            ->count();
+
+        return view('admin.seo.index', compact('settings', 'redirects', 'robotsContent', 'topPages', 'deviceStats', 'keywords', 'cities', 'reviews', 'healthData', 'errorLogs', 'gscData', 'orphanPages', 'autoHeals', 'gscService', 'crawlLogs', 'orphanCrawlCount'));
     }
 
     public function analyze(Request $request, SeoGraderService $grader)
